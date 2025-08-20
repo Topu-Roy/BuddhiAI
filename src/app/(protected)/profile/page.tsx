@@ -2,6 +2,7 @@
 
 import { api } from "@/trpc/react";
 import { BookOpen, CalendarDays, GraduationCap, Mail, Trophy, User, X } from "lucide-react";
+import { useRouter } from "nextjs-toploader/app";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -11,13 +12,18 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { EditDialog } from "../../_components/profile/edit-dialog";
 
 export default function ProfileScreen() {
-  const { data: profile, isLoading, isError, refetch } = api.profile.getProfileInfo.useQuery();
+  const router = useRouter();
+  const { data: profile, isLoading, isError, error, refetch } = api.profile.getProfileInfo.useQuery();
 
   if (isLoading) {
     return <ProfileScreenLoader />;
   }
 
   if (isError || !profile) {
+    if (error?.data?.code === "NOT_FOUND") {
+      router.push("/profile/setup");
+    }
+
     return (
       <Card className="flex items-center justify-center">
         <div className="space-y-2 text-center">

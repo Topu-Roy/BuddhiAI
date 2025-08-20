@@ -2,19 +2,25 @@
 
 import { api } from "@/trpc/react";
 import { ScanFace, X } from "lucide-react";
+import { useRouter } from "nextjs-toploader/app";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export function ProfileCard() {
-  const { data: profile, isLoading, isError, refetch } = api.profile.getProfileInfo.useQuery();
+  const router = useRouter();
+  const { data: profile, isLoading, isError, error, refetch } = api.profile.getProfileInfo.useQuery();
 
   if (isLoading) {
     return <ProfileCardSkelton />;
   }
 
   if (isError || !profile) {
+    if (error?.data?.code === "NOT_FOUND") {
+      router.push("/profile/setup");
+    }
+
     return (
       <Card className="flex items-center justify-center">
         <div className="space-y-2 text-center">
