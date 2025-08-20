@@ -1,6 +1,6 @@
-import React from "react";
 import { CTA } from "@/app/_components/home/cta";
 import { BarChart3, Brain, Target, Zap } from "lucide-react";
+import DynamicText from "@/components/dynamic-text";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -11,9 +11,12 @@ export default function LandingPage() {
         {/* Hero Section */}
         <section className="flex min-h-[70dvh] items-center justify-center px-4 py-20 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-4xl text-center">
-            <h2 className="text-foreground mb-6 text-4xl font-bold md:text-6xl">
-              Test Your Knowledge with <span className="text-primary">AI-Generated MCQ</span>
-            </h2>
+            <div className="mb-6 text-4xl font-bold text-balance md:text-6xl">
+              Test Your Knowledge of
+              <div className="text-primary">
+                <DynamicText />
+              </div>
+            </div>
             <p className="text-muted-foreground mx-auto mb-8 max-w-2xl text-xl">
               Enter any topic and let our AI create personalized quizzes tailored to your knowledge level and
               interests.

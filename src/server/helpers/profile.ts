@@ -9,7 +9,7 @@ export const getProfileWithNotFoundCheck = cache(async () => {
 
   if (error) {
     if (error.message === "Profile not found") {
-      redirect("/profile/setup");
+      redirect("/auth/sign-in");
     } else {
       notFound();
     }

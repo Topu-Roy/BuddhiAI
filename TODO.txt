@@ -1,0 +1,6 @@
+https://reui.io/docs/marquee
+
+    Make marquee with quizzes in the hero section
+
+https://smoothui.dev/doc/blocks/testimonial
+https://smoothui.dev/doc/components/cursor-follow

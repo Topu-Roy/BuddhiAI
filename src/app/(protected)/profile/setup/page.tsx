@@ -7,7 +7,7 @@ import { api } from "@/trpc/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { EDUCATION_LEVEL, INTEREST } from "@prisma/client";
 import { Brain } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type z from "zod";

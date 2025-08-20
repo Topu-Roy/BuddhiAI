@@ -1,31 +1,38 @@
-import { Suspense } from "react";
-import { getProfileWithNotFoundCheck } from "@/server/helpers/profile";
-import { BookOpen, CalendarDays, GraduationCap, Mail, Trophy, User } from "lucide-react";
-// import { unstable_cache } from "next/cache";
+"use client";
+
+import { api } from "@/trpc/react";
+import { BookOpen, CalendarDays, GraduationCap, Mail, Trophy, User, X } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EditDialog } from "../../_components/profile/edit-dialog";
 
-export default function RenderProfileScreen() {
-  return (
-    <Suspense fallback={<ProfileScreenLoader />}>
-      <ProfileScreen />
-    </Suspense>
-  );
-}
+export default function ProfileScreen() {
+  const { data: profile, isLoading, isError, refetch } = api.profile.getProfileInfo.useQuery();
 
-async function ProfileScreen() {
-  // const cached = unstable_cache(
-  //   async () => {
-  //     return await getProfileWithNotFoundCheck();
-  //   },
-  //   [],
-  //   { tags: [""] }
-  // );
-  const { profile } = await getProfileWithNotFoundCheck();
+  if (isLoading) {
+    return <ProfileScreenLoader />;
+  }
+
+  if (isError || !profile) {
+    return (
+      <Card className="flex items-center justify-center">
+        <div className="space-y-2 text-center">
+          <div className="bg-destructive/10 mx-auto flex size-12 items-center justify-center rounded-full p-2">
+            <X size={18} className="text-destructive" />
+          </div>
+          <p className="text-destructive text-2xl font-semibold">{"Couldn't load data"}</p>
+          <p className="text-muted-foreground pb-4">Please refresh or try again later.</p>
+          <Button onClick={() => refetch()} variant={"outline"}>
+            Refresh
+          </Button>
+        </div>
+      </Card>
+    );
+  }
 
   return (
     <div className="bg-background p-4 md:p-6 lg:p-8">

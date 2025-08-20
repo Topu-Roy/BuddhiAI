@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import type { AnswerSchema } from "@/server/schema/quiz";
 import { api } from "@/trpc/react";
 import { CheckCircle, ChevronLeft, ChevronRight, Clock } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter } from 'nextjs-toploader/app';
 import { toast } from "sonner";
 import type z from "zod";
 import { cn } from "@/lib/utils";

@@ -1,12 +1,11 @@
 "use client";
 
-import type { getProfileByUserId } from "@/server/helpers/profile";
 import { updateOrCreateProfileInputSchema } from "@/server/schema/profile";
 import { api } from "@/trpc/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { EDUCATION_LEVEL, INTEREST } from "@prisma/client";
 import { Edit } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter } from 'nextjs-toploader/app';
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type z from "zod";
@@ -35,8 +34,19 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-export function EditDialog({ profile }: { profile: NonNullable<Awaited<ReturnType<typeof getProfileByUserId>>> }) {
+type Profile = {
+  name: string;
+  id: string;
+  email: string;
+  userId: string;
+  age: number;
+  educationLevel: EDUCATION_LEVEL;
+  interests: INTEREST[];
+};
+
+export function EditDialog({ profile }: { profile: Profile }) {
   const router = useRouter();
+  const utils = api.useUtils();
   const {
     mutate: updateMutation,
     isPending: pendingUpdate,
@@ -44,6 +54,9 @@ export function EditDialog({ profile }: { profile: NonNullable<Awaited<ReturnTyp
     error,
   } = api.profile.createOrUpdate.useMutation({
     onSuccess: () => {
+      void utils.profile.getProfileInfo.invalidate();
+      void utils.profile.getProfileInfo.refetch();
+
       toast.success("✅ Profile updated successfully, redirecting...");
       router.refresh();
     },

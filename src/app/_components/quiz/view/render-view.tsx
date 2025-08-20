@@ -140,7 +140,7 @@ export async function RenderView({ quizId }: { quizId: string }) {
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-green-600">{data.analytics?.averageScore ?? 0}%</div>
+                    <div className="text-2xl font-bold text-green-600">{data.analytics?.averageScore ?? 0}/10</div>
                     <div className="text-muted-foreground text-xs">Avg Score</div>
                   </div>
                   <div className="text-center">
@@ -151,9 +151,9 @@ export async function RenderView({ quizId }: { quizId: string }) {
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
                     <span>Performance</span>
-                    <span>{data.analytics?.averageScore ?? 0}%</span>
+                    <span>{data.analytics?.averageScore ?? 0}0%</span>
                   </div>
-                  <Progress value={data.analytics?.averageScore ?? 0} className="h-2" />
+                  <Progress value={(data.analytics?.averageScore ?? 0) * 10} className="h-2" max={10} />
                 </div>
               </CardContent>
             </Card>
@@ -200,7 +200,7 @@ export async function RenderView({ quizId }: { quizId: string }) {
                         <span
                           className={`text-sm font-semibold ${taker.correctAnswer >= 6 ? "text-green-600" : "text-red-600"}`}
                         >
-                          {taker.correctAnswer}%
+                          {taker.correctAnswer}0%
                         </span>
                       </div>
                       <div className="text-muted-foreground text-xs">{fmtTime(taker.timeTookInSeconds)}</div>

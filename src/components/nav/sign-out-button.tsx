@@ -2,9 +2,9 @@
 
 import { useMutation } from "@tanstack/react-query";
 import { signOut } from "@/auth/auth-client";
-import { useRouter } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
 import { toast } from "sonner";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 
 export function SignOutButton() {
   const router = useRouter();

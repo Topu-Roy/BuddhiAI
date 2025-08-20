@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { api } from "@/trpc/react";
 import { BrainCircuit, X } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
 import { toast } from "sonner";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
@@ -17,8 +17,29 @@ export function GenerateQuizCard() {
   const router = useRouter();
 
   const utils = api.useUtils();
-  const [profile] = api.profile.getProfileInfo.useSuspenseQuery();
+  const { data: profile, isLoading, isError, refetch } = api.profile.getProfileInfo.useQuery();
   const { mutate: createQuiz, isPending, isError: isCreateQuizError, error } = api.quiz.generateQuiz.useMutation();
+
+  if (isLoading) {
+    return <GenerateQuizCardSkeleton />;
+  }
+
+  if (isError || !profile) {
+    return (
+      <Card className="flex items-center justify-center">
+        <div className="space-y-2 text-center">
+          <div className="bg-destructive/10 mx-auto flex size-12 items-center justify-center rounded-full p-2">
+            <X size={18} className="text-destructive" />
+          </div>
+          <p className="text-destructive text-2xl font-semibold">{"Couldn't load data"}</p>
+          <p className="text-muted-foreground pb-4">Please refresh or try again later.</p>
+          <Button onClick={() => refetch()} variant={"outline"}>
+            Refresh
+          </Button>
+        </div>
+      </Card>
+    );
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     if (!profile) return;
@@ -38,6 +59,15 @@ export function GenerateQuizCard() {
           toast.error("Something bad happened - " + error.message);
         },
         onSuccess(data) {
+          void utils.profile.getProfileInfo.invalidate();
+          void utils.profile.getProfileInfo.refetch();
+
+          void utils.quiz.getPaginatedQuiz.invalidate();
+          void utils.quiz.getPaginatedQuiz.refetch();
+
+          void utils.profile.getPaginatedCreatedHistory.invalidate();
+          void utils.profile.getPaginatedCreatedHistory.refetch();
+
           router.push(`/quiz/view/${data.id}`);
         },
       }
@@ -114,7 +144,7 @@ export function GenerateQuizCard() {
   );
 }
 
-export function GenerateQuizCardSkelton() {
+function GenerateQuizCardSkeleton() {
   return (
     <Card className="shadow-sm">
       <CardHeader>

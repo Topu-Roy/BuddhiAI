@@ -1,5 +1,4 @@
-import { Suspense } from "react";
-import { History, HistorySkeleton } from "@/app/_components/quiz/history/history";
+import { History } from "@/app/_components/quiz/history/history";
 import { redirect } from "next/navigation";
 
 type Props = {
@@ -24,9 +23,7 @@ export default async function HistoryScreen({ searchParams }: Props) {
         </div>
 
         {/* Profile History */}
-        <Suspense fallback={<HistorySkeleton />}>
-          <History page={page} />
-        </Suspense>
+        <History page={page} />
       </div>
     </div>
   );

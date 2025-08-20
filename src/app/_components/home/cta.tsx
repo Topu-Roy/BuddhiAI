@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { getServerAuthSession } from "@/auth/auth";
 import Link from "next/link";
-import { Button } from "../../../components/ui/button";
+import { Button } from "@/components/ui/button";
 
 async function CTAComponent() {
   const session = await getServerAuthSession();

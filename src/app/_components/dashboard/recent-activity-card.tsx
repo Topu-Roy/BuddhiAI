@@ -1,8 +1,8 @@
-import { Suspense } from "react";
-import { getProfileWithNotFoundCheck } from "@/server/helpers/profile";
+"use client";
+
+import { api } from "@/trpc/react";
 import { BookOpen, Calendar, Clock, Ellipsis, Repeat, Target, X } from "lucide-react";
 import Link from "next/link";
-import { tryCatch } from "@/lib/helpers/try-catch";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -20,18 +20,14 @@ const formatTime = (s: number) => {
   return `${m}:${sec.toString().padStart(2, "0")}`;
 };
 
-export function RenderRecentActivityCard() {
-  return (
-    <Suspense fallback={<RecentActivityCardSkelton />}>
-      <RecentActivityCard />
-    </Suspense>
-  );
-}
+export function RecentActivityCard() {
+  const { data: profile, isLoading, isError, refetch } = api.profile.getProfileInfo.useQuery();
 
-async function RecentActivityCard() {
-  const { data, error } = await tryCatch(getProfileWithNotFoundCheck());
+  if (isLoading) {
+    return <RecentActivityCardSkelton />;
+  }
 
-  if (error) {
+  if (isError || !profile) {
     return (
       <Card className="flex items-center justify-center">
         <div className="space-y-2 text-center">
@@ -40,16 +36,16 @@ async function RecentActivityCard() {
           </div>
           <p className="text-destructive text-2xl font-semibold">{"Couldn't load data"}</p>
           <p className="text-muted-foreground pb-4">Please refresh or try again later.</p>
-          <Button variant={"outline"} asChild>
-            <Link href={"/dashboard"}>Dashboard</Link>
+          <Button variant={"outline"} onClick={() => refetch()}>
+            Refresh
           </Button>
         </div>
       </Card>
     );
   }
 
-  const created = data.profile.quizzesCreated;
-  const taken = data.profile.quizzesTaken;
+  const created = profile.quizzesCreated;
+  const taken = profile.quizzesTaken;
 
   return (
     <Card className="shadow-sm">

@@ -1,6 +1,8 @@
-import { Suspense } from "react";
-import { getProfileWithNotFoundCheck } from "@/server/helpers/profile";
-import { Target } from "lucide-react";
+"use client";
+
+import { api } from "@/trpc/react";
+import { Target, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -10,16 +12,29 @@ const formatTime = (seconds: number) => {
   return { minutes, remainingSeconds };
 };
 
-export function RenderQuickStatsCard() {
-  return (
-    <Suspense fallback={<QuickStatsCardSkelton />}>
-      <QuickStatsCard />
-    </Suspense>
-  );
-}
+export function QuickStatsCard() {
+  const { data: profile, isLoading, isError, refetch } = api.profile.getProfileInfo.useQuery();
 
-async function QuickStatsCard() {
-  const { profile } = await getProfileWithNotFoundCheck();
+  if (isLoading) {
+    return <QuickStatsCardSkelton />;
+  }
+
+  if (isError || !profile) {
+    return (
+      <Card className="flex items-center justify-center">
+        <div className="space-y-2 text-center">
+          <div className="bg-destructive/10 mx-auto flex size-12 items-center justify-center rounded-full p-2">
+            <X size={18} className="text-destructive" />
+          </div>
+          <p className="text-destructive text-2xl font-semibold">{"Couldn't load data"}</p>
+          <p className="text-muted-foreground pb-4">Please refresh or try again later.</p>
+          <Button onClick={() => refetch()} variant={"outline"}>
+            Refresh
+          </Button>
+        </div>
+      </Card>
+    );
+  }
 
   const timeSpent = formatTime(profile.Stats?.totalTimeSpentInSeconds ?? 0);
 
@@ -50,7 +65,7 @@ async function QuickStatsCard() {
   );
 }
 
-export function QuickStatsCardSkelton() {
+function QuickStatsCardSkelton() {
   return (
     <Card className="shadow-sm">
       <CardHeader className="border-border border-b pb-4!">
@@ -73,20 +88,3 @@ export function QuickStatsCardSkelton() {
     </Card>
   );
 }
-
-// if (isError || !profile) {
-//   return (
-//     <Card className="flex items-center justify-center">
-//       <div className="space-y-2 text-center">
-//         <div className="bg-destructive/10 mx-auto flex size-12 items-center justify-center rounded-full p-2">
-//           <X size={18} className="text-destructive" />
-//         </div>
-//         <p className="text-destructive text-2xl font-semibold">{"Couldn't load data"}</p>
-//         <p className="text-muted-foreground pb-4">Please refresh or try again later.</p>
-//         <Button onClick={() => refetch()} variant={"outline"}>
-//           Refresh
-//         </Button>
-//       </div>
-//     </Card>
-//   );
-// }
