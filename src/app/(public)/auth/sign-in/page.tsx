@@ -1,7 +1,7 @@
+import { SignInForm } from "@/app/_components/auth/sign-in-form";
 import { Brain } from "lucide-react";
 import Link from "next/link";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { SignInForm } from "../../../_components/auth/sign-in-form";
 
 export default function SignInScreen() {
   return (
@@ -11,7 +11,7 @@ export default function SignInScreen() {
           <div className="mb-4 flex justify-center">
             <Brain className="text-primary h-12 w-12" />
           </div>
-          <CardTitle className="text-2xl font-bold">Quiz Generator AI</CardTitle>
+          <CardTitle className="text-2xl font-bold">BuddhiAI</CardTitle>
           <CardDescription>Sign in to your account</CardDescription>
         </CardHeader>
         <CardContent>

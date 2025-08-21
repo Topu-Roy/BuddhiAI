@@ -54,8 +54,8 @@ export const metadata: Metadata = {
 };
 
 const geist = Geist({
-  subsets: ["latin"],
   variable: "--font-geist-sans",
+  weight: ["400", "500", "600", "700"],
 });
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

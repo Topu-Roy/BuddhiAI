@@ -12,7 +12,7 @@ export default function SignUpScreen() {
             <Brain className="text-primary h-12 w-12" />
           </div>
 
-          <CardTitle className="text-2xl font-bold">Quiz Generator AI</CardTitle>
+          <CardTitle className="text-2xl font-bold">BuddhiAI</CardTitle>
           <CardDescription>Create your account</CardDescription>
         </CardHeader>
         <CardContent>
