@@ -1,10 +1,12 @@
-import { getProfileWithNotFoundCheck } from "@/server/helpers/profile";
+import { getServerAuthSession } from "@/auth/auth";
 import { redirect } from "next/navigation";
 
 export default async function AuthLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const { profile } = await getProfileWithNotFoundCheck();
+  const session = await getServerAuthSession();
 
-  if (profile) redirect("/dashboard");
+  if (session?.user.id) {
+    redirect("/dashboard");
+  }
 
   return <>{children}</>;
 }
