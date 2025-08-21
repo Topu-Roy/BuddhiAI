@@ -1,29 +1,46 @@
-# Create T3 App
+# BuddhiAI
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+![BuddhiAI Logo](https://bwjcur3siq.ufs.sh/f/j7HvSadRZFfQCcnsEOxNESncf5r1kAu2bvV9G4dqle0hosZN)  
+**Fuel your brain. Fast. Fun. AI-powered.**
 
-## What's next? How do I make an app with this?
+![BuddhiAI Cover](https://bwjcur3siq.ufs.sh/f/j7HvSadRZFfQxYHWBvoYVLAR8WIPC709sH6laUyFSiuGOfpK)
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+BuddhiAI is an AI-powered quiz platform that lets you **create, explore, and take bite-sized quizzes in seconds**. Whether you’re learning, testing your knowledge, or challenging friends, BuddhiAI makes it fast, fun, and addictive.
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+## Features
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+- **AI-Powered Quiz Creation:** Generate smart multiple-choice questions instantly based on any topic.
+- **Explore Quizzes:** Browse thousands of bite-sized quizzes made by others.
+- **Leaderboard & Scores:** Track your performance and challenge friends.
+- **Fast & Fun:** 10 questions per quiz — play anytime, anywhere.
+- **Shareable Quizzes:** Share quizzes easily via URL or social media.
 
-## Learn More
+**Taglines / Hero Lines:**
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+- “Fuel your brain. Fast. Fun. AI-powered.”
+- “10 questions. Unlimited smarts. Let’s go!”
+- “Quizzes made for humans. Powered by AI.”
+- “Play. Learn. Beat your brain.”
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+---
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+## Demo
 
-## How do I deploy this?
+_Include screenshots or links to the deployed version here._
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+- **Live App:** [https://buddhiai.vercel.app](https://buddhiai.vercel.app)
+
+---
+
+## Tech Stack
+
+- **Frontend:** Next.js 15 + React 19 + TypeScript 5
+- **UI & Styling:** TailwindCSS 4, Radix UI components, Lucide icons
+- **State & Data Fetching:** React Query, TRPC
+- **Forms:** React Hook Form + Zod
+- **Backend:** Bun + Hono (with AI API integrations)
+- **Database & ORM:** Prisma + PostgreSQL
+- **Authentication:** Better Auth / Google OAuth
+- **AI Integration:** OpenAI / AI SDK
+
+---

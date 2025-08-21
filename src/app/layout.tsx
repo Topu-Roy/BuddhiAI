@@ -54,6 +54,7 @@ export const metadata: Metadata = {
 };
 
 const geist = Geist({
+  subsets: [],
   variable: "--font-geist-sans",
   weight: ["400", "500", "600", "700"],
 });
