@@ -3,57 +3,37 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 
-const greetings: string[] = [
-  "Science",
-  "Stars",
-  "Oceans",
-  "Robots",
-  "Dinosaurs",
-  "Volcano",
-  "Rainbow",
-  "Gravity",
-  "Water",
-  "Sound",
-  "Music",
-  "Weather",
-  "Animals",
-  "Garden",
-  "Books",
-  "Space",
-  "Bike",
-  "Food",
-  "Desert",
-  "Earth",
-  "Coffee",
-  "Plants",
-  "Light",
-  "Time",
-  "Air",
-  "Island",
-  "Stone",
-  "Starlight",
-  "Metal",
-  "Movies",
-  "Ice",
-  "Clouds",
-  "Forest",
-  "Ocean",
-  "River",
-  "Tea",
-  "Phone",
-  "Energy",
-  "Bridge",
-  "Fire",
-  "Sunset",
-  "Train",
-  "Camera",
-  "Game",
-  "Sport",
-  "Mountain",
-  "Cake",
-  "Sunrise",
-  "Car",
-  "Moonlight",
+const topics: string[] = [
+  "Ancient Civilizations",
+  "World War II",
+  "Modern Art",
+  "Renaissance Literature",
+  "Human Anatomy",
+  "Microeconomics",
+  "Macroeconomics",
+  "Political Theory",
+  "Ethics",
+  "Philosophy of Mind",
+  "Environmental Science",
+  "Astronomy",
+  "Organic Chemistry",
+  "Cell Biology",
+  "Genetics",
+  "World Geography",
+  "Classical Music",
+  "Linguistics",
+  "Archaeology",
+  "Computer Algorithms",
+  "Artificial Intelligence",
+  "Mathematical Logic",
+  "Human Physiology",
+  "Sociology",
+  "Cultural Studies",
+  "Modern History",
+  "Geology",
+  "Oceanography",
+  "Neuroscience",
+  "Psychology",
 ];
 
 const DynamicText = () => {
@@ -64,7 +44,7 @@ const DynamicText = () => {
       setCurrentIndex(prevIndex => {
         const nextIndex = prevIndex + 1;
 
-        return nextIndex % greetings.length;
+        return nextIndex % topics.length;
       });
     }, 3000);
 
@@ -82,7 +62,7 @@ const DynamicText = () => {
         transition={{ duration: 0.5, ease: "easeOut" }}
       >
         <div className="h-2 w-2 rounded-full" aria-hidden="true" />
-        {greetings[currentIndex]}
+        {topics[currentIndex]}
       </motion.div>
     </AnimatePresence>
   );

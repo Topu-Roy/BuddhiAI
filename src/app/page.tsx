@@ -12,14 +12,14 @@ export default function LandingPage() {
         <section className="flex min-h-[70dvh] items-center justify-center px-4 py-20 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-4xl text-center">
             <div className="mb-6 text-4xl font-bold text-balance md:text-6xl">
-              Test Your Knowledge of
+              Let&apos;s take a bite size Quiz of
               <div className="text-primary">
                 <DynamicText />
               </div>
             </div>
             <p className="text-muted-foreground mx-auto mb-8 max-w-2xl text-xl">
-              Enter any topic and let our AI create personalized quizzes tailored to your knowledge level and
-              interests.
+              Got a topic in mind? Let BuddhiAI whip up a quiz just for you — smart, snappy, and perfectly tuned to
+              boost your brainpower
             </p>
             <div className="flex flex-col justify-center gap-4 sm:flex-row">
               <CTA />
@@ -30,7 +30,7 @@ export default function LandingPage() {
         {/* Features Section */}
         <section className="bg-card flex min-h-[70dvh] items-center justify-center px-4 py-16 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-6xl">
-            <h3 className="text-foreground mb-12 text-center text-3xl font-bold">Why Choose Quiz Generator AI?</h3>
+            <h3 className="text-foreground mb-12 text-center text-3xl font-bold">Why BuddhiAI Rocks</h3>
             <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
               <Card>
                 <CardHeader className="text-center">
@@ -39,7 +39,7 @@ export default function LandingPage() {
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-center">
-                    Advanced AI generates unique, relevant questions on any topic you choose.
+                    BuddhiAI&apos;s brainy AI whips up unique questions on any topic—fast and clever every time.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -51,7 +51,7 @@ export default function LandingPage() {
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-center">
-                    Quizzes adapt to your education level, age, and interests for optimal learning.
+                    Quizzes flex to your level, interests, and goals—because one-size-fits-all is boring.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -59,11 +59,11 @@ export default function LandingPage() {
               <Card>
                 <CardHeader className="text-center">
                   <Zap className="text-primary mx-auto mb-4 h-12 w-12" />
-                  <CardTitle>Instant Results</CardTitle>
+                  <CardTitle>Instant Feedback</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-center">
-                    Get immediate feedback with detailed explanations for every answer.
+                    Snap! Get immediate answers with clear explanations—no waiting, no guessing.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -75,7 +75,7 @@ export default function LandingPage() {
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-center">
-                    Monitor your learning journey with comprehensive performance analytics.
+                    Watch your brain grow with easy-to-read stats and performance insights.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -93,9 +93,10 @@ export default function LandingPage() {
                   1
                 </div>
                 <div>
-                  <h4 className="text-foreground mb-2 text-xl font-semibold">Sign Up & Complete Profile</h4>
+                  <h4 className="text-foreground mb-2 text-xl font-semibold">Sign Up & Tell Us About You</h4>
                   <p className="text-muted-foreground">
-                    Create your account and tell us about your interests and education level.
+                    Create your account and share your interests and knowledge level. BuddhiAI loves to know its
+                    player!
                   </p>
                 </div>
               </div>
@@ -105,9 +106,10 @@ export default function LandingPage() {
                   2
                 </div>
                 <div>
-                  <h4 className="text-foreground mb-2 text-xl font-semibold">Enter Your Topic</h4>
+                  <h4 className="text-foreground mb-2 text-xl font-semibold">Pick a Topic</h4>
                   <p className="text-muted-foreground">
-                    Type in any subject you want to be quizzed on - from history to science to pop culture.
+                    Type any subject you fancy—history, science, pop culture, or something completely wild—and
+                    watch BuddhiAI craft your quiz.
                   </p>
                 </div>
               </div>
@@ -117,9 +119,9 @@ export default function LandingPage() {
                   3
                 </div>
                 <div>
-                  <h4 className="text-foreground mb-2 text-xl font-semibold">Take the Quiz</h4>
+                  <h4 className="text-foreground mb-2 text-xl font-semibold">Take Your Quiz</h4>
                   <p className="text-muted-foreground">
-                    Answer 10 AI-generated questions tailored to your knowledge level.
+                    Answer 10 questions made just for you. Fast, fun, and smart—perfectly tuned to your brainpower.
                   </p>
                 </div>
               </div>
@@ -129,9 +131,10 @@ export default function LandingPage() {
                   4
                 </div>
                 <div>
-                  <h4 className="text-foreground mb-2 text-xl font-semibold">Review & Learn</h4>
+                  <h4 className="text-foreground mb-2 text-xl font-semibold">Check & Celebrate</h4>
                   <p className="text-muted-foreground">
-                    Get instant results with explanations and track your progress over time.
+                    Get instant results with explanations, track your progress, and flex your growing brainpower.
+                    Knowledge = unlocked.
                   </p>
                 </div>
               </div>
@@ -142,11 +145,12 @@ export default function LandingPage() {
         {/* CTA Section */}
         <section className="bg-card flex min-h-[40dvh] items-center justify-center px-4 py-16 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-4xl text-center">
-            <h3 className="text-card-foreground mb-6 text-3xl font-bold">Ready to Challenge Yourself?</h3>
+            <h3 className="text-card-foreground mb-6 text-3xl font-bold">Ready to Flex Your Brain?</h3>
             <p className="text-card-foreground/80 mb-8 text-xl">
-              Join thousands of learners who are expanding their knowledge with AI-powered quizzes.
+              Join thousands of curious minds testing their smarts with BuddhiAI&apos;s AI-powered quizzes. Fast,
+              fun, and brain-boosting!
             </p>
-            <Button size="lg">Get Started for Free</Button>
+            <Button size="lg">Start Quizzing</Button>
           </div>
         </section>
       </main>
@@ -155,10 +159,10 @@ export default function LandingPage() {
         <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
           <div className="mb-4 flex items-center justify-center">
             <Brain className="text-muted-foreground mr-2 h-6 w-6" />
-            <span className="text-foreground font-semibold">Quiz Generator AI</span>
+            <span className="text-foreground font-semibold">BuddhiAI</span>
           </div>
           <p className="text-muted-foreground">
-            © 2024 Quiz Generator AI. Empowering learning through artificial intelligence.
+            © 2025 BuddhiAI. Making brains smarter, one AI-powered quiz at a time.
           </p>
         </div>
       </footer>
