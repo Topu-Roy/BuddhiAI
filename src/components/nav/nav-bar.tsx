@@ -1,9 +1,16 @@
 import { Suspense } from "react";
+import { Pacifico } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
 import { ModeToggle } from "../mode-toggle";
 import { Skeleton } from "../ui/skeleton";
 import { NavButtons } from "./nav-buttons";
+
+const pacifico = Pacifico({
+  subsets: [],
+  variable: "--font-pacifico",
+  weight: ["400"],
+});
 
 export function Navbar() {
   return (
@@ -23,8 +30,11 @@ export function Navbar() {
                 alt="BuddhiAI"
               />
             </Link>
+
             <Link href={"/"}>
-              <h1 className="text-xl font-bold">BuddhiAI</h1>
+              <h1 className={`text-xl ${pacifico.variable}`}>
+                Buddhi<span className="text-accent">AI</span>
+              </h1>
             </Link>
           </div>
 
