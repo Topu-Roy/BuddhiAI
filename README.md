@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://bwjcur3siq.ufs.sh/f/j7HvSadRZFfQTTBf02AsAZ7tIpXHFoOuRjnW35C0G6axBDhv" alt="BuddhiAI Cover" width="100%" style="border-radius:12px; max-width: 640px;" />
+  <img src="https://bwjcur3siq.ufs.sh/f/j7HvSadRZFfQkNePSwyrK2OcEi6C5ALxu3zMyeZnpNjbqTfh" alt="BuddhiAI Cover" width="100%" style="border-radius:12px; max-width: 640px;" />
 </p>
 
 ---
