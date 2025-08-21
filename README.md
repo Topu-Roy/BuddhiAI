@@ -1,14 +1,5 @@
 <p align="center">
-  <img src="https://bwjcur3siq.ufs.sh/f/j7HvSadRZFfQCcnsEOxNESncf5r1kAu2bvV9G4dqle0hosZN" alt="BuddhiAI Logo" height="80" style="vertical-align:middle; margin-right:16px;">
-  <span style="font-size:64px; font-weight:900; vertical-align:middle;">BuddhiAI</span>
-</p>
-
-<p align="center">
-  <strong>Fuel your brain. Fast. Fun. AI-powered.</strong>
-</p>
-
-<p align="center">
-  <img src="https://bwjcur3siq.ufs.sh/f/j7HvSadRZFfQxYHWBvoYVLAR8WIPC709sH6laUyFSiuGOfpK" alt="BuddhiAI Cover" width="100%" style="border-radius:12px; max-width: 640px;" />
+  <img src="https://bwjcur3siq.ufs.sh/f/j7HvSadRZFfQTTBf02AsAZ7tIpXHFoOuRjnW35C0G6axBDhv" alt="BuddhiAI Cover" width="100%" style="border-radius:12px; max-width: 640px;" />
 </p>
 
 ---
