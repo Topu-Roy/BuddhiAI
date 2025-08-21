@@ -32,8 +32,8 @@ export function Navbar() {
             </Link>
 
             <Link href={"/"}>
-              <h1 className={`text-xl ${pacifico.variable}`}>
-                Buddhi<span className="text-accent">AI</span>
+              <h1 className={`text-2xl ${pacifico.className} tracking-widest`}>
+                Buddhi<span className="text-blue-500">AI</span>
               </h1>
             </Link>
           </div>
