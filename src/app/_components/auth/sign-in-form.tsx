@@ -4,7 +4,7 @@ import { signIn } from "@/auth/auth-client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { z } from "zod";
+import { email, object, string, type infer as Infer } from "zod";
 import { GoogleSignInButton } from "@/components/google-sign-in-button";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,16 +18,15 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-const signInSchema = z.object({
-  email: z.string({ required_error: "Email required" }).trim().email({ message: "Invalid email" }),
-  password: z
-    .string({ required_error: "Password required" })
-    .min(8, { message: "Must be within 8 to 30 characters" })
-    .max(30, { message: "Must be within 8 to 30 characters" }),
+const signInSchema = object({
+  email: email({ error: "Invalid email" }),
+  password: string({ error: "Password required" })
+    .min(8, { error: "Must be within 8 to 30 characters" })
+    .max(30, { error: "Must be within 8 to 30 characters" }),
 });
 
 export function SignInForm() {
-  const form = useForm<z.infer<typeof signInSchema>>({
+  const form = useForm<Infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
       email: "",
@@ -35,7 +34,7 @@ export function SignInForm() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof signInSchema>) {
+  function onSubmit(values: Infer<typeof signInSchema>) {
     void signIn.email({
       email: values.email,
       password: values.password,

@@ -1,7 +1,7 @@
 import { TRPCError } from "@trpc/server";
-import { protectedProcedure } from "../../trpc";
 import { number, object } from "zod";
 import { tryCatch } from "@/lib/helpers/try-catch";
+import { protectedProcedure } from "../../trpc";
 
 export const HISTORY_ITEM_PER_PAGE = 9;
 

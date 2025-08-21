@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { z } from "zod";
+import { email, object, string, type infer as Infer } from "zod";
 import { GoogleSignInButton } from "@/components/google-sign-in-button";
 import { Button } from "@/components/ui/button";
 import {
@@ -20,35 +20,29 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-const signUpSchema = z
-  .object({
-    email: z.string({ required_error: "Email is required" }).trim().email({ message: "Invalid email" }),
-    firstName: z
-      .string({ required_error: "First name is required" })
-      .min(2, { message: "Must be within 2 to 20 characters" })
-      .max(20, { message: "Must be within 2 to 20 characters" }),
-    lastName: z
-      .string({ required_error: "Last name is required" })
-      .min(2, { message: "Must be within 2 to 20 characters" })
-      .max(20, { message: "Must be within 2 to 20 characters" }),
-    password: z
-      .string({ required_error: "Password required" })
-      .min(8, { message: "Must be within 8 to 30 characters" })
-      .max(30, { message: "Must be within 8 to 30 characters" }),
-    confirmPassword: z
-      .string({ required_error: "Password required" })
-      .min(8, { message: "Must be within 8 to 30 characters" })
-      .max(30, { message: "Must be within 8 to 30 characters" }),
-  })
-  .refine(({ password, confirmPassword }) => password === confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"],
-  });
+const signUpSchema = object({
+  email: email({ error: "Invalid email" }),
+  firstName: string({ error: "First name is required" })
+    .min(2, { error: "Must be within 2 to 20 characters" })
+    .max(20, { error: "Must be within 2 to 20 characters" }),
+  lastName: string({ error: "Last name is required" })
+    .min(2, { error: "Must be within 2 to 20 characters" })
+    .max(20, { error: "Must be within 2 to 20 characters" }),
+  password: string({ error: "Password required" })
+    .min(8, { error: "Must be within 8 to 30 characters" })
+    .max(30, { error: "Must be within 8 to 30 characters" }),
+  confirmPassword: string({ error: "Password required" })
+    .min(8, { error: "Must be within 8 to 30 characters" })
+    .max(30, { error: "Must be within 8 to 30 characters" }),
+}).refine(({ password, confirmPassword }) => password === confirmPassword, {
+  error: "Passwords do not match",
+  path: ["confirmPassword"],
+});
 
 export function SignUpForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const form = useForm<z.infer<typeof signUpSchema>>({
+  const form = useForm<Infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
       email: "",
@@ -59,7 +53,7 @@ export function SignUpForm() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof signUpSchema>) {
+  function onSubmit(values: Infer<typeof signUpSchema>) {
     void signUp.email({
       email: values.email,
       name: `${values.firstName} ${values.lastName}`,

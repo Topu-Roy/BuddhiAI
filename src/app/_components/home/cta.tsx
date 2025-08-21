@@ -1,10 +1,24 @@
-import { Suspense } from "react";
-import { getServerAuthSession } from "@/auth/auth";
+"use client";
+
+import { useSession } from "@/auth/auth-client";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
-async function CTAComponent() {
-  const session = await getServerAuthSession();
+export function CTA() {
+  const { data: session, isPending } = useSession();
+
+  if (isPending) {
+    return (
+      <>
+        <Button size="lg" className="w-full sm:w-auto">
+          <Link href={"/sign-in"}>Get started</Link>
+        </Button>
+        <Button variant="outline" size="lg" className="w-full sm:w-auto">
+          <Link href={"/quiz/explore"}>Explore</Link>
+        </Button>
+      </>
+    );
+  }
 
   return (
     <>
@@ -28,24 +42,5 @@ async function CTAComponent() {
         </>
       )}
     </>
-  );
-}
-
-export function CTA() {
-  return (
-    <Suspense
-      fallback={
-        <>
-          <Button size="lg" className="w-full sm:w-auto">
-            <Link href={"/sign-in"}>Get started</Link>
-          </Button>
-          <Button variant="outline" size="lg" className="w-full sm:w-auto">
-            <Link href={"/quiz/explore"}>Explore</Link>
-          </Button>
-        </>
-      }
-    >
-      <CTAComponent />
-    </Suspense>
   );
 }
