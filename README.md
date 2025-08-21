@@ -1,6 +1,7 @@
-# BuddhiAI
-
-![BuddhiAI Logo](https://bwjcur3siq.ufs.sh/f/j7HvSadRZFfQCcnsEOxNESncf5r1kAu2bvV9G4dqle0hosZN)  
+<p align="left">
+  <img src="https://bwjcur3siq.ufs.sh/f/j7HvSadRZFfQCcnsEOxNESncf5r1kAu2bvV9G4dqle0hosZN" alt="BuddhiAI Logo" width="50" height="50" style="vertical-align:middle;">
+  <span style="font-size:28px; font-weight:bold; vertical-align:middle; margin-left:10px;">BuddhiAI</span>
+</p>  
 **Fuel your brain. Fast. Fun. AI-powered.**
 
 ![BuddhiAI Cover](https://bwjcur3siq.ufs.sh/f/j7HvSadRZFfQxYHWBvoYVLAR8WIPC709sH6laUyFSiuGOfpK)
