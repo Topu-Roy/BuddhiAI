@@ -152,7 +152,7 @@ function QuizCard({ quiz }: QuizCardProps) {
       </CardContent>
 
       <CardFooter className="justify-between">
-        <Badge variant="secondary" className="text-muted-foreground px-2">
+        <Badge variant="outline" className="text-muted-foreground px-3 py-2">
           {quiz.timesTaken.toLocaleString()} taken
         </Badge>
         <Button size="sm" asChild>

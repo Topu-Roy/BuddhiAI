@@ -163,7 +163,7 @@ export default function ProfileSetupPage() {
                       <FormLabel>Education Level</FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
-                          <SelectTrigger className="w-full">
+                          <SelectTrigger className="border-border w-full border">
                             <SelectValue />
                           </SelectTrigger>
                         </FormControl>
@@ -228,6 +228,7 @@ export default function ProfileSetupPage() {
                               <FormControl>
                                 <Checkbox
                                   id={interest}
+                                  className="border-border cursor-pointer border"
                                   checked={field.value?.includes(interest)}
                                   onCheckedChange={checked =>
                                     checked

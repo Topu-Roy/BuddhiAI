@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useSession } from "@/auth/auth-client";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -10,6 +11,7 @@ import { SignOutButton } from "./sign-out-button";
 
 export function NavButtons() {
   const { data: session, isPending } = useSession();
+  const [open, setOpen] = useState(false);
 
   if (isPending || !session) {
     return (
@@ -31,7 +33,7 @@ export function NavButtons() {
         <Link href={"/dashboard"}>Dashboard</Link>
       </Button>
 
-      <Popover>
+      <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild className="cursor-pointer">
           <Avatar className="border-border size-10 border-2">
             <AvatarImage src={session.user.image ?? ""} />
@@ -64,22 +66,22 @@ export function NavButtons() {
 
           <Separator />
 
-          <Button variant={"outline"} className="w-full" asChild>
+          <Button onClick={() => setOpen(false)} variant={"outline"} className="w-full" asChild>
             <Link className="w-full" href={"/dashboard"}>
               Dashboard
             </Link>
           </Button>
-          <Button variant={"outline"} className="w-full" asChild>
+          <Button onClick={() => setOpen(false)} variant={"outline"} className="w-full" asChild>
             <Link className="w-full" href={"/quiz/explore?page=1"}>
               Explore
             </Link>
           </Button>
-          <Button variant={"outline"} className="w-full" asChild>
+          <Button onClick={() => setOpen(false)} variant={"outline"} className="w-full" asChild>
             <Link className="w-full" href={"/quiz/history?page=1"}>
               History
             </Link>
           </Button>
-          <Button variant={"outline"} className="w-full" asChild>
+          <Button onClick={() => setOpen(false)} variant={"outline"} className="w-full" asChild>
             <Link className="w-full" href={"/profile"}>
               Profile
             </Link>

@@ -86,8 +86,8 @@ export async function RenderView({ quizId }: { quizId: string }) {
                   </div>
 
                   <div className="bg-card flex flex-col items-center space-y-2 rounded-lg border p-4 text-center">
-                    <div className="bg-secondary flex h-10 w-10 items-center justify-center rounded-full">
-                      <Trophy className="text-secondary-foreground h-5 w-5" />
+                    <div className="bg-primary/10 flex h-10 w-10 items-center justify-center rounded-full">
+                      <Trophy className="text-primary h-5 w-5" />
                     </div>
                     <div className="space-y-1">
                       <p className="text-muted-foreground text-sm font-medium">Times Taken</p>

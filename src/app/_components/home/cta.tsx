@@ -13,8 +13,8 @@ export function CTA() {
         <Button size="lg" className="w-full sm:w-auto">
           <Link href={"/sign-in"}>Get started</Link>
         </Button>
-        <Button variant="outline" size="lg" className="w-full sm:w-auto">
-          <Link href={"/quiz/explore"}>Explore</Link>
+        <Button variant="outline" size="lg" className="dark:text-foreground w-full text-black sm:w-auto">
+          <Link href={"/quiz/explore?page=1"}>Explore</Link>
         </Button>
       </>
     );
@@ -27,17 +27,17 @@ export function CTA() {
           <Button size="lg" className="w-full sm:w-auto">
             <Link href={"/dashboard"}>Start Learning Now</Link>
           </Button>
-          <Button variant="outline" size="lg" className="w-full sm:w-auto">
-            <Link href={"/explore"}>Explore</Link>
+          <Button variant="outline" size="lg" className="dark:text-foreground w-full text-black sm:w-auto">
+            <Link href={"/quiz/explore?page=1"}>Explore</Link>
           </Button>
         </>
       ) : (
         <>
           <Button size="lg" className="w-full sm:w-auto">
-            <Link href={"/sign-in"}>Get started</Link>
+            <Link href={"/auth/sign-in"}>Get started</Link>
           </Button>
-          <Button variant="outline" size="lg" className="w-full sm:w-auto">
-            <Link href={"/explore"}>Explore</Link>
+          <Button variant="outline" size="lg" className="dark:text-foreground w-full text-black sm:w-auto">
+            <Link href={"/quiz/explore?page=1"}>Explore</Link>
           </Button>
         </>
       )}

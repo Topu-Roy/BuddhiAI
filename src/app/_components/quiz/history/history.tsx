@@ -79,7 +79,7 @@ export function History({ page = 1 }: { page?: number }) {
   return (
     <>
       {/* Profile Info Card */}
-      <Card className="bg-card/80 border-0 shadow-lg backdrop-blur-sm">
+      <Card className="bg-card border-border border shadow-lg backdrop-blur-sm">
         <CardHeader className="pb-4">
           <div className="flex items-center gap-6">
             <Avatar className="border-background h-20 w-20 border-4 shadow-lg">
@@ -185,7 +185,7 @@ export function History({ page = 1 }: { page?: number }) {
       </div>
 
       {/* Tabbed History */}
-      <Tabs value={activeTab} onValueChange={value => setActiveTab(value as TabType)}>
+      <Tabs className="" value={activeTab} onValueChange={value => setActiveTab(value as TabType)}>
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="taken" className="flex items-center gap-2">
             <Trophy className="h-4 w-4" />
@@ -198,7 +198,7 @@ export function History({ page = 1 }: { page?: number }) {
         </TabsList>
 
         <TabsContent value="taken">
-          <Card className="bg-card/80 border-0 shadow-lg backdrop-blur-sm">
+          <Card className="bg-card border-border border shadow-lg backdrop-blur-sm">
             <CardHeader>
               <CardTitle className="text-foreground text-2xl">Recent Quiz Results</CardTitle>
               <CardDescription>Your latest quiz performances and scores</CardDescription>
@@ -221,8 +221,8 @@ export function History({ page = 1 }: { page?: number }) {
                         const total = quiz.correctAnswer + quiz.incorrectAnswer;
 
                         return (
-                          <div key={quiz.id}>
-                            <div className="bg-muted/50 hover:bg-muted/70 flex items-center justify-between rounded-lg p-4 transition-colors">
+                          <Link href={`/quiz/results/${quiz.id}`} key={quiz.id}>
+                            <div className="bg-card border-border/50 hover:bg-muted/70 flex items-center justify-between rounded-lg border p-4 transition-colors">
                               <div className="flex items-center gap-4">
                                 <div
                                   className={`rounded-full border px-3 py-1 font-semibold ${getScoreColor(percentage)}`}
@@ -259,7 +259,7 @@ export function History({ page = 1 }: { page?: number }) {
                                 </p>
                               </div>
                             </div>
-                          </div>
+                          </Link>
                         );
                       })
                     )}
@@ -279,7 +279,7 @@ export function History({ page = 1 }: { page?: number }) {
         </TabsContent>
 
         <TabsContent value="created">
-          <Card className="bg-card/80 border-0 shadow-lg backdrop-blur-sm">
+          <Card className="bg-card border-border border shadow-lg backdrop-blur-sm">
             <CardHeader>
               <CardTitle className="text-foreground text-2xl">Created Quizzes</CardTitle>
               <CardDescription>Quizzes you&apos;ve created and their engagement</CardDescription>
@@ -299,10 +299,10 @@ export function History({ page = 1 }: { page?: number }) {
                     ) : (
                       createdHistory.quizzesCreated.map(quiz => (
                         <div key={quiz.id}>
-                          <div className="bg-muted/50 hover:bg-muted/70 flex items-center justify-between rounded-lg p-4 transition-colors">
+                          <div className="bg-card border-border/50 hover:bg-muted/70 flex items-center justify-between rounded-lg border p-4 shadow-md transition-colors">
                             <div className="flex items-center gap-4">
-                              <div className="rounded-full border border-blue-200 bg-blue-100 px-3 py-1 font-semibold text-blue-800">
-                                <Users className="mr-1 inline h-4 w-4" />
+                              <div className="border-border rounded-full border px-3 py-2 font-semibold">
+                                <Users className="mr-2 inline h-4 w-4" />
                                 {quiz.timesTaken}
                               </div>
                               <div>
@@ -527,7 +527,7 @@ const getScorePercentage = (correct: number, incorrect: number) => {
 };
 
 const getScoreColor = (percentage: number) => {
-  if (percentage >= 80) return "text-green-600 bg-green-50 border-green-200";
-  if (percentage >= 60) return "text-yellow-600 bg-yellow-50 border-yellow-200";
-  return "text-red-600 bg-red-50 border-red-200";
+  if (percentage >= 80) return "text-green-600/80 py-2 border border-border";
+  if (percentage >= 60) return "text-yellow-600/80 py-2 border border-border";
+  return "text-red-600/80 py-2 border border-border";
 };

@@ -1,5 +1,6 @@
 "use client";
 
+import { EditDialog } from "@/app/_components/profile/edit-dialog";
 import { api } from "@/trpc/react";
 import { BookOpen, CalendarDays, GraduationCap, Mail, Trophy, User, X } from "lucide-react";
 import { useRouter } from "nextjs-toploader/app";
@@ -9,9 +10,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
-import { EditDialog } from "../../_components/profile/edit-dialog";
 
-export default function ProfileScreen() {
+export default function Profile() {
   const router = useRouter();
   const { data: profile, isLoading, isError, error, refetch } = api.profile.getProfileInfo.useQuery();
 
@@ -41,13 +41,13 @@ export default function ProfileScreen() {
   }
 
   return (
-    <div className="bg-background p-4 md:p-6 lg:p-8">
+    <div className="p-4 md:p-6 lg:p-8">
       <div className="mx-auto max-w-4xl space-y-6">
         {/* Header Card */}
         <Card>
           <CardContent className="flex flex-row items-center justify-between">
             <div className="flex flex-col items-center space-y-4 text-center sm:flex-row sm:space-y-0 sm:space-x-6 sm:text-left">
-              <Avatar className="h-24 w-24 sm:h-32 sm:w-32">
+              <Avatar className="border-border h-24 w-24 border sm:h-32 sm:w-32">
                 <AvatarImage src={profile.image ?? ""} alt={profile.name} />
                 <AvatarFallback className="text-2xl font-semibold">{getInitials(profile.name)}</AvatarFallback>
               </Avatar>
@@ -95,7 +95,7 @@ export default function ProfileScreen() {
                 <h3 className="text-muted-foreground mb-3 text-sm font-medium tracking-wide">Interests</h3>
                 <div className="flex flex-wrap gap-2">
                   {profile.interests.map((interest, index) => (
-                    <Badge key={index} variant="secondary" className="text-sm">
+                    <Badge key={index} variant="secondary" className="bg-primary/10 text-foreground/80 text-xs">
                       {interest.charAt(0).toUpperCase() + interest.slice(1).toLocaleLowerCase()}
                     </Badge>
                   ))}
@@ -124,8 +124,8 @@ export default function ProfileScreen() {
                   </div>
                 </div>
                 <div className="space-y-2 text-center">
-                  <div className="bg-secondary/50 mx-auto flex h-12 w-12 items-center justify-center rounded-full">
-                    <Trophy className="text-secondary-foreground h-6 w-6" />
+                  <div className="bg-primary/10 mx-auto flex h-12 w-12 items-center justify-center rounded-full">
+                    <Trophy className="text-primary h-6 w-6" />
                   </div>
                   <div>
                     <p className="text-2xl font-bold">{profile._count.quizzesTaken}</p>

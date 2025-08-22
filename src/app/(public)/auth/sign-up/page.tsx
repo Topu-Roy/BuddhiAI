@@ -1,11 +1,11 @@
+import { SignUpForm } from "@/app/_components/auth/sign-up-form";
 import { Brain } from "lucide-react";
 import Link from "next/link";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { SignUpForm } from "../../../_components/auth/sign-up-form";
 
 export default function SignUpScreen() {
   return (
-    <div className="bg-background w-full items-center justify-center p-4">
+    <div className="w-full items-center justify-center p-4">
       <Card className="mx-auto mt-14 max-w-2xl">
         <CardHeader className="text-center">
           <div className="mb-4 flex justify-center">

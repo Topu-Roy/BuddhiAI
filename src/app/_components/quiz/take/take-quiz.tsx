@@ -102,7 +102,7 @@ export function TakeQuiz({ quizId }: { quizId: string }) {
   return (
     <div className="mx-auto max-w-2xl space-y-6 px-4 py-8">
       {/* Progress & Timer */}
-      <div className="bg-background/80 sticky top-0 z-10 py-3 backdrop-blur">
+      <div className="py-3">
         <div className="flex items-center justify-between text-sm font-medium">
           <span>
             Question {current + 1} / {quiz.questions.length}
@@ -116,7 +116,7 @@ export function TakeQuiz({ quizId }: { quizId: string }) {
       </div>
 
       {/* Question */}
-      <Card key={question.id} className="rounded-2xl shadow-xl">
+      <Card key={question.id} className="bg-card/40 rounded-2xl shadow-xl">
         <CardHeader>
           <CardTitle className="text-lg leading-relaxed">{question.question}</CardTitle>
         </CardHeader>
@@ -145,13 +145,13 @@ export function TakeQuiz({ quizId }: { quizId: string }) {
                   className={cn(
                     "flex cursor-pointer items-center space-x-3 rounded-xl border-2 p-4 transition-all",
                     isSelected
-                      ? "border-indigo-500 bg-indigo-50 dark:bg-indigo-900/30"
-                      : "border-transparent hover:border-slate-300 dark:hover:border-slate-600"
+                      ? "border-primary ring-primary bg-primary/10 ring-2 ring-inset"
+                      : "hover:border-border border-transparent"
                   )}
                 >
                   <RadioGroupItem value={String(idx)} id={`${question.localId}-${idx}`} />
                   <span className="flex-1">{opt}</span>
-                  {isSelected && <CheckCircle className="h-5 w-5 text-indigo-500" />}
+                  {isSelected && <CheckCircle className="text-primary h-5 w-5" />}
                 </Label>
               );
             })}

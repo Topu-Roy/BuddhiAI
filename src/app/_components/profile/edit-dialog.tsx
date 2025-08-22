@@ -164,7 +164,7 @@ export function EditDialog({ profile }: { profile: Profile }) {
                     <FormLabel>Education Level</FormLabel>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
-                        <SelectTrigger className="w-full">
+                        <SelectTrigger className="border-border w-full border">
                           <SelectValue />
                         </SelectTrigger>
                       </FormControl>
@@ -198,7 +198,7 @@ export function EditDialog({ profile }: { profile: Profile }) {
               render={() => (
                 <FormItem>
                   <div className="mb-4">
-                    <FormLabel className="text-base">Interests</FormLabel>
+                    <FormLabel className="font-semibold">Interests</FormLabel>
                     <FormDescription>Select at least 3 topics you enjoy.</FormDescription>
                   </div>
                   <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
@@ -228,7 +228,7 @@ export function EditDialog({ profile }: { profile: Profile }) {
                             <FormControl>
                               <Checkbox
                                 id={interest}
-                                className="cursor-pointer"
+                                className="border-border cursor-pointer border"
                                 checked={field.value?.includes(interest)}
                                 onCheckedChange={checked =>
                                   checked

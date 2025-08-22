@@ -3,10 +3,12 @@ import { Brain } from "lucide-react";
 import Link from "next/link";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
+// bg-[#0a0a0a]
+
 export default function SignInScreen() {
   return (
-    <div className="bg-background flex items-center justify-center p-4">
-      <Card className="ma-auto mt-16 w-full max-w-md">
+    <div className="flex w-full items-center justify-center p-4">
+      <Card className="mx-auto mt-16 w-full max-w-md">
         <CardHeader className="text-center">
           <div className="mb-4 flex justify-center">
             <Brain className="text-primary h-12 w-12" />

@@ -9,15 +9,29 @@ export default function LandingPage() {
     <div className="bg-background">
       <main>
         {/* Hero Section */}
-        <section className="flex min-h-[70dvh] items-center justify-center px-4 py-20 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-4xl text-center">
+        <section className="relative flex min-h-[80dvh] w-full items-center justify-center px-4 py-20 sm:px-6 lg:px-8">
+          {/* Prismatic Aurora Burst - Multi-layered Gradient */}
+          <div
+            className="absolute inset-0 z-0"
+            style={{
+              background: `
+          radial-gradient(ellipse 120% 80% at 70% 20%, rgba(255, 20, 147, 0.15), transparent 50%),
+          radial-gradient(ellipse 100% 60% at 30% 10%, rgba(0, 255, 255, 0.12), transparent 60%),
+          radial-gradient(ellipse 90% 70% at 50% 0%, rgba(138, 43, 226, 0.18), transparent 65%),
+          radial-gradient(ellipse 110% 50% at 80% 30%, rgba(255, 215, 0, 0.08), transparent 40%),
+          #000000
+        `,
+            }}
+          ></div>
+
+          <div className="z-10 mx-auto max-w-4xl text-center text-white">
             <div className="mb-6 text-4xl font-bold text-balance md:text-6xl">
               Let&apos;s take a bite size Quiz of
               <div className="text-primary">
                 <DynamicText />
               </div>
             </div>
-            <p className="text-muted-foreground mx-auto mb-8 max-w-2xl text-xl">
+            <p className="dark:text-muted-foreground mx-auto mb-8 max-w-2xl text-xl text-white/60">
               Got a topic in mind? Let BuddhiAI whip up a quiz just for you — smart, snappy, and perfectly tuned to
               boost your brainpower
             </p>
@@ -155,7 +169,7 @@ export default function LandingPage() {
         </section>
       </main>
 
-      <footer className="bg-muted py-8">
+      <footer className="bg-background py-8">
         <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
           <div className="mb-4 flex items-center justify-center">
             <Brain className="text-muted-foreground mr-2 h-6 w-6" />
