@@ -1,4 +1,3 @@
-import { getProfileWithNotFoundCheck } from "@/server/helpers/profile";
 import { api } from "@/trpc/server";
 import { CheckCircle, Home, RotateCcw, XCircle } from "lucide-react";
 import Link from "next/link";
@@ -12,7 +11,7 @@ import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export async function Results({ resultId }: { resultId: string }) {
-  const { profile } = await getProfileWithNotFoundCheck();
+  const profile = await api.profile.getProfileInfo();
   const { data: result, error } = await tryCatch(api.quiz.getResult({ profileId: profile.id, resultId }));
 
   if (!result || error) notFound();

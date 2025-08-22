@@ -2,7 +2,10 @@ import { createTRPCRouter } from "@/server/api/trpc";
 import { createOrUpdateProcedure } from "../procedures/profile/createOrUpdateProcedure";
 import { getPaginatedCreatedHistoryProcedure } from "../procedures/profile/getPaginatedCreatedHistoryProcedure";
 import { getPaginatedTakenHistoryProcedure } from "../procedures/profile/getPaginatedTakenHistoryProcedure";
-import { getProfileInfoProcedure } from "../procedures/profile/getProfileInfoProcedure";
+import {
+  checkProfileStatusProcedure,
+  getProfileInfoProcedure,
+} from "../procedures/profile/getProfileInfoProcedure";
 
 export const profileRouter = createTRPCRouter({
   /**
@@ -12,6 +15,14 @@ export const profileRouter = createTRPCRouter({
    * quizzes they took and created.
    */
   getProfileInfo: getProfileInfoProcedure,
+
+  /**
+   * * checkProfileStatus
+   *
+   * Returns the status if the user is authenticated and checks if profile exist
+   * or not.
+   */
+  checkProfileStatus: checkProfileStatusProcedure,
 
   /**
    * * getPaginatedTakenHistory

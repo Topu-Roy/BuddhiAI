@@ -1,10 +1,13 @@
-import { getProfileWithNotFoundCheck } from "@/server/helpers/profile";
-import { redirect } from "next/navigation";
+import { api } from "@/trpc/server";
+import { notFound, redirect } from "next/navigation";
+import { tryCatch } from "@/lib/helpers/try-catch";
 
 export default async function ProtectedLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const { profile } = await getProfileWithNotFoundCheck();
+  const { data, error } = await tryCatch(api.profile.checkProfileStatus());
 
-  if (!profile.id) redirect("/profile/setup");
+  if (error) notFound();
+  if (!data.authenticated) redirect("/auth/sign-in");
+  if (!data.profile) redirect("/profile/setup");
 
   return (
     <div className="relative">

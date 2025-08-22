@@ -1,9 +1,9 @@
 import { SeedButton } from "@/app/_components/seed/seed-button";
-import { getProfileWithNotFoundCheck } from "@/server/helpers/profile";
+import { api } from "@/trpc/server";
 import { notFound } from "next/navigation";
 
 export default async function SeedScreen() {
-  const { profile } = await getProfileWithNotFoundCheck();
+  const profile = await api.profile.getProfileInfo();
 
   // Only allow the seed screen for a specific user (empty e-mail in this example)
   if (profile.email !== "topu.roy.ttr@gmail.com") notFound();

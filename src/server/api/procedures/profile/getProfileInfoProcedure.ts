@@ -1,6 +1,7 @@
+import { getServerAuthSession } from "@/auth/auth";
 import { TRPCError } from "@trpc/server";
 import { tryCatch } from "@/lib/helpers/try-catch";
-import { protectedProcedure } from "../../trpc";
+import { protectedProcedure, publicProcedure } from "../../trpc";
 
 export const getProfileInfoProcedure = protectedProcedure.query(async ({ ctx }) => {
   const { data, error } = await tryCatch(
@@ -77,4 +78,40 @@ export const getProfileInfoProcedure = protectedProcedure.query(async ({ ctx }) 
   if (!data) throw new TRPCError({ code: "NOT_FOUND", message: "Profile not found" });
 
   return data;
+});
+
+export const checkProfileStatusProcedure = publicProcedure.query(async ({ ctx }) => {
+  const session = await getServerAuthSession();
+
+  if (!session) {
+    return {
+      authenticated: false,
+      profile: null,
+    };
+  }
+
+  const { data, error } = await tryCatch(
+    ctx.db.profile.findUnique({
+      where: {
+        userId: session.user.id,
+      },
+      select: {
+        id: true,
+        userId: true,
+      },
+    })
+  );
+
+  if (error) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Failed to fetch profile data" });
+  if (!data) {
+    return {
+      authenticated: true,
+      profile: null,
+    };
+  }
+
+  return {
+    authenticated: true,
+    profile: data,
+  };
 });

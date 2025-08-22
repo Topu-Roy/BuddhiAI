@@ -54,10 +54,23 @@ export default function ProfileSetupPage() {
       name: session?.user.name ?? "",
       email: session?.user.email ?? "",
       age: 18,
-      educationLevel: "HIGH_SCHOOL",
+      educationLevel: "COLLAGE",
       interests: [],
     },
   });
+
+  useEffect(() => {
+    if (!isPending && session?.user) {
+      form.reset({
+        name: session.user.name || "",
+        email: session.user.email || "",
+        age: 18,
+        educationLevel: "COLLAGE",
+        interests: [],
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session, isPending]);
 
   function onSubmit(values: z.infer<typeof updateOrCreateProfileInputSchema>) {
     const payload = {
@@ -68,35 +81,12 @@ export default function ProfileSetupPage() {
     updateMutation(payload);
   }
 
-  useEffect(() => {
-    if (isPending) return;
-
-    if (session?.user) {
-      console.log(session.user);
-
-      form.reset(
-        {
-          name: session.user.name,
-          email: session.user.email,
-          age: 18,
-          educationLevel: "HIGH_SCHOOL",
-          interests: [],
-        },
-        { keepDefaultValues: false }
-      );
-    }
-
-    if (!session?.user.id) {
-      router.push("/auth/sign-in");
-    }
-  }, [session, isPending, router, form]);
-
-  if (isPending) {
+  if (isPending || !session?.user) {
     return <CompleteProfileLoader />;
   }
 
   return (
-    <div className="bg-background flex min-h-screen items-center justify-center p-4">
+    <div className="flex min-h-screen items-center justify-center p-4">
       <Card className="w-full max-w-2xl">
         <CardHeader className="text-center">
           <div className="mb-4 flex justify-center">
@@ -131,7 +121,12 @@ export default function ProfileSetupPage() {
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input type="email" placeholder={session?.user.email ?? "ada@lovelace.com"} {...field} />
+                      <Input
+                        disabled
+                        type="email"
+                        placeholder={session?.user.email ?? "ada@lovelace.com"}
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
