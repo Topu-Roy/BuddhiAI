@@ -1,5 +1,6 @@
 "use client";
 
+import { useMutation } from "@tanstack/react-query";
 import { signIn } from "@/auth/auth-client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -25,7 +26,20 @@ const signInSchema = object({
     .max(30, { error: "Must be within 8 to 30 characters" }),
 });
 
+function useSignInWithEmail() {
+  return useMutation({
+    mutationFn: ({ email, password, callbackURL }: { email: string; password: string; callbackURL: string }) =>
+      signIn.email({
+        email: email,
+        password: password,
+        callbackURL: callbackURL,
+      }),
+  });
+}
+
 export function SignInForm() {
+  const { mutate: signInWithEmail, isPending } = useSignInWithEmail();
+
   const form = useForm<Infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
@@ -35,17 +49,20 @@ export function SignInForm() {
   });
 
   function onSubmit(values: Infer<typeof signInSchema>) {
-    void signIn.email({
-      email: values.email,
-      password: values.password,
-      callbackURL: "/dashboard",
-      fetchOptions: {
-        onError: ctx => {
-          toast.error(`Authentication failed - ${ctx.error.message}`);
-        },
+    signInWithEmail(
+      {
+        email: values.email,
+        password: values.password,
+        callbackURL: "/dashboard",
       },
-    });
+      {
+        onError: error => {
+          toast.error(`Authentication failed - ${error.message}`);
+        },
+      }
+    );
   }
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -83,7 +100,7 @@ export function SignInForm() {
           <GoogleSignInButton className="h-10 flex-1" />
 
           <Button type="submit" className="h-10 flex-1">
-            Submit
+            {isPending ? "Signing in" : "Sign in"}
           </Button>
         </div>
       </form>

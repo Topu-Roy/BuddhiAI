@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
 import { signUp } from "@/auth/auth-client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff } from "lucide-react";
@@ -39,7 +40,35 @@ const signUpSchema = object({
   path: ["confirmPassword"],
 });
 
+function useSignUpWithEmail() {
+  return useMutation({
+    mutationFn: ({
+      email,
+      name,
+      password,
+      callbackURL,
+    }: {
+      email: string;
+      name: string;
+      password: string;
+      callbackURL: string;
+    }) =>
+      signUp.email({
+        name: name,
+        email: email,
+        password: password,
+        callbackURL: callbackURL,
+        fetchOptions: {
+          onError: ctx => {
+            toast.error(`Authentication failed - ${ctx.error.message}`);
+          },
+        },
+      }),
+  });
+}
+
 export function SignUpForm() {
+  const { mutate: signUpWithEmail, isPending } = useSignUpWithEmail();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const form = useForm<Infer<typeof signUpSchema>>({
@@ -54,17 +83,19 @@ export function SignUpForm() {
   });
 
   function onSubmit(values: Infer<typeof signUpSchema>) {
-    void signUp.email({
-      email: values.email,
-      name: `${values.firstName} ${values.lastName}`,
-      password: values.password,
-      callbackURL: "/dashboard",
-      fetchOptions: {
-        onError: ctx => {
-          toast.error(`Authentication failed - ${ctx.error.message}`);
-        },
+    signUpWithEmail(
+      {
+        email: values.email,
+        name: `${values.firstName} ${values.lastName}`,
+        password: values.password,
+        callbackURL: "/dashboard",
       },
-    });
+      {
+        onError(error) {
+          toast.error(`Authentication failed - ${error.message}`);
+        },
+      }
+    );
   }
   return (
     <Form {...form}>
@@ -186,7 +217,7 @@ export function SignUpForm() {
         <div className="grid grid-cols-1 items-center gap-4 md:grid-cols-2">
           <GoogleSignInButton className="w-full" />
           <Button type="submit" size={"lg"} className="w-full">
-            Register
+            {isPending ? "Signing up" : "Register"}
           </Button>
         </div>
       </form>
