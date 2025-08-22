@@ -1,10 +1,10 @@
-import { getProfileWithNotFoundCheck } from "@/server/helpers/profile";
+import { getServerAuthSession } from "@/auth/auth";
 import { redirect } from "next/navigation";
 
 export default async function ProtectedLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const { profile } = await getProfileWithNotFoundCheck();
+  const session = await getServerAuthSession();
 
-  if (!profile.id) redirect("/profile/setup");
+  if (!session?.user.id) redirect("/auth/sign-in");
 
   return (
     <div className="relative">
