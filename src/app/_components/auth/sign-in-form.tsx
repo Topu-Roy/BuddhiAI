@@ -3,6 +3,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { signIn } from "@/auth/auth-client";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "nextjs-toploader/app";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { email, object, string, type infer as Infer } from "zod";
@@ -38,6 +39,7 @@ function useSignInWithEmail() {
 }
 
 export function SignInForm() {
+  const router = useRouter();
   const { mutate: signInWithEmail, isPending } = useSignInWithEmail();
 
   const form = useForm<Infer<typeof signInSchema>>({
@@ -56,6 +58,9 @@ export function SignInForm() {
         callbackURL: "/dashboard",
       },
       {
+        onSuccess: () => {
+          router.push("/dashboard");
+        },
         onError: error => {
           toast.error(`Authentication failed - ${error.message}`);
         },

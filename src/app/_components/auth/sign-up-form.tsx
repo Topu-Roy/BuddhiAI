@@ -5,6 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import { signUp } from "@/auth/auth-client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff } from "lucide-react";
+import { useRouter } from "nextjs-toploader/app";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { email, object, string, type infer as Infer } from "zod";
@@ -68,6 +69,7 @@ function useSignUpWithEmail() {
 }
 
 export function SignUpForm() {
+  const router = useRouter();
   const { mutate: signUpWithEmail, isPending } = useSignUpWithEmail();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -91,6 +93,9 @@ export function SignUpForm() {
         callbackURL: "/dashboard",
       },
       {
+        onSuccess: () => {
+          router.push("/dashboard");
+        },
         onError(error) {
           toast.error(`Authentication failed - ${error.message}`);
         },
