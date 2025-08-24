@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect } from "react";
+import { LOGO_URL } from "@/assets/AssetUrl";
 import { useSession } from "@/auth/auth-client";
 import { updateOrCreateProfileInputSchema } from "@/server/schema/profile";
 import { api } from "@/trpc/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { EDUCATION_LEVEL, INTEREST } from "@prisma/client";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "nextjs-toploader/app";
 import { useForm } from "react-hook-form";
@@ -91,14 +93,14 @@ export default function ProfileSetupPage() {
       <Card className="w-full max-w-2xl">
         <CardHeader className="text-center">
           <div className="flex w-full items-center justify-center gap-2">
-            <Link href={"/"} className="bg-primary inline-flex size-8 items-center justify-center rounded-full">
-              {/* <Image
-                  className="size-8"
-                  src={LOGO_URL}
-                  height={100}
-                  width={100}
-                  alt="BuddhiAI"
-                /> */}
+            <Link href={"/"}>
+              <Image
+                className="aspect-square size-8 lg:size-12"
+                src={LOGO_URL}
+                height={100}
+                width={100}
+                alt="BuddhiAI"
+              />
             </Link>
             <LogoText className="text-xl" />
           </div>

@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { LOGO_URL } from "@/assets/AssetUrl";
 import { useSession } from "@/auth/auth-client";
 import { Menu } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -50,17 +52,14 @@ export function NavButtons() {
         <SheetContent className="px-4">
           <SheetHeader>
             <div className="inline-flex items-center justify-start gap-2">
-              <Link
-                href={"/"}
-                className="bg-primary inline-flex size-8 items-center justify-center rounded-full p-1 lg:size-12"
-              >
-                {/* <Image
-                className="size-8"
-                src={LOGO_URL}
-                height={100}
-                width={100}
-                alt="BuddhiAI"
-              /> */}
+              <Link href={"/"}>
+                <Image
+                  className="aspect-square size-8 lg:size-12"
+                  src={LOGO_URL}
+                  height={100}
+                  width={100}
+                  alt="BuddhiAI"
+                />
               </Link>
               <SheetTitle>
                 <Link href={"/"}>

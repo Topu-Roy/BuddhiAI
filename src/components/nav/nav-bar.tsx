@@ -1,3 +1,5 @@
+import { LOGO_URL } from "@/assets/AssetUrl";
+import Image from "next/image";
 import Link from "next/link";
 import { LogoText } from "../logo-text";
 import { ModeToggle } from "../mode-toggle";
@@ -9,17 +11,14 @@ export function Navbar() {
       <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex min-h-[8dvh] items-center justify-between">
           <div className="inline-flex items-center justify-start gap-2">
-            <Link
-              href={"/"}
-              className="bg-primary inline-flex size-8 items-center justify-center rounded-full p-1 lg:size-12"
-            >
-              {/* <Image
-                className="size-8"
+            <Link href={"/"}>
+              <Image
+                className="aspect-square size-8 lg:size-12"
                 src={LOGO_URL}
                 height={100}
                 width={100}
                 alt="BuddhiAI"
-              /> */}
+              />
             </Link>
 
             <Link href={"/"}>

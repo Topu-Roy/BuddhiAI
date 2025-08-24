@@ -1,4 +1,6 @@
 import { SignUpForm } from "@/app/_components/auth/sign-up-form";
+import { LOGO_URL } from "@/assets/AssetUrl";
+import Image from "next/image";
 import Link from "next/link";
 import { LogoText } from "@/components/logo-text";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,14 +11,14 @@ export default function SignUpScreen() {
       <Card className="mx-auto max-w-2xl lg:mt-14">
         <CardHeader className="w-full lg:text-center">
           <CardTitle className="flex w-full items-center justify-start gap-2 lg:justify-center">
-            <Link href={"/"} className="bg-primary inline-flex size-8 items-center justify-center rounded-full">
-              {/* <Image
-                  className="size-8"
-                  src={LOGO_URL}
-                  height={100}
-                  width={100}
-                  alt="BuddhiAI"
-                /> */}
+            <Link href={"/"}>
+              <Image
+                className="aspect-square size-8 lg:size-12"
+                src={LOGO_URL}
+                height={100}
+                width={100}
+                alt="BuddhiAI"
+              />
             </Link>
             <LogoText className="text-xl" />
           </CardTitle>
