@@ -32,9 +32,9 @@ export async function RenderExplorePage({ page }: { page: number }) {
   }
 
   return (
-    <main className="mx-auto max-w-7xl px-4 py-10">
-      <h2 className="pb-10 text-3xl font-bold tracking-tight">Explore Quizzes</h2>
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <main className="mx-auto max-w-7xl p-4">
+      <h2 className="pb-8 text-xl font-bold tracking-tight lg:text-3xl">Explore Quizzes</h2>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {data.quizzes.map(q => (
           <QuizCard key={q.id} quiz={q} />
         ))}
@@ -52,7 +52,7 @@ export async function RenderExplorePage({ page }: { page: number }) {
         </>
       ) : null}
 
-      <Pagination className="py-8">
+      <Pagination className="pt-4">
         <PaginationContent>
           <PaginationItem>
             <PaginationPrevious
@@ -165,23 +165,23 @@ function QuizCard({ quiz }: QuizCardProps) {
 
 export function ExploreSkeleton() {
   return (
-    <main className="mx-auto max-w-7xl px-4 py-10">
-      <Skeleton className="mb-10 h-9 w-48 rounded" /> {/* Title */}
+    <main className="mx-auto max-w-7xl p-4 px-4">
+      <Skeleton className="mb-10 h-9 w-48" />
       {/* Grid of 9 skeleton cards */}
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {Array.from({ length: 9 }).map((_, i) => (
-          <div key={i} className="bg-card text-card-foreground flex flex-col rounded-xl border shadow">
+          <div key={i} className="flex flex-col rounded-xl border shadow">
             <div className="flex flex-col space-y-1.5 p-6">
-              <Skeleton className="h-5 w-3/4 rounded" />
-              <Skeleton className="mt-2 h-4 w-full rounded" />
-              <Skeleton className="mt-2 h-4 w-4/5 rounded" />
+              <Skeleton className="h-5 w-3/4" />
+              <Skeleton className="mt-2 h-4 w-full" />
+              <Skeleton className="mt-2 h-4 w-4/5" />
             </div>
 
             <div className="flex-1 p-6 pt-0">
               <div className="flex items-center justify-between gap-2 text-sm">
                 <div className="flex items-center gap-2">
                   <Skeleton className="size-4 rounded-full" />
-                  <Skeleton className="h-4 w-20 rounded" />
+                  <Skeleton className="h-4 w-20" />
                 </div>
                 <Skeleton className="h-5 w-16 rounded-full" />
               </div>
@@ -189,7 +189,7 @@ export function ExploreSkeleton() {
 
             <div className="flex items-center justify-between p-6 pt-0">
               <Skeleton className="h-5 w-20 rounded-full" />
-              <Skeleton className="h-8 w-16 rounded" />
+              <Skeleton className="h-8 w-16" />
             </div>
           </div>
         ))}
@@ -198,19 +198,19 @@ export function ExploreSkeleton() {
       <Pagination className="py-8">
         <PaginationContent>
           <PaginationItem>
-            <Skeleton className="h-8 w-16 rounded-md" />
+            <Skeleton className="h-8 w-16" />
           </PaginationItem>
 
           <div className="flex items-center justify-center gap-4 px-4">
             {Array.from({ length: 5 }).map((_, i) => (
               <PaginationItem key={i}>
-                <Skeleton className="size-8 rounded-md" />
+                <Skeleton className="size-8" />
               </PaginationItem>
             ))}
           </div>
 
           <PaginationItem>
-            <Skeleton className="h-8 w-16 rounded-md" />
+            <Skeleton className="h-8 w-16" />
           </PaginationItem>
         </PaginationContent>
       </Pagination>

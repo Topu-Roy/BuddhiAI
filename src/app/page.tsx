@@ -4,95 +4,90 @@ import DynamicText from "@/components/dynamic-text";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
+const features = [
+  {
+    icon: Brain,
+    title: "AI-Powered",
+    desc: "BuddhiAI's brainy AI whips up unique questions on any topic—fast and clever every time.",
+  },
+  {
+    icon: Target,
+    title: "Personalized",
+    desc: "Quizzes flex to your level, interests, and goals—because one-size-fits-all is boring.",
+  },
+  {
+    icon: Zap,
+    title: "Instant Feedback",
+    desc: "Snap! Get immediate answers with clear explanations—no waiting, no guessing.",
+  },
+  {
+    icon: BarChart3,
+    title: "Track Progress",
+    desc: "Watch your brain grow with easy-to-read stats and performance insights.",
+  },
+];
+
 export default function LandingPage() {
   return (
     <div className="bg-background">
       <main>
         {/* Hero Section */}
-        <section className="relative flex min-h-[80dvh] w-full items-center justify-center px-4 py-20 sm:px-6 lg:px-8">
+        <section className="relative flex min-h-[85dvh] w-full items-center justify-center px-4 py-20 sm:px-6 lg:px-8">
           {/* Prismatic Aurora Burst - Multi-layered Gradient */}
           <div
             className="absolute inset-0 z-0"
             style={{
               background: `
-          radial-gradient(ellipse 120% 80% at 70% 20%, rgba(255, 20, 147, 0.15), transparent 50%),
-          radial-gradient(ellipse 100% 60% at 30% 10%, rgba(0, 255, 255, 0.12), transparent 60%),
-          radial-gradient(ellipse 90% 70% at 50% 0%, rgba(138, 43, 226, 0.18), transparent 65%),
-          radial-gradient(ellipse 110% 50% at 80% 30%, rgba(255, 215, 0, 0.08), transparent 40%),
-          #000000
-        `,
+                radial-gradient(ellipse 120% 80% at 70% 20%, rgba(255, 20, 147, 0.15), transparent 50%),
+                radial-gradient(ellipse 100% 60% at 30% 10%, rgba(0, 255, 255, 0.12), transparent 60%),
+                radial-gradient(ellipse 90% 70% at 50% 0%, rgba(138, 43, 226, 0.18), transparent 65%),
+                radial-gradient(ellipse 110% 50% at 80% 30%, rgba(255, 215, 0, 0.08), transparent 40%),
+                #000000
+              `,
             }}
           ></div>
 
-          <div className="z-10 mx-auto max-w-4xl text-center text-white">
-            <div className="mb-6 text-4xl font-bold text-balance md:text-6xl">
-              Let&apos;s take a bite size Quiz of
-              <div className="text-primary">
+          <div className="z-10 mx-auto max-w-4xl px-4 text-center">
+            {/* Heading */}
+            <h1 className="mb-4 text-3xl leading-tight font-bold text-balance sm:text-4xl md:text-5xl lg:text-6xl">
+              Let&apos;s take a bite-size Quiz of
+              <span className="text-primary block sm:inline">
                 <DynamicText />
-              </div>
-            </div>
-            <p className="dark:text-muted-foreground mx-auto mb-8 max-w-2xl text-xl text-white/60">
+              </span>
+            </h1>
+
+            {/* Subtext */}
+            <p className="text-muted-foreground mx-auto mb-8 max-w-lg text-base sm:max-w-xl sm:text-lg md:text-xl">
               Got a topic in mind? Let BuddhiAI whip up a quiz just for you — smart, snappy, and perfectly tuned to
               boost your brainpower
             </p>
-            <div className="flex flex-col justify-center gap-4 sm:flex-row">
+
+            {/* CTA */}
+            <div className="flex flex-col items-center justify-center gap-3 px-12 sm:flex-row sm:px-4 md:px-0">
               <CTA />
             </div>
           </div>
         </section>
 
         {/* Features Section */}
-        <section className="bg-card flex min-h-[70dvh] items-center justify-center px-4 py-16 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-6xl">
-            <h3 className="text-foreground mb-12 text-center text-3xl font-bold">Why BuddhiAI Rocks</h3>
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
-              <Card>
-                <CardHeader className="text-center">
-                  <Brain className="text-primary mx-auto mb-4 h-12 w-12" />
-                  <CardTitle>AI-Powered</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-center">
-                    BuddhiAI&apos;s brainy AI whips up unique questions on any topic—fast and clever every time.
-                  </CardDescription>
-                </CardContent>
-              </Card>
+        <section className="bg-card flex min-h-[75dvh] items-center justify-center px-4 py-16 sm:px-6 lg:px-8">
+          <div className="z-10 mx-auto max-w-6xl">
+            <h3 className="text-foreground mb-12 text-center text-3xl font-bold sm:text-4xl">
+              Why BuddhiAI Rocks
+            </h3>
 
-              <Card>
-                <CardHeader className="text-center">
-                  <Target className="text-primary mx-auto mb-4 h-12 w-12" />
-                  <CardTitle>Personalized</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-center">
-                    Quizzes flex to your level, interests, and goals—because one-size-fits-all is boring.
-                  </CardDescription>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader className="text-center">
-                  <Zap className="text-primary mx-auto mb-4 h-12 w-12" />
-                  <CardTitle>Instant Feedback</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-center">
-                    Snap! Get immediate answers with clear explanations—no waiting, no guessing.
-                  </CardDescription>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader className="text-center">
-                  <BarChart3 className="text-primary mx-auto mb-4 h-12 w-12" />
-                  <CardTitle>Track Progress</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-center">
-                    Watch your brain grow with easy-to-read stats and performance insights.
-                  </CardDescription>
-                </CardContent>
-              </Card>
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+              {features.map(({ icon: Icon, title, desc }) => (
+                <Card key={title} className="bg-card/60 backdrop-blur-sm">
+                  <CardHeader className="text-center">
+                    <Icon className="text-primary mx-auto mb-4 h-12 w-12" />
+                    <CardTitle className="text-lg">{title}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <CardDescription className="text-center text-sm">{desc}</CardDescription>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
           </div>
         </section>

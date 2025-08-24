@@ -101,12 +101,12 @@ export function SignInForm() {
           )}
         />
 
-        <div className="inline-flex w-full items-center justify-between gap-2">
-          <GoogleSignInButton className="h-10 flex-1" />
-
-          <Button type="submit" className="h-10 flex-1">
+        <div className="flex w-full flex-col items-center gap-4">
+          <Button type="submit" className="h-10 w-full">
             {isPending ? "Signing in" : "Sign in"}
           </Button>
+
+          <GoogleSignInButton className="h-10 w-full" />
         </div>
       </form>
     </Form>

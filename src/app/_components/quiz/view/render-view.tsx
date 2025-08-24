@@ -1,5 +1,16 @@
 import { api } from "@/trpc/server";
-import { Award, Brain, Calendar, CheckCircle, Clock, Play, Target, Trophy, Users, XCircle } from "lucide-react";
+import {
+  Brain,
+  Calendar,
+  ChartBarBig,
+  CheckCircle,
+  ClipboardClock,
+  Clock,
+  Play,
+  Target,
+  Trophy,
+  XCircle,
+} from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { formatDistanceToNow } from "@/lib/helpers/formatDistanceToNow";
@@ -29,10 +40,9 @@ export async function RenderView({ quizId }: { quizId: string }) {
               <div>
                 <h3 className="text-destructive text-lg font-semibold">Failed to Load Quiz</h3>
                 <p className="text-muted-foreground mt-1 text-sm">
-                  There was an error loading the quiz. Please try again.
+                  There was an error loading the quiz. Please try again or refresh the page
                 </p>
               </div>
-              <Button variant="outline">Try Again</Button>
             </div>
           </CardContent>
         </Card>
@@ -46,9 +56,9 @@ export async function RenderView({ quizId }: { quizId: string }) {
   const passRate = data.analytics ? Math.round((data.analytics.totalPassed / data.analytics.timesTaken) * 100) : 0;
 
   return (
-    <div className="flex w-full justify-center px-4 pt-32">
+    <div className="mx-auto flex w-full max-w-5xl justify-center p-4">
       <div className="w-full max-w-7xl">
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
           {/* Main Quiz Card */}
           <div className="lg:col-span-2">
             <Card className="border-border w-full border shadow-lg">
@@ -72,7 +82,7 @@ export async function RenderView({ quizId }: { quizId: string }) {
                 </div>
               </CardHeader>
 
-              <CardContent className="space-y-6 pt-6">
+              <CardContent className="space-y-6">
                 {/* Enhanced stats grid */}
                 <div className="grid grid-cols-2 gap-4">
                   <div className="bg-card flex flex-col items-center space-y-2 rounded-lg border p-4 text-center">
@@ -99,7 +109,7 @@ export async function RenderView({ quizId }: { quizId: string }) {
                 <Separator />
 
                 {/* Creator and date info */}
-                <div className="bg-muted/50 flex items-center justify-between rounded-lg p-3">
+                <div className="bg-muted/50 flex items-center justify-between rounded-lg">
                   <div className="flex items-center space-x-2">
                     <div className="bg-muted flex h-8 w-8 items-center justify-center rounded-full">
                       <Brain className="text-muted-foreground h-4 w-4" />
@@ -116,7 +126,7 @@ export async function RenderView({ quizId }: { quizId: string }) {
                 </div>
               </CardContent>
 
-              <CardFooter className="pt-2">
+              <CardFooter>
                 <Button asChild size="lg" className="w-full">
                   <Link href={`/quiz/take/${id}`} className="flex items-center space-x-2">
                     <Play className="h-5 w-5" />
@@ -128,22 +138,25 @@ export async function RenderView({ quizId }: { quizId: string }) {
           </div>
 
           {/* Quiz Analytics Sidebar */}
-          <div className="space-y-6">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-1">
             {/* Quiz Statistics */}
             <Card className="border shadow-lg">
-              <CardHeader className="pb-4">
+              <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-lg">
-                  <Users className="h-5 w-5" />
+                  <div className="bg-primary/10 flex size-10 items-center justify-center rounded-full">
+                    <ChartBarBig className="text-primary size-5" />
+                  </div>
                   Quiz Analytics
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="text-center">
+                <div className="divide-border flex items-center justify-between divide-x">
+                  <div className="flex-1 text-center">
                     <div className="text-2xl font-bold text-green-600">{data.analytics?.averageScore ?? 0}/10</div>
                     <div className="text-muted-foreground text-xs">Avg Score</div>
                   </div>
-                  <div className="text-center">
+
+                  <div className="flex-1 text-center">
                     <div className="text-2xl font-bold text-blue-600">{isNaN(passRate) ? 0 : passRate}%</div>
                     <div className="text-muted-foreground text-xs">Pass Rate</div>
                   </div>
@@ -162,7 +175,9 @@ export async function RenderView({ quizId }: { quizId: string }) {
             <Card className="border shadow-lg">
               <CardHeader className="pb-4">
                 <CardTitle className="flex items-center gap-2 text-lg">
-                  <Award className="h-5 w-5" />
+                  <div className="bg-primary/10 flex size-10 items-center justify-center rounded-full">
+                    <ClipboardClock className="text-primary size-5" />
+                  </div>
                   Recent Attempts
                 </CardTitle>
                 <CardDescription>Latest {_count.results} quiz attempts</CardDescription>
@@ -218,117 +233,100 @@ export async function RenderView({ quizId }: { quizId: string }) {
 
 export function QuizDetailSkeleton() {
   return (
-    <div className="flex w-full justify-center px-4 pt-32">
+    <div className="mx-auto flex w-full max-w-5xl justify-center p-4">
       <div className="w-full max-w-7xl">
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-          {/* Main Quiz Card skeleton */}
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+          {/* Main Quiz Card */}
           <div className="lg:col-span-2">
-            <Card className="border-border w-full border shadow-lg">
-              <CardHeader className="border-b">
-                <div className="space-y-3">
-                  <Skeleton className="h-7 w-3/4 rounded" />
-                  <Skeleton className="h-4 w-full rounded" />
-                  <Skeleton className="h-4 w-5/6 rounded" />
-                  <div className="flex items-center gap-2">
-                    <Skeleton className="h-5 w-24 rounded-full" />
-                    <Skeleton className="h-5 w-20 rounded-full" />
-                  </div>
-                </div>
-              </CardHeader>
+            <div className="border-border w-full rounded-lg border shadow-lg">
+              <div className="border-border border-b p-6">
+                <Skeleton className="mb-3 h-7 w-3/4" />
+                <Skeleton className="mb-3 h-5 w-full" />
+                <Skeleton className="h-4 w-1/2" />
+              </div>
 
-              <CardContent className="space-y-6 pt-6">
-                {/* Stats grid skeleton */}
+              <div className="space-y-6 p-6">
+                {/* Stats grid */}
                 <div className="grid grid-cols-2 gap-4">
                   {[1, 2].map(i => (
-                    <div
-                      key={i}
-                      className="bg-card flex flex-col items-center space-y-2 rounded-lg border p-4 text-center"
-                    >
+                    <div key={i} className="flex flex-col items-center space-y-2 rounded-lg border p-4">
                       <Skeleton className="h-10 w-10 rounded-full" />
-                      <Skeleton className="h-3 w-16 rounded" />
-                      <Skeleton className="h-7 w-8 rounded" />
+                      <Skeleton className="h-4 w-16" />
+                      <Skeleton className="h-7 w-8" />
                     </div>
                   ))}
                 </div>
 
-                <Separator />
+                <Skeleton className="h-px w-full" />
 
-                {/* Creator & date skeleton */}
-                <div className="bg-muted/50 flex items-center justify-between rounded-lg p-3">
-                  <div className="flex items-center space-x-2">
+                {/* Creator & date */}
+                <div className="flex items-center justify-between rounded-lg p-3">
+                  <div className="flex items-center space-x-3">
                     <Skeleton className="h-8 w-8 rounded-full" />
                     <div>
-                      <Skeleton className="h-4 w-20 rounded" />
-                      <Skeleton className="mt-1 h-3 w-16 rounded" />
+                      <Skeleton className="h-4 w-20" />
+                      <Skeleton className="h-3 w-16" />
                     </div>
                   </div>
-                  <div className="flex items-center space-x-1">
-                    <Skeleton className="h-3 w-3 rounded-full" />
-                    <Skeleton className="h-3 w-20 rounded" />
-                  </div>
+                  <Skeleton className="h-4 w-24" />
                 </div>
-              </CardContent>
 
-              <CardFooter className="pt-2">
-                <Skeleton className="h-10 w-full rounded" />
-              </CardFooter>
-            </Card>
+                <Skeleton className="h-11 w-full" />
+              </div>
+            </div>
           </div>
 
-          {/* Sidebar skeleton */}
-          <div className="space-y-6">
-            {/* Quiz Analytics skeleton */}
-            <Card className="border shadow-lg">
-              <CardHeader className="pb-4">
-                <Skeleton className="h-5 w-32 rounded" />
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  {[1, 2].map(i => (
-                    <div key={i} className="text-center">
-                      <Skeleton className="mx-auto h-7 w-8 rounded" />
-                      <Skeleton className="mt-1 h-3 w-12 rounded" />
-                    </div>
-                  ))}
+          {/* Sidebar cards */}
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-1">
+            {[1, 2].map(card => (
+              <div key={card} className="rounded-lg border p-4">
+                <div className="mb-4 flex items-center gap-2">
+                  <Skeleton className="h-10 w-10 rounded-full" />
+                  <Skeleton className="h-5 w-32" />
                 </div>
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <Skeleton className="h-4 w-20 rounded" />
-                    <Skeleton className="h-4 w-10 rounded" />
-                  </div>
-                  <Skeleton className="h-2 w-full rounded" />
-                </div>
-              </CardContent>
-            </Card>
 
-            {/* Recent Attempts skeleton */}
-            <Card className="border shadow-lg">
-              <CardHeader className="pb-4">
-                <Skeleton className="h-5 w-32 rounded" />
-                <Skeleton className="mt-1 h-4 w-48 rounded" />
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {Array.from({ length: 3 }).map((_, i) => (
-                  <div key={i} className="bg-card/50 flex items-center justify-between rounded-lg border p-3">
-                    <div className="flex items-center space-x-3">
-                      <Avatar className="h-8 w-8">
-                        <AvatarFallback>
-                          <Skeleton className="h-full w-full rounded-full" />
-                        </AvatarFallback>
-                      </Avatar>
-                      <div className="min-w-0 flex-1">
-                        <Skeleton className="h-4 w-20 rounded" />
-                        <Skeleton className="mt-1 h-3 w-16 rounded" />
+                {/* Analytics stats */}
+                <div className="space-y-4">
+                  {card === 1 && (
+                    <>
+                      <div className="flex items-center justify-between divide-x">
+                        <div className="flex-1 space-y-1 text-center">
+                          <Skeleton className="mx-auto h-7 w-10" />
+                          <Skeleton className="mx-auto h-3 w-16" />
+                        </div>
+                        <Skeleton className="h-8 w-px" />
+                        <div className="flex-1 space-y-1 text-center">
+                          <Skeleton className="mx-auto h-7 w-10" />
+                          <Skeleton className="mx-auto h-3 w-16" />
+                        </div>
                       </div>
-                    </div>
-                    <div className="space-y-1 text-right">
-                      <Skeleton className="h-4 w-10 rounded" />
-                      <Skeleton className="h-3 w-12 rounded" />
-                    </div>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
+                      <div className="space-y-2">
+                        <Skeleton className="h-4 w-full" />
+                        <Skeleton className="h-2 w-full" />
+                      </div>
+                    </>
+                  )}
+
+                  {/* Recent attempts */}
+                  {card === 2 &&
+                    Array.from({ length: 3 }).map((_, i) => (
+                      <div key={i} className="flex items-center justify-between rounded-lg border p-3">
+                        <div className="flex items-center space-x-3">
+                          <Skeleton className="h-8 w-8 rounded-full" />
+                          <div>
+                            <Skeleton className="h-4 w-20" />
+                            <Skeleton className="h-3 w-16" />
+                          </div>
+                        </div>
+                        <div className="space-y-1 text-right">
+                          <Skeleton className="h-4 w-8" />
+                          <Skeleton className="h-3 w-12" />
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>

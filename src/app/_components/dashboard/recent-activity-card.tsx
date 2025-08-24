@@ -1,8 +1,9 @@
 "use client";
 
 import { api } from "@/trpc/react";
-import { BookOpen, Calendar, Clock, Ellipsis, Repeat, Target, X } from "lucide-react";
+import { BrushCleaning, Calendar, Clock, Ellipsis, History, Repeat, Target } from "lucide-react";
 import Link from "next/link";
+import { ErrorCard } from "@/components/error-card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -29,18 +30,11 @@ export function RecentActivityCard() {
 
   if (isError || !profile) {
     return (
-      <Card className="flex items-center justify-center">
-        <div className="space-y-2 text-center">
-          <div className="bg-destructive/10 mx-auto flex size-12 items-center justify-center rounded-full p-2">
-            <X size={18} className="text-destructive" />
-          </div>
-          <p className="text-destructive text-2xl font-semibold">{"Couldn't load data"}</p>
-          <p className="text-muted-foreground pb-4">Please refresh or try again later.</p>
-          <Button variant={"outline"} onClick={() => refetch()}>
-            Refresh
-          </Button>
-        </div>
-      </Card>
+      <ErrorCard
+        error="Oops... Something bad happened"
+        prompt="Please refresh or try again later"
+        onClick={refetch}
+      />
     );
   }
 
@@ -50,8 +44,10 @@ export function RecentActivityCard() {
   return (
     <Card className="shadow-sm">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <BookOpen className="h-5 w-5 text-sky-500" />
+        <CardTitle className="flex items-center gap-2 text-lg">
+          <div className="bg-primary/10 flex size-8 items-center justify-center rounded-full">
+            <History size={18} className="text-primary" />
+          </div>
           Recent Activity
         </CardTitle>
         <CardDescription>Your latest quizzes created & taken.</CardDescription>
@@ -70,15 +66,17 @@ export function RecentActivityCard() {
 
           {/* ---------- Created ---------- */}
           <TabsContent value="created">
-            {!created ? (
-              <div className="flex flex-col items-center justify-center py-10 text-slate-400">
-                <BookOpen className="mb-2 h-8 w-8" />
+            {!created.length ? (
+              <div className="text-muted-foreground flex flex-col items-center justify-center gap-2 py-10">
+                <div className="bg-destructive/10 flex size-10 items-center justify-center rounded-full">
+                  <BrushCleaning size={18} className="text-destructive/80" />
+                </div>
                 <p>No quizzes created yet.</p>
               </div>
             ) : (
               <div className="space-y-3">
                 {created.map(quiz => (
-                  <div key={quiz.id} className="flex items-center justify-between border p-3 text-sm">
+                  <div key={quiz.id} className="flex items-center justify-between rounded-md border p-3 text-sm">
                     <div>
                       <p className="font-semibold">{quiz.topic}</p>
                       <div className="text-foreground/50 mt-1 flex items-center gap-3 text-xs">
@@ -115,9 +113,11 @@ export function RecentActivityCard() {
           {/* ---------- Taken ---------- */}
           <TabsContent value="taken">
             {!taken.length ? (
-              <div className="flex flex-col items-center justify-center py-10 text-slate-400">
-                <BookOpen className="mb-2 h-8 w-8" />
-                <p>No quizzes created yet.</p>
+              <div className="text-muted-foreground flex flex-col items-center justify-center gap-2 py-10">
+                <div className="bg-destructive/10 flex size-10 items-center justify-center rounded-full">
+                  <BrushCleaning size={18} className="text-destructive/80" />
+                </div>
+                <p>No quizzes taken yet.</p>
               </div>
             ) : (
               <div className="space-y-3">
@@ -170,10 +170,13 @@ export function RecentActivityCard() {
 
 function RecentActivityCardSkelton() {
   return (
-    <Card>
+    <Card className="bg-transparent">
       <CardHeader>
-        <Skeleton className="h-8 w-xs" />
-        <Skeleton className="h-4 w-sm" />
+        <div className="flex items-center gap-2">
+          <Skeleton className="size-8 rounded-full" />
+          <Skeleton className="h-6 w-32" />
+        </div>
+        <Skeleton className="h-4 w-52" />
       </CardHeader>
 
       <CardContent>
@@ -186,9 +189,9 @@ function RecentActivityCardSkelton() {
           {Array.from({ length: 4 }).map((q, i) => (
             <div key={i} className="border-border rounded-md border p-3">
               <Skeleton className="h-4 w-14" />
-              <div className="mt-1 inline-flex items-center justify-start gap-3">
-                <Skeleton className="h-4 w-xs" />
-                <Skeleton className="h-4 w-xs" />
+              <div className="mt-1 inline-flex w-full items-center justify-start gap-3">
+                <Skeleton className="h-4 w-32" />
+                <Skeleton className="h-4 w-32" />
               </div>
             </div>
           ))}

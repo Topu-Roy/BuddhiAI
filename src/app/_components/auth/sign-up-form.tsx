@@ -221,7 +221,7 @@ export function SignUpForm() {
 
         <div className="grid grid-cols-1 items-center gap-4 md:grid-cols-2">
           <GoogleSignInButton className="w-full" />
-          <Button type="submit" size={"lg"} className="w-full">
+          <Button disabled={isPending} type="submit" size={"lg"} className="w-full">
             {isPending ? "Signing up" : "Register"}
           </Button>
         </div>

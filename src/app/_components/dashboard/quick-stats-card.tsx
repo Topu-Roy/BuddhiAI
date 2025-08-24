@@ -1,8 +1,8 @@
 "use client";
 
 import { api } from "@/trpc/react";
-import { Target, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ChartSpline } from "lucide-react";
+import { ErrorCard } from "@/components/error-card";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -21,18 +21,11 @@ export function QuickStatsCard() {
 
   if (isError || !profile) {
     return (
-      <Card className="flex items-center justify-center">
-        <div className="space-y-2 text-center">
-          <div className="bg-destructive/10 mx-auto flex size-12 items-center justify-center rounded-full p-2">
-            <X size={18} className="text-destructive" />
-          </div>
-          <p className="text-destructive text-2xl font-semibold">{"Couldn't load data"}</p>
-          <p className="text-muted-foreground pb-4">Please refresh or try again later.</p>
-          <Button onClick={() => refetch()} variant={"outline"}>
-            Refresh
-          </Button>
-        </div>
-      </Card>
+      <ErrorCard
+        error="Oops... Something bad happened"
+        prompt="Please refresh or try again later"
+        onClick={refetch}
+      />
     );
   }
 
@@ -42,7 +35,9 @@ export function QuickStatsCard() {
     <Card className="shadow-sm">
       <CardHeader className="border-border border-b pb-4!">
         <CardTitle className="flex items-center gap-2 text-lg">
-          <Target className="h-4 w-4 text-emerald-500" />
+          <div className="bg-primary/10 flex size-8 items-center justify-center rounded-full">
+            <ChartSpline size={18} className="text-primary" />
+          </div>
           Quick Stats
         </CardTitle>
       </CardHeader>
@@ -67,9 +62,12 @@ export function QuickStatsCard() {
 
 function QuickStatsCardSkelton() {
   return (
-    <Card className="shadow-sm">
+    <Card className="bg-transparent shadow-sm">
       <CardHeader className="border-border border-b pb-4!">
-        <Skeleton className="h-6 w-28" />
+        <div className="flex items-center gap-2">
+          <Skeleton className="size-8 rounded-full" />
+          <Skeleton className="h-6 w-28" />
+        </div>
       </CardHeader>
       <CardContent className="space-y-3">
         <div className="flex justify-between text-sm">

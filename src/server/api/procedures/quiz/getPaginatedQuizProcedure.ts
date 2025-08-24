@@ -8,7 +8,7 @@ export const EXPLORE_ITEMS_PER_PAGE = 9;
 export const getPaginatedQuizProcedure = publicProcedure
   .input(object({ page: number().nonnegative() }))
   .query(async ({ ctx, input }) => {
-    const skip = input.page < 2 ? 0 : input.page * EXPLORE_ITEMS_PER_PAGE;
+    const skip = (input.page - 1) * EXPLORE_ITEMS_PER_PAGE;
 
     const { data, error } = await tryCatch(
       Promise.all([
@@ -45,7 +45,7 @@ export const getPaginatedQuizProcedure = publicProcedure
       });
 
     const [quizCount, quizzes] = data;
-    const totalPages = Math.floor(quizCount / EXPLORE_ITEMS_PER_PAGE);
+    const totalPages = Math.ceil(quizCount / EXPLORE_ITEMS_PER_PAGE);
 
     return {
       totalPages,

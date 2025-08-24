@@ -1,20 +1,26 @@
 import { SignInForm } from "@/app/_components/auth/sign-in-form";
-import { Brain } from "lucide-react";
 import Link from "next/link";
+import { LogoText } from "@/components/logo-text";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-
-// bg-[#0a0a0a]
 
 export default function SignInScreen() {
   return (
     <div className="flex w-full items-center justify-center p-4">
-      <Card className="mx-auto mt-16 w-full max-w-md">
-        <CardHeader className="text-center">
-          <div className="mb-4 flex justify-center">
-            <Brain className="text-primary h-12 w-12" />
-          </div>
-          <CardTitle className="text-2xl font-bold">BuddhiAI</CardTitle>
-          <CardDescription>Sign in to your account</CardDescription>
+      <Card className="mx-auto w-full max-w-md">
+        <CardHeader className="lg:text-center">
+          <CardTitle className="flex w-full items-center justify-start gap-2 lg:justify-center">
+            <Link href={"/"} className="bg-primary inline-flex size-8 items-center justify-center rounded-full">
+              {/* <Image
+                  className="size-8"
+                  src={LOGO_URL}
+                  height={100}
+                  width={100}
+                  alt="BuddhiAI"
+                /> */}
+            </Link>
+            <LogoText className="text-xl" />
+          </CardTitle>
+          <CardDescription className="text-lg">Sign in to your account</CardDescription>
         </CardHeader>
         <CardContent>
           <SignInForm />

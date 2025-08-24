@@ -2,11 +2,10 @@
 
 import { useState } from "react";
 import { api } from "@/trpc/react";
-import { Calendar, CheckCircle, Clock, GraduationCap, Heart, Trophy, User, Users, X, XCircle } from "lucide-react";
+import { BarChart3, CheckCircle, Clock, Trophy, User, Users, XCircle } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
+import { ErrorCard } from "@/components/error-card";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -29,7 +28,7 @@ export function History({ page = 1 }: { page?: number }) {
   const [createdPage, setCreatedPage] = useState(page);
 
   // Profile query - shared between tabs
-  const { data: profile, error: profileError } = api.profile.getProfileInfo.useQuery();
+  const { data: profile, error: profileError, refetch } = api.profile.getProfileInfo.useQuery();
 
   // Taken history query
   const {
@@ -50,19 +49,11 @@ export function History({ page = 1 }: { page?: number }) {
 
   if (error) {
     return (
-      <div className="flex min-h-[50vh] w-full items-center justify-center">
-        <div className="space-y-2 text-center">
-          <div className="bg-destructive/10 mx-auto flex size-12 items-center justify-center rounded-full p-2">
-            <X size={18} className="text-destructive" />
-          </div>
-          <p className="text-destructive text-2xl font-semibold">{"Couldn't load history"}</p>
-          <p className="text-destructive">{error?.message}</p>
-          <p className="text-muted-foreground pb-4">Please refresh or try again later.</p>
-          <Button variant={"outline"} asChild>
-            <Link href={"/dashboard"}>Dashboard</Link>
-          </Button>
-        </div>
-      </div>
+      <ErrorCard
+        error="Oops... Something bad happened"
+        prompt="Please refresh or try again later"
+        onClick={refetch}
+      />
     );
   }
 
@@ -76,122 +67,73 @@ export function History({ page = 1 }: { page?: number }) {
   const averageScore = totalQuizzes > 0 ? getScorePercentage(totalCorrect, totalCorrect + totalIncorrect) : 0;
   const totalTimeSpent = profile.Stats?.totalTimeSpentInSeconds ?? 0;
 
+  const stats = [
+    {
+      label: "Total Quizzes",
+      value: totalQuizzes,
+      icon: BarChart3,
+      accent: "text-indigo-500",
+      bg: "bg-indigo-50 dark:bg-indigo-950/30",
+    },
+    {
+      label: "Average Score",
+      value: `${averageScore}%`,
+      icon: Trophy,
+      accent: "text-emerald-500",
+      bg: "bg-emerald-50 dark:bg-emerald-950/30",
+    },
+    {
+      label: "Correct Answers",
+      value: totalCorrect,
+      icon: CheckCircle,
+      accent: "text-violet-500",
+      bg: "bg-violet-50 dark:bg-violet-950/30",
+    },
+    {
+      label: "Time Spent",
+      value: formatTime(totalTimeSpent),
+      icon: Clock,
+      accent: "text-amber-500",
+      bg: "bg-amber-50 dark:bg-amber-950/30",
+    },
+  ];
+
   return (
-    <>
-      {/* Profile Info Card */}
-      <Card className="bg-card border-border border shadow-lg backdrop-blur-sm">
-        <CardHeader className="pb-4">
-          <div className="flex items-center gap-6">
-            <Avatar className="border-background h-20 w-20 border-4 shadow-lg">
-              <AvatarImage src={profile.image ?? ""} alt={profile.name} />
-              <AvatarFallback className="from-primary to-primary/80 text-primary-foreground bg-gradient-to-br text-xl font-semibold">
-                {profile.name
-                  ?.split(" ")
-                  .map(n => n[0])
-                  .join("") ?? "U"}
-              </AvatarFallback>
-            </Avatar>
-            <div className="flex-1">
-              <h2 className="text-foreground text-2xl font-bold">{profile.name}</h2>
-              <p className="text-muted-foreground mt-1 flex items-center gap-2">
-                <User className="h-4 w-4" />
-                {profile.email}
-              </p>
-              <div className="text-muted-foreground mt-2 flex items-center gap-4 text-sm">
-                <span className="flex items-center gap-1">
-                  <Calendar className="h-4 w-4" />
-                  Age {profile.age}
-                </span>
-                <span className="flex items-center gap-1">
-                  <GraduationCap className="h-4 w-4" />
-                  {profile.educationLevel}
-                </span>
-              </div>
-            </div>
-          </div>
-        </CardHeader>
-        <CardContent className="pt-0">
-          <div className="space-y-4">
-            <div>
-              <h3 className="text-foreground mb-2 flex items-center gap-2 text-sm font-semibold">
-                <Heart className="h-4 w-4" />
-                Interests
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {profile.interests.map((interest, index) => (
-                  <Badge
-                    key={index}
-                    variant="secondary"
-                    className="bg-secondary text-secondary-foreground hover:bg-secondary/80"
-                  >
-                    {interest.charAt(0) + interest.slice(1).toLowerCase()}
-                  </Badge>
-                ))}
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+    <div className="mx-auto max-w-5xl space-y-4 p-4">
+      {/* Header */}
+      <div className="space-y-2 pb-2 text-center">
+        <h1 className="text-foreground text-2xl font-bold lg:text-4xl">Quiz History</h1>
+        <p className="text-muted-foreground text-sm leading-2">Track your learning progress and achievements</p>
+      </div>
 
-      {/* Statistics Overview */}
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-4">
-        <Card className="bg-primary text-primary-foreground border-0 shadow-lg">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-primary-foreground/80 text-sm font-medium">Total Quizzes</p>
-                <p className="text-3xl font-bold">{totalQuizzes}</p>
+      {/* Stats */}
+      <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+        {stats.map(({ label, value, icon: Icon, accent, bg }) => (
+          <Card key={label} className="!py-2 shadow-sm transition-all duration-300 hover:shadow-md">
+            <CardContent className="flex flex-col items-center justify-center gap-2 p-3 text-center sm:flex-row sm:items-center sm:gap-4 sm:p-4 sm:text-left">
+              <div
+                className={`flex h-10 w-10 items-center justify-center rounded-lg ${bg} ${accent} transition-transform duration-300 group-hover:scale-110 sm:h-12 sm:w-12 sm:rounded-xl`}
+              >
+                <Icon className="h-5 w-5 sm:h-6 sm:w-6" />
               </div>
-              <Trophy className="text-primary-foreground/60 h-8 w-8" />
-            </div>
-          </CardContent>
-        </Card>
 
-        <Card className="border-0 bg-green-600 text-white shadow-lg">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-green-100">Average Score</p>
-                <p className="text-3xl font-bold">{averageScore}%</p>
+                <p className="text-muted-foreground text-xs font-medium sm:text-sm">{label}</p>
+                <p className="text-foreground text-lg font-semibold sm:text-2xl">{value}</p>
               </div>
-              <CheckCircle className="h-8 w-8 text-green-200" />
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="border-0 bg-violet-600 text-white shadow-lg">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-violet-100">Correct Answers</p>
-                <p className="text-3xl font-bold">{totalCorrect}</p>
-              </div>
-              <CheckCircle className="h-8 w-8 text-violet-200" />
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="border-0 bg-orange-600 text-white shadow-lg">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-orange-100">Time Spent</p>
-                <p className="text-3xl font-bold">{formatTime(totalTimeSpent)}</p>
-              </div>
-              <Clock className="h-8 w-8 text-orange-200" />
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        ))}
       </div>
 
       {/* Tabbed History */}
-      <Tabs className="" value={activeTab} onValueChange={value => setActiveTab(value as TabType)}>
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="taken" className="flex items-center gap-2">
+      <Tabs value={activeTab} onValueChange={value => setActiveTab(value as TabType)}>
+        <TabsList className="grid h-11.5 w-full grid-cols-2">
+          <TabsTrigger value="taken" className="flex h-10 items-center gap-2">
             <Trophy className="h-4 w-4" />
             Taken Quizzes
           </TabsTrigger>
-          <TabsTrigger value="created" className="flex items-center gap-2">
+          <TabsTrigger value="created" className="flex h-10 items-center gap-2">
             <Users className="h-4 w-4" />
             Created Quizzes
           </TabsTrigger>
@@ -344,7 +286,7 @@ export function History({ page = 1 }: { page?: number }) {
           </Card>
         </TabsContent>
       </Tabs>
-    </>
+    </div>
   );
 }
 
@@ -419,19 +361,18 @@ function HistoryContentSkeleton() {
   return (
     <div className="space-y-4">
       {Array.from({ length: 3 }).map((_, i) => (
-        <div key={i} className="flex items-center justify-between rounded-lg p-4">
+        <div key={i} className="border-border flex items-center justify-between rounded-md border p-2">
           <div className="flex items-center gap-4">
             <Skeleton className="h-8 w-14 rounded-full" />
             <div className="space-y-2">
-              <Skeleton className="h-5 w-48 rounded" />
+              <Skeleton className="h-5 w-28" />
               <div className="flex gap-4">
-                <Skeleton className="h-4 w-20 rounded" />
-                <Skeleton className="h-4 w-24 rounded" />
-                <Skeleton className="h-4 w-16 rounded" />
+                <Skeleton className="h-4 w-20" />
+                <Skeleton className="h-4 w-24" />
               </div>
             </div>
           </div>
-          <Skeleton className="h-4 w-16 rounded" />
+          <Skeleton className="h-4 w-16" />
         </div>
       ))}
     </div>
@@ -440,47 +381,22 @@ function HistoryContentSkeleton() {
 
 export function HistorySkeleton() {
   return (
-    <>
-      {/* Profile Card */}
-      <Card className="bg-card/80 border-0 shadow-lg backdrop-blur-sm">
-        <CardHeader className="pb-4">
-          <div className="flex items-center gap-6">
-            <Skeleton className="h-20 w-20 rounded-full border-4" />
-            <div className="flex-1 space-y-2">
-              <Skeleton className="h-7 w-40 rounded" />
-              <Skeleton className="h-4 w-56 rounded" />
-              <div className="flex gap-4">
-                <Skeleton className="h-4 w-20 rounded" />
-                <Skeleton className="h-4 w-28 rounded" />
-              </div>
-            </div>
-          </div>
-        </CardHeader>
-        <CardContent className="pt-0">
-          <div className="space-y-4">
-            <div>
-              <Skeleton className="mb-2 h-4 w-16 rounded" />
-              <div className="flex flex-wrap gap-2">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Skeleton key={i} className="h-6 w-16 rounded-full" />
-                ))}
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+    <div className="mx-auto max-w-5xl space-y-4 p-4">
+      {/* Header */}
+      <div className="space-y-2 pb-2 text-center">
+        <Skeleton className="mx-auto h-8 w-48 lg:h-10 lg:w-64" />
+        <Skeleton className="mx-auto h-4 w-72" />
+      </div>
 
       {/* Statistics Overview */}
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-4">
+      <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
         {Array.from({ length: 4 }).map((_, i) => (
-          <Card key={i} className="border-0 shadow-lg">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div className="space-y-1">
-                  <Skeleton className="h-3 w-20 rounded" />
-                  <Skeleton className="h-8 w-12 rounded" />
-                </div>
-                <Skeleton className="h-8 w-8 rounded-full" />
+          <Card key={i} className="border-border border bg-transparent !py-2">
+            <CardContent className="flex flex-col items-center justify-center gap-2 p-3 sm:flex-row sm:items-center sm:gap-4 sm:p-4">
+              <Skeleton className="h-10 w-10 rounded-full sm:h-12 sm:w-12" />
+              <div className="w-full">
+                <Skeleton className="mx-auto h-3 w-20 sm:mx-0 sm:h-4" />
+                <Skeleton className="mx-auto mt-1 h-6 w-16 sm:mx-0 sm:h-7" />
               </div>
             </CardContent>
           </Card>
@@ -489,18 +405,18 @@ export function HistorySkeleton() {
 
       {/* Tabbed Content Skeleton */}
       <div className="space-y-4">
-        <Skeleton className="h-10 w-full rounded" />
-        <Card className="bg-card/80 border-0 shadow-lg backdrop-blur-sm">
+        <Skeleton className="h-10 w-full" />
+        <Card className="bg-transparent shadow-lg">
           <CardHeader>
-            <Skeleton className="h-7 w-48 rounded" />
-            <Skeleton className="h-4 w-64 rounded" />
+            <Skeleton className="h-7 w-48" />
+            <Skeleton className="h-4 w-64" />
           </CardHeader>
           <CardContent>
             <HistoryContentSkeleton />
           </CardContent>
         </Card>
       </div>
-    </>
+    </div>
   );
 }
 

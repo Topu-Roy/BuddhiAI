@@ -6,11 +6,12 @@ import { updateOrCreateProfileInputSchema } from "@/server/schema/profile";
 import { api } from "@/trpc/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { EDUCATION_LEVEL, INTEREST } from "@prisma/client";
-import { Brain } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "nextjs-toploader/app";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type z from "zod";
+import { LogoText } from "@/components/logo-text";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -38,15 +39,7 @@ export default function ProfileSetupPage() {
     isPending: pendingUpdate,
     isError,
     error,
-  } = api.profile.createOrUpdate.useMutation({
-    onSuccess: () => {
-      toast.success("✅ Profile updated successfully");
-      router.push("/dashboard");
-    },
-    onError(error) {
-      if (error.data?.code === "INTERNAL_SERVER_ERROR") toast.error("❌ Internal server error");
-    },
-  });
+  } = api.profile.createOrUpdate.useMutation();
 
   const form = useForm<z.infer<typeof updateOrCreateProfileInputSchema>>({
     resolver: zodResolver(updateOrCreateProfileInputSchema),
@@ -62,8 +55,8 @@ export default function ProfileSetupPage() {
   useEffect(() => {
     if (!isPending && session?.user) {
       form.reset({
-        name: session.user.name || "",
-        email: session.user.email || "",
+        name: session.user.name ?? "",
+        email: session.user.email ?? "",
         age: 18,
         educationLevel: "COLLAGE",
         interests: [],
@@ -78,7 +71,15 @@ export default function ProfileSetupPage() {
       userId: session!.user.id,
     };
 
-    updateMutation(payload);
+    updateMutation(payload, {
+      onSuccess: () => {
+        toast.success("✅ Profile updated successfully");
+        router.push("/dashboard");
+      },
+      onError(error) {
+        if (error.data?.code === "INTERNAL_SERVER_ERROR") toast.error("❌ Internal server error");
+      },
+    });
   }
 
   if (isPending || !session?.user) {
@@ -86,11 +87,20 @@ export default function ProfileSetupPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center p-4">
+    <div className="flex min-h-[92dvh] items-center justify-center p-4">
       <Card className="w-full max-w-2xl">
         <CardHeader className="text-center">
-          <div className="mb-4 flex justify-center">
-            <Brain className="text-primary h-12 w-12" />
+          <div className="flex w-full items-center justify-center gap-2">
+            <Link href={"/"} className="bg-primary inline-flex size-8 items-center justify-center rounded-full">
+              {/* <Image
+                  className="size-8"
+                  src={LOGO_URL}
+                  height={100}
+                  width={100}
+                  alt="BuddhiAI"
+                /> */}
+            </Link>
+            <LogoText className="text-xl" />
           </div>
           <CardTitle className="text-2xl font-bold">Complete Your Profile</CardTitle>
           <CardDescription>Help us personalize your quiz experience</CardDescription>
@@ -266,7 +276,7 @@ export default function ProfileSetupPage() {
 
 function CompleteProfileLoader() {
   return (
-    <div className="bg-background flex min-h-screen items-center justify-center p-4">
+    <div className="flex min-h-[92dvh] items-center justify-center p-4">
       <Card className="w-full max-w-2xl">
         <CardHeader className="text-center">
           <Skeleton className="mx-auto mb-4 h-12 w-12 rounded-full" />

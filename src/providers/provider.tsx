@@ -7,7 +7,7 @@ import NextTopLoader from "nextjs-toploader";
 export function Provider({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <TRPCReactProvider>
-      <NextThemesProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+      <NextThemesProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
         <NextTopLoader
           color="#155dfc"
           initialPosition={0.1}

@@ -9,14 +9,14 @@ import { Card, CardContent } from "@/components/ui/card";
 
 export default function DashboardScreen() {
   return (
-    <main className="container mx-auto max-w-7xl px-4 py-8 sm:py-12 lg:px-8">
+    <main className="container mx-auto max-w-7xl px-4 py-4 sm:py-8 lg:px-8">
       {/* ----------  Welcome Header  ---------- */}
       <Header />
 
       {/* ----------  2-Column Grid  ---------- */}
-      <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 sm:gap-8 lg:grid-cols-3">
         {/* -- Left / Main Column -- */}
-        <div className="space-y-8 lg:col-span-2">
+        <div className="space-y-4 sm:space-y-8 lg:col-span-2">
           {/* Generate Quiz Card */}
           <GenerateQuizCard />
 
@@ -34,15 +34,15 @@ export default function DashboardScreen() {
 
           {/* Call-to-Action */}
           <Card className="border-0 bg-gradient-to-br from-indigo-900/70 to-sky-900/70 shadow-sm">
-            <CardContent className="pt-6">
+            <CardContent>
               <div className="flex items-start gap-4">
-                <Zap className="h-10 w-10 flex-shrink-0 text-indigo-500" />
+                <Zap strokeWidth={1} size={40} className="text-secondary" />
                 <div>
-                  <p className="text-background dark:text-foreground">Daily Challenge</p>
+                  <p className="text-background dark:text-foreground/90 text-lg">Daily Challenge</p>
                   <p className="text-background/80 dark:text-foreground/50 text-sm">
                     Take a 5-question lightning round and climb the leaderboard.
                   </p>
-                  <Button size="sm" className="mt-3">
+                  <Button disabled size="sm" className="mt-3">
                     Coming soon
                   </Button>
                 </div>

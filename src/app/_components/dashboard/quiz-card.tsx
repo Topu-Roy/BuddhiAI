@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import { api } from "@/trpc/react";
-import { BrainCircuit, X } from "lucide-react";
+import { BotMessageSquare } from "lucide-react";
 import { useRouter } from "nextjs-toploader/app";
 import { toast } from "sonner";
+import { ErrorCard } from "@/components/error-card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -26,18 +27,11 @@ export function GenerateQuizCard() {
 
   if (isError || !profile) {
     return (
-      <Card className="flex items-center justify-center">
-        <div className="space-y-2 text-center">
-          <div className="bg-destructive/10 mx-auto flex size-12 items-center justify-center rounded-full p-2">
-            <X size={18} className="text-destructive" />
-          </div>
-          <p className="text-destructive text-2xl font-semibold">{"Couldn't load data"}</p>
-          <p className="text-muted-foreground pb-4">Please refresh or try again later.</p>
-          <Button onClick={() => refetch()} variant={"outline"}>
-            Refresh
-          </Button>
-        </div>
-      </Card>
+      <ErrorCard
+        error="Oops... Something bad happened"
+        prompt="Please refresh or try again later"
+        onClick={refetch}
+      />
     );
   }
 
@@ -46,6 +40,7 @@ export function GenerateQuizCard() {
 
     e.preventDefault();
     if (!topic.trim()) return;
+    if (topic.trim().length < 2) return;
 
     createQuiz(
       {
@@ -68,34 +63,20 @@ export function GenerateQuizCard() {
           void utils.profile.getPaginatedCreatedHistory.invalidate();
           void utils.profile.getPaginatedCreatedHistory.refetch();
 
+          setTopic("");
           router.push(`/quiz/view/${data.id}`);
         },
       }
     );
   };
 
-  if (!profile) {
-    return (
-      <Card className="flex items-center justify-center">
-        <div className="space-y-2 text-center">
-          <div className="bg-destructive/10 mx-auto flex size-12 items-center justify-center rounded-full p-2">
-            <X size={18} className="text-destructive" />
-          </div>
-          <p className="text-destructive text-2xl font-semibold">{"Couldn't load data"}</p>
-          <p className="text-muted-foreground pb-4">Please refresh or try again later.</p>
-          <Button onClick={() => utils.profile.getProfileInfo.refetch()} variant={"outline"}>
-            Refresh
-          </Button>
-        </div>
-      </Card>
-    );
-  }
-
   return (
     <Card className="shadow-sm">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-2xl">
-          <BrainCircuit className="h-6 w-6 text-indigo-500" />
+        <CardTitle className="flex items-center gap-2 text-lg">
+          <div className="bg-primary/10 flex size-8 items-center justify-center rounded-full">
+            <BotMessageSquare size={18} className="text-primary" />
+          </div>
           Build a new quiz
         </CardTitle>
         <CardDescription>
@@ -114,13 +95,14 @@ export function GenerateQuizCard() {
               value={topic}
               onChange={e => setTopic(e.target.value)}
               required
-              className="mt-1"
+              disabled={isPending}
+              className="mt-1 placeholder:text-xs sm:placeholder:text-base"
             />
           </div>
 
           {isCreateQuizError && (
             <Alert variant="destructive">
-              <AlertDescription>{error.message}</AlertDescription>
+              <AlertDescription className="text-sm sm:text-base">{error.message}</AlertDescription>
             </Alert>
           )}
 
@@ -129,12 +111,12 @@ export function GenerateQuizCard() {
               onClick={() => setTopic("")}
               type="button"
               variant={"outline"}
-              className="w-[30%]"
+              className="h-8 sm:h-10"
               disabled={isPending}
             >
-              Reset
+              clear
             </Button>
-            <Button type="submit" className="w-[30%]" disabled={isPending}>
+            <Button type="submit" className="h-8 sm:h-10" disabled={isPending}>
               {isPending ? "Generating..." : "Generate Quiz"}
             </Button>
           </div>
@@ -146,22 +128,28 @@ export function GenerateQuizCard() {
 
 function GenerateQuizCardSkeleton() {
   return (
-    <Card className="shadow-sm">
+    <Card className="bg-transparent shadow-sm">
       <CardHeader>
-        <Skeleton className="h-8 w-md" />
-        <Skeleton className="h-4 w-lg" />
+        {/* title */}
+        <div className="flex items-center gap-4">
+          <Skeleton className="size-8 rounded-full" />
+          <Skeleton className="h-5 w-36 md:h-6" />
+        </div>
+        {/* description */}
+        <Skeleton className="mt-1 h-4 w-full max-w-sm md:h-5" />
       </CardHeader>
-      <CardContent>
-        <div className="w-full space-y-4">
-          <div>
-            <Skeleton className="h-4 w-10 pb-1.5" />
-            <Skeleton className="mt-1 h-8 w-full" />
-          </div>
 
-          <div className="flex w-full items-center justify-end gap-2">
-            <Skeleton className="h-8 w-[30%]" />
-            <Skeleton className="h-8 w-[30%]" />
-          </div>
+      <CardContent className="space-y-4">
+        {/* Topic label & input */}
+        <div>
+          <Skeleton className="mb-1.5 h-4 w-10 md:h-5" />
+          <Skeleton className="h-10 w-full md:h-11" />
+        </div>
+
+        {/* Buttons */}
+        <div className="flex w-full items-center justify-end gap-2">
+          <Skeleton className="h-8 w-16 md:h-10 md:w-20" />
+          <Skeleton className="h-8 w-24 md:h-10 md:w-28" />
         </div>
       </CardContent>
     </Card>

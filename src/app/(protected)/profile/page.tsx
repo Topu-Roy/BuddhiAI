@@ -2,50 +2,37 @@
 
 import { EditDialog } from "@/app/_components/profile/edit-dialog";
 import { api } from "@/trpc/react";
-import { BookOpen, CalendarDays, GraduationCap, Mail, Trophy, User, X } from "lucide-react";
-import { useRouter } from "nextjs-toploader/app";
+import { BookOpen, CalendarDays, GraduationCap, Mail, Smile, Trophy, User } from "lucide-react";
+import { ErrorCard } from "@/components/error-card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Profile() {
-  const router = useRouter();
-  const { data: profile, isLoading, isError, error, refetch } = api.profile.getProfileInfo.useQuery();
+  const { data: profile, isLoading, isError, refetch } = api.profile.getProfileInfo.useQuery();
 
   if (isLoading) {
     return <ProfileScreenLoader />;
   }
 
   if (isError || !profile) {
-    if (error?.data?.code === "NOT_FOUND") {
-      router.push("/profile/setup");
-    }
-
     return (
-      <Card className="flex items-center justify-center">
-        <div className="space-y-2 text-center">
-          <div className="bg-destructive/10 mx-auto flex size-12 items-center justify-center rounded-full p-2">
-            <X size={18} className="text-destructive" />
-          </div>
-          <p className="text-destructive text-2xl font-semibold">{"Couldn't load data"}</p>
-          <p className="text-muted-foreground pb-4">Please refresh or try again later.</p>
-          <Button onClick={() => refetch()} variant={"outline"}>
-            Refresh
-          </Button>
-        </div>
-      </Card>
+      <ErrorCard
+        error="Oops... Something bad happened"
+        prompt="Please refresh or try again later"
+        onClick={refetch}
+      />
     );
   }
 
   return (
-    <div className="p-4 md:p-6 lg:p-8">
+    <div className="p-4 md:p-6">
       <div className="mx-auto max-w-4xl space-y-6">
         {/* Header Card */}
         <Card>
-          <CardContent className="flex flex-row items-center justify-between">
+          <CardContent className="relative">
             <div className="flex flex-col items-center space-y-4 text-center sm:flex-row sm:space-y-0 sm:space-x-6 sm:text-left">
               <Avatar className="border-border h-24 w-24 border sm:h-32 sm:w-32">
                 <AvatarImage src={profile.image ?? ""} alt={profile.name} />
@@ -69,17 +56,21 @@ export default function Profile() {
                 </div>
               </div>
             </div>
-            <EditDialog profile={profile} />
+            <div className="absolute top-[3%] right-[3%] md:top-[50%] md:-translate-y-1/2">
+              <EditDialog profile={profile} />
+            </div>
           </CardContent>
         </Card>
 
         <div className="grid gap-6 md:grid-cols-2">
           {/* Personal Information */}
           <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center space-x-2">
-                <GraduationCap className="h-5 w-5" />
-                <span>Education & Interests</span>
+            <CardHeader className="border-border border-b">
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <div className="bg-primary/10 flex size-8 items-center justify-center rounded-full">
+                  <GraduationCap size={18} className="text-primary" />
+                </div>
+                Education & Interests
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -90,7 +81,6 @@ export default function Profile() {
                     profile.educationLevel.slice(1).toLocaleLowerCase().replace("_", " ")}
                 </p>
               </div>
-              <Separator />
               <div>
                 <h3 className="text-muted-foreground mb-3 text-sm font-medium tracking-wide">Interests</h3>
                 <div className="flex flex-wrap gap-2">
@@ -106,15 +96,17 @@ export default function Profile() {
 
           {/* Quiz Statistics */}
           <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center space-x-2">
-                <Trophy className="h-5 w-5" />
-                <span>Quiz Statistics</span>
+            <CardHeader className="border-border border-b">
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <div className="bg-primary/10 flex size-8 items-center justify-center rounded-full">
+                  <Trophy size={18} className="text-primary" />
+                </div>
+                Quiz Statistics
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2 text-center">
+              <div className="divide-border flex items-center justify-between divide-x">
+                <div className="flex-1 space-y-2 text-center">
                   <div className="bg-primary/10 mx-auto flex h-12 w-12 items-center justify-center rounded-full">
                     <BookOpen className="text-primary h-6 w-6" />
                   </div>
@@ -123,7 +115,8 @@ export default function Profile() {
                     <p className="text-muted-foreground text-sm">Quizzes Created</p>
                   </div>
                 </div>
-                <div className="space-y-2 text-center">
+
+                <div className="flex-1 space-y-2 text-center">
                   <div className="bg-primary/10 mx-auto flex h-12 w-12 items-center justify-center rounded-full">
                     <Trophy className="text-primary h-6 w-6" />
                   </div>
@@ -154,7 +147,12 @@ export default function Profile() {
         {/* Account Details */}
         <Card>
           <CardHeader>
-            <CardTitle>Account Details</CardTitle>
+            <CardTitle className="flex items-center gap-2 text-lg">
+              <div className="bg-primary/10 flex size-8 items-center justify-center rounded-full">
+                <Smile size={18} className="text-primary" />
+              </div>
+              Account details
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid gap-4 md:grid-cols-2">
@@ -176,38 +174,50 @@ export default function Profile() {
 
 function ProfileScreenLoader() {
   return (
-    <div className="bg-background p-4 md:p-6 lg:p-8">
+    <div className="p-4 md:p-6">
       <div className="mx-auto max-w-4xl space-y-6">
-        {/* Header Card */}
-        <Card>
-          <CardContent className="flex flex-row items-center justify-between">
+        {/* ------------------------------------------------------------------ */}
+        {/* Header Card Skeleton                                               */}
+        {/* ------------------------------------------------------------------ */}
+        <Card className="bg-transparent">
+          <CardContent className="relative">
             <div className="flex flex-col items-center space-y-4 text-center sm:flex-row sm:space-y-0 sm:space-x-6 sm:text-left">
+              {/* Avatar */}
               <Skeleton className="h-24 w-24 rounded-full sm:h-32 sm:w-32" />
+
+              {/* Text block */}
               <div className="flex-1 space-y-2">
-                <Skeleton className="h-8 w-48" />
-                <div className="flex flex-col space-y-1 sm:flex-row sm:items-center sm:space-y-0 sm:space-x-4">
-                  <Skeleton className="h-4 w-36" />
-                  <Skeleton className="h-4 w-24" />
+                <Skeleton className="mx-auto h-8 w-48 sm:mx-0" />
+                <div className="flex flex-col items-center space-y-1 sm:flex-row sm:items-center sm:space-y-0 sm:space-x-4">
+                  <Skeleton className="h-4 w-40" />
+                  <Skeleton className="h-4 w-28" />
                 </div>
-                <Skeleton className="h-4 w-40" />
+                <Skeleton className="mx-auto h-4 w-36 sm:mx-0" />
               </div>
             </div>
-            <Skeleton className="h-10 w-24" />
+
+            {/* Edit button */}
+            <Skeleton className="absolute top-[3%] right-[3%] h-10 w-10 rounded-md md:top-1/2 md:-translate-y-1/2" />
           </CardContent>
         </Card>
 
+        {/* ------------------------------------------------------------------ */}
+        {/* Grid: Education & Quiz Statistics                                  */}
+        {/* ------------------------------------------------------------------ */}
         <div className="grid gap-6 md:grid-cols-2">
           {/* Education & Interests */}
-          <Card>
-            <CardHeader>
-              <Skeleton className="h-5 w-48" />
+          <Card className="bg-transparent">
+            <CardHeader className="border-b">
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <Skeleton className="h-8 w-8 rounded-full" />
+                <Skeleton className="h-5 w-40" />
+              </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <Skeleton className="mb-1 h-4 w-28" />
-                <Skeleton className="h-6 w-32" />
+                <Skeleton className="h-4 w-28" />
+                <Skeleton className="mt-1 h-6 w-36" />
               </div>
-              <Skeleton className="h-[1px] w-full" />
               <div>
                 <Skeleton className="mb-3 h-4 w-16" />
                 <div className="flex flex-wrap gap-2">
@@ -220,40 +230,49 @@ function ProfileScreenLoader() {
           </Card>
 
           {/* Quiz Statistics */}
-          <Card>
-            <CardHeader>
-              <Skeleton className="h-5 w-40" />
+          <Card className="bg-transparent">
+            <CardHeader className="border-b">
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <Skeleton className="h-8 w-8 rounded-full" />
+                <Skeleton className="h-5 w-32" />
+              </CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="flex divide-x">
                 {Array.from({ length: 2 }).map((_, i) => (
-                  <div key={i} className="space-y-2 text-center">
+                  <div key={i} className="flex-1 space-y-2 text-center">
                     <Skeleton className="mx-auto h-12 w-12 rounded-full" />
-                    <Skeleton className="mx-auto h-7 w-8" />
-                    <Skeleton className="mx-auto h-4 w-28" />
+                    <Skeleton className="mx-auto h-7 w-10" />
+                    <Skeleton className="mx-auto h-4 w-24" />
                   </div>
                 ))}
               </div>
-              <Skeleton className="h-[1px] w-full" />
+
+              <Separator />
               <div className="text-center">
-                <Skeleton className="mx-auto h-4 w-36" />
+                <Skeleton className="mx-auto h-4 w-32" />
                 <Skeleton className="mx-auto mt-1 h-6 w-20" />
               </div>
             </CardContent>
           </Card>
         </div>
 
-        {/* Account Details */}
-        <Card>
+        {/* ------------------------------------------------------------------ */}
+        {/* Account Details                                                    */}
+        {/* ------------------------------------------------------------------ */}
+        <Card className="bg-transparent">
           <CardHeader>
-            <Skeleton className="h-6 w-32" />
+            <CardTitle className="flex items-center gap-2 text-lg">
+              <Skeleton className="h-8 w-8 rounded-full" />
+              <Skeleton className="h-5 w-28" />
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid gap-4 md:grid-cols-2">
               {Array.from({ length: 2 }).map((_, i) => (
                 <div key={i}>
-                  <Skeleton className="mb-1 h-4 w-20" />
-                  <Skeleton className="h-4 w-full font-mono" />
+                  <Skeleton className="h-4 w-20" />
+                  <Skeleton className="mt-1 h-5 w-full" />
                 </div>
               ))}
             </div>

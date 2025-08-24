@@ -1,16 +1,7 @@
-import { Suspense } from "react";
-import { Pacifico } from "next/font/google";
-import Image from "next/image";
 import Link from "next/link";
+import { LogoText } from "../logo-text";
 import { ModeToggle } from "../mode-toggle";
-import { Skeleton } from "../ui/skeleton";
 import { NavButtons } from "./nav-buttons";
-
-const pacifico = Pacifico({
-  subsets: [],
-  variable: "--font-pacifico",
-  weight: ["400"],
-});
 
 export function Navbar() {
   return (
@@ -20,37 +11,27 @@ export function Navbar() {
           <div className="inline-flex items-center justify-start gap-2">
             <Link
               href={"/"}
-              className="bg-primary inline-flex size-12 items-center justify-center rounded-full p-1"
+              className="bg-primary inline-flex size-8 items-center justify-center rounded-full p-1 lg:size-12"
             >
-              <Image
+              {/* <Image
                 className="size-8"
-                src={"https://bwjcur3siq.ufs.sh/f/j7HvSadRZFfQCcnsEOxNESncf5r1kAu2bvV9G4dqle0hosZN"}
+                src={LOGO_URL}
                 height={100}
                 width={100}
                 alt="BuddhiAI"
-              />
+              /> */}
             </Link>
 
             <Link href={"/"}>
-              <h1 className={`text-2xl ${pacifico.className} tracking-widest`}>
-                Buddhi<span className="text-blue-500">AI</span>
-              </h1>
+              <LogoText className="lg:text-2xl" />
             </Link>
           </div>
 
           <div className="flex items-center gap-4">
-            <ModeToggle />
-
-            <Suspense
-              fallback={
-                <>
-                  <Skeleton className="h-8 w-20" />
-                  <Skeleton className="size-8 rounded-full" />
-                </>
-              }
-            >
-              <NavButtons />
-            </Suspense>
+            <div className="hidden lg:block">
+              <ModeToggle />
+            </div>
+            <NavButtons />
           </div>
         </div>
       </nav>
