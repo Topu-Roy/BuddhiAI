@@ -1,41 +1,23 @@
 import { CTA } from "@/app/_components/home/cta";
-import { BarChart3, Brain, Target, Zap } from "lucide-react";
+import { Brain } from "lucide-react";
+import Link from "next/link";
+import { FeaturesBentoGrid } from "@/components/animated-grid";
 import DynamicText from "@/components/dynamic-text";
+import { QuizMarquee } from "@/components/quiz-marquee";
+import { BackgroundBeams } from "@/components/ui/background-beams";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-
-const features = [
-  {
-    icon: Brain,
-    title: "AI-Powered",
-    desc: "BuddhiAI's brainy AI whips up unique questions on any topic—fast and clever every time.",
-  },
-  {
-    icon: Target,
-    title: "Personalized",
-    desc: "Quizzes flex to your level, interests, and goals—because one-size-fits-all is boring.",
-  },
-  {
-    icon: Zap,
-    title: "Instant Feedback",
-    desc: "Snap! Get immediate answers with clear explanations—no waiting, no guessing.",
-  },
-  {
-    icon: BarChart3,
-    title: "Track Progress",
-    desc: "Watch your brain grow with easy-to-read stats and performance insights.",
-  },
-];
+import { Card } from "@/components/ui/card";
+import { Highlighter } from "@/components/ui/highlighter";
 
 export default function LandingPage() {
   return (
-    <div className="bg-background">
+    <>
       <main>
         {/* Hero Section */}
-        <section className="relative flex min-h-[85dvh] w-full items-center justify-center px-4 py-20 sm:px-6 lg:px-8">
+        <section className="relative flex min-h-[75dvh] w-full flex-col items-center justify-center px-4 py-20 sm:px-6 lg:px-8">
           {/* Prismatic Aurora Burst - Multi-layered Gradient */}
           <div
-            className="absolute inset-0 z-0"
+            className="absolute inset-0 -z-10 hidden dark:block"
             style={{
               background: `
                 radial-gradient(ellipse 120% 80% at 70% 20%, rgba(255, 20, 147, 0.15), transparent 50%),
@@ -47,10 +29,32 @@ export default function LandingPage() {
             }}
           ></div>
 
+          {/* Cool Blue Glow Top */}
+          <div
+            className="absolute inset-0 z-0 dark:hidden"
+            style={{
+              background: "#ffffff",
+              backgroundImage: `
+                radial-gradient(
+                  circle at top center,
+                  rgba(70, 130, 180, 0.5),
+                  transparent 70%
+                )
+              `,
+              filter: "blur(80px)",
+              clipPath: "inset(0 0 0 0)",
+              backgroundRepeat: "no-repeat",
+            }}
+          ></div>
+
           <div className="z-10 mx-auto max-w-4xl px-4 text-center">
             {/* Heading */}
             <h1 className="mb-4 text-3xl leading-tight font-bold text-balance sm:text-4xl md:text-5xl lg:text-6xl">
-              Let&apos;s take a bite-size Quiz of
+              Let&apos;s take a{" "}
+              <Highlighter action="underline" strokeWidth={3} color="oklch(0.6818 0.1584 243.3540)">
+                bite-size
+              </Highlighter>{" "}
+              Quiz of
               <span className="text-primary block sm:inline">
                 <DynamicText />
               </span>
@@ -69,98 +73,64 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Features Section */}
-        <section className="bg-card flex min-h-[75dvh] items-center justify-center px-4 py-16 sm:px-6 lg:px-8">
-          <div className="z-10 mx-auto max-w-6xl">
-            <h3 className="text-foreground mb-12 text-center text-3xl font-bold sm:text-4xl">
-              Why BuddhiAI Rocks
-            </h3>
+        {/* Quiz Marquee Section */}
+        <section className="pb-8">
+          <QuizMarquee />
+        </section>
 
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-              {features.map(({ icon: Icon, title, desc }) => (
-                <Card key={title} className="bg-card/60 backdrop-blur-sm">
-                  <CardHeader className="text-center">
-                    <Icon className="text-primary mx-auto mb-4 h-12 w-12" />
-                    <CardTitle className="text-lg">{title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <CardDescription className="text-center text-sm">{desc}</CardDescription>
-                  </CardContent>
-                </Card>
+        {/* Features Section */}
+        <section className="bg-accent dark:bg-card/40 px-4 py-16">
+          <FeaturesBentoGrid />
+        </section>
+
+        {/* How It Works Section */}
+        <section className="px-4 py-16 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-6xl">
+            <div className="mb-8 text-center text-balance">
+              <h2 className="text-foreground mb-4 text-3xl font-bold">How It Works</h2>
+              <p className="text-muted-foreground mx-auto max-w-2xl text-lg">
+                Get started with BuddhiAI in four simple steps
+              </p>
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+              {steps.map((step, index) => (
+                <div key={index} className="relative">
+                  <div className="bg-card h-full rounded-xl border p-6 transition-shadow hover:shadow-lg">
+                    <div className="mb-4 flex items-center">
+                      <div className="bg-primary/10 text-primary flex h-12 w-12 items-center justify-center rounded-lg text-lg font-bold">
+                        {step.number}
+                      </div>
+                    </div>
+                    <h3 className="text-foreground mb-3 text-lg font-semibold">{step.title}</h3>
+                    <p className="text-muted-foreground text-sm leading-relaxed">{step.description}</p>
+                  </div>
+
+                  {/* Connection line for desktop */}
+                  {index < steps.length - 1 && (
+                    <div className="bg-border absolute top-12 -right-4 hidden h-px w-8 lg:block" />
+                  )}
+                </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* How It Works Section */}
-        <section className="flex min-h-[70dvh] items-center justify-center px-4 py-16 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-4xl">
-            <h3 className="text-foreground mb-12 text-center text-3xl font-bold">How It Works</h3>
-            <div className="space-y-8">
-              <div className="flex items-center space-x-6">
-                <div className="bg-primary text-primary-foreground flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full text-lg font-bold">
-                  1
-                </div>
-                <div>
-                  <h4 className="text-foreground mb-2 text-xl font-semibold">Sign Up & Tell Us About You</h4>
-                  <p className="text-muted-foreground">
-                    Create your account and share your interests and knowledge level. BuddhiAI loves to know its
-                    player!
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center space-x-6">
-                <div className="bg-primary text-primary-foreground flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full text-lg font-bold">
-                  2
-                </div>
-                <div>
-                  <h4 className="text-foreground mb-2 text-xl font-semibold">Pick a Topic</h4>
-                  <p className="text-muted-foreground">
-                    Type any subject you fancy—history, science, pop culture, or something completely wild—and
-                    watch BuddhiAI craft your quiz.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center space-x-6">
-                <div className="bg-primary text-primary-foreground flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full text-lg font-bold">
-                  3
-                </div>
-                <div>
-                  <h4 className="text-foreground mb-2 text-xl font-semibold">Take Your Quiz</h4>
-                  <p className="text-muted-foreground">
-                    Answer 10 questions made just for you. Fast, fun, and smart—perfectly tuned to your brainpower.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center space-x-6">
-                <div className="bg-primary text-primary-foreground flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full text-lg font-bold">
-                  4
-                </div>
-                <div>
-                  <h4 className="text-foreground mb-2 text-xl font-semibold">Check & Celebrate</h4>
-                  <p className="text-muted-foreground">
-                    Get instant results with explanations, track your progress, and flex your growing brainpower.
-                    Knowledge = unlocked.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
         {/* CTA Section */}
-        <section className="bg-card flex min-h-[40dvh] items-center justify-center px-4 py-16 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-4xl text-center">
-            <h3 className="text-card-foreground mb-6 text-3xl font-bold">Ready to Flex Your Brain?</h3>
-            <p className="text-card-foreground/80 mb-8 text-xl">
-              Join thousands of curious minds testing their smarts with BuddhiAI&apos;s AI-powered quizzes. Fast,
-              fun, and brain-boosting!
-            </p>
-            <Button size="lg">Start Quizzing</Button>
-          </div>
+        <section className="bg-accent dark:bg-card/40 flex items-center justify-center px-4 py-16 sm:px-6 lg:px-8">
+          <Card className="relative mx-auto flex h-[50dvh] max-w-6xl items-center justify-center rounded-lg px-12 text-center">
+            <div className="z-10 flex h-full flex-col items-center justify-center">
+              <h3 className="text-card-foreground mb-4 text-3xl font-bold">Ready to farm some brilliancy?</h3>
+              <p className="text-card-foreground/80 mb-8 w-2/3 text-balance">
+                Join thousands of curious minds testing their smarts with BuddhiAI&apos;s AI-powered quizzes. Fast,
+                fun, and brain-boosting!
+              </p>
+              <Button size="lg" className="mx-auto max-w-sm">
+                <Link href={"/dashboard"}>Start Quizzing</Link>
+              </Button>
+            </div>
+            <BackgroundBeams />
+          </Card>
         </section>
       </main>
 
@@ -175,6 +145,29 @@ export default function LandingPage() {
           </p>
         </div>
       </footer>
-    </div>
+    </>
   );
 }
+
+const steps = [
+  {
+    number: "01",
+    title: "Sign Up",
+    description: "Create your account and tell us your interests and knowledge level.",
+  },
+  {
+    number: "02",
+    title: "Pick a Topic",
+    description: "Choose any subject and watch BuddhiAI craft your personalized quiz.",
+  },
+  {
+    number: "03",
+    title: "Take Your Quiz",
+    description: "Answer 10 questions perfectly tuned to your brainpower.",
+  },
+  {
+    number: "04",
+    title: "Track Progress",
+    description: "Get instant results with explanations and celebrate your growth.",
+  },
+];

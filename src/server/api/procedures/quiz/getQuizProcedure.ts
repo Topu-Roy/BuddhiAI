@@ -1,5 +1,5 @@
 import { TRPCError } from "@trpc/server";
-import { object, string } from "zod";
+import { number, object, string } from "zod";
 import { tryCatch } from "@/lib/helpers/try-catch";
 import { publicProcedure } from "../../trpc";
 
@@ -74,4 +74,35 @@ export const getQuizProcedure = publicProcedure
     if (!analytics) throw new TRPCError({ code: "NOT_FOUND", message: "Analytics not found" });
 
     return { quiz, analytics };
+  });
+
+export const getManyQuizProcedure = publicProcedure
+  .input(object({ amount: number().positive() }))
+  .query(async ({ ctx, input }) => {
+    const { data, error } = await tryCatch(
+      ctx.db.quiz.findMany({
+        select: {
+          id: true,
+          category: true,
+          description: true,
+          topic: true,
+          Profile: {
+            select: {
+              name: true,
+            },
+          },
+          _count: {
+            select: {
+              questions: true,
+            },
+          },
+        },
+        take: input.amount,
+      })
+    );
+
+    if (error) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Failed to fetch quiz" });
+    if (data.length === 0) throw new TRPCError({ code: "NOT_FOUND", message: "Quiz not found" });
+
+    return data;
   });

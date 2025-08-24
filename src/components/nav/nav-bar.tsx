@@ -5,7 +5,7 @@ import { NavButtons } from "./nav-buttons";
 
 export function Navbar() {
   return (
-    <header className="bg-card border-b shadow-sm">
+    <header className="bg-card z-20 border-b shadow-sm">
       <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex min-h-[8dvh] items-center justify-between">
           <div className="inline-flex items-center justify-start gap-2">

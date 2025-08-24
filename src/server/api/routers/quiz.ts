@@ -2,7 +2,7 @@ import { createTRPCRouter } from "@/server/api/trpc";
 import { checkIfAlreadyTakenProcedure } from "../procedures/quiz/checkIfAlreadyTakenProcedure";
 import { generateQuizProcedure } from "../procedures/quiz/generateQuizProcedure";
 import { getPaginatedQuizProcedure } from "../procedures/quiz/getPaginatedQuizProcedure";
-import { getQuizProcedure } from "../procedures/quiz/getQuizProcedure";
+import { getManyQuizProcedure, getQuizProcedure } from "../procedures/quiz/getQuizProcedure";
 import { getResultProcedure } from "../procedures/quiz/getResultProcedure";
 import { submitQuizResultProcedure } from "../procedures/quiz/submitQuizResultProcedure";
 
@@ -22,6 +22,13 @@ export const quizRouter = createTRPCRouter({
    * the latest five attempt summaries for quick insight.
    */
   getQuiz: getQuizProcedure,
+
+  /**
+   * * getManyQuiz
+   *
+   * Public endpoint that returns one quizId, some basic info and creator info.
+   */
+  getManyQuiz: getManyQuizProcedure,
 
   /**
    * * getPaginatedQuiz
