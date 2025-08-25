@@ -9,14 +9,13 @@ import { protectedProcedure } from "../../trpc";
 export const generateQuizProcedure = protectedProcedure
   .input(generateQuizInputSchema)
   .mutation(async ({ ctx, input }) => {
-    // Get user profile and how many quiz this user has already created
+    // Get user profile and how many quiz this user has already created today (MAX = 10)
     const { data: profile, error: profileError } = await tryCatch(
       ctx.db.profile.findUnique({
         where: {
           userId: ctx.user.id,
         },
         select: {
-          _count: { select: { quizzesCreated: true } },
           id: true,
         },
       })
@@ -25,7 +24,24 @@ export const generateQuizProcedure = protectedProcedure
     if (profileError) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Failed to query profile" });
     if (!profile) throw new TRPCError({ code: "NOT_FOUND", message: "Profile not found" });
 
-    if (profile._count.quizzesCreated > 10) {
+    // build the date range for "today"
+    const startOfDay = new Date();
+    startOfDay.setHours(0, 0, 0, 0);
+
+    const endOfDay = new Date();
+    endOfDay.setHours(23, 59, 59, 999);
+
+    const todaysQuizzes = await ctx.db.quiz.count({
+      where: {
+        profileId: profile.id,
+        createdAt: {
+          gte: startOfDay,
+          lt: endOfDay,
+        },
+      },
+    });
+
+    if (todaysQuizzes >= 10) {
       throw new TRPCError({
         code: "TOO_MANY_REQUESTS",
         message: "You have exceeded the limit of 10 quizzes you can cerate per day", // Todo
