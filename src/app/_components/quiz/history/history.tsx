@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { api } from "@/trpc/react";
-import { BarChart3, CheckCircle, Clock, Trophy, User, Users, XCircle } from "lucide-react";
+import { BarChart3, Calendar, CheckCircle, Clock, Trophy, User, Users } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { ErrorCard } from "@/components/error-card";
@@ -140,7 +140,7 @@ export function History({ page = 1 }: { page?: number }) {
         </TabsList>
 
         <TabsContent value="taken">
-          <Card className="bg-card border-border border shadow-lg backdrop-blur-sm">
+          <Card className="bg-card/80 border-border border shadow-lg backdrop-blur-sm">
             <CardHeader>
               <CardTitle className="text-foreground text-2xl">Recent Quiz Results</CardTitle>
               <CardDescription>Your latest quiz performances and scores</CardDescription>
@@ -160,45 +160,99 @@ export function History({ page = 1 }: { page?: number }) {
                     ) : (
                       takenHistory.quizzesTaken.map(quiz => {
                         const percentage = getScorePercentage(quiz.correctAnswer, quiz.incorrectAnswer);
-                        const total = quiz.correctAnswer + quiz.incorrectAnswer;
 
                         return (
-                          <Link href={`/quiz/results/${quiz.id}`} key={quiz.id}>
-                            <div className="bg-card border-border/50 hover:bg-muted/70 flex items-center justify-between rounded-lg border p-4 transition-colors">
-                              <div className="flex items-center gap-4">
-                                <div
-                                  className={`rounded-full border px-3 py-1 font-semibold ${getScoreColor(percentage)}`}
-                                >
-                                  {percentage}%
+                          <Link href={`/quiz/results/${quiz.id}`} key={quiz.id} className="group block">
+                            <div className="bg-card border-border/50 hover:border-border group-hover:bg-muted/30 rounded-xl border p-4 transition-all duration-200 hover:shadow-md">
+                              {/* Mobile Layout */}
+                              <div className="flex flex-col gap-4 md:hidden">
+                                {/* Score Badge - Prominent on mobile */}
+                                <div className="flex items-center justify-between">
+                                  <div
+                                    className={`inline-flex items-center justify-center rounded-full border px-4 py-2 font-bold ${getScoreColor(percentage)}`}
+                                  >
+                                    {percentage}%
+                                  </div>
+                                  <div className="text-right">
+                                    <div className="text-muted-foreground flex items-center gap-1 text-sm">
+                                      <Calendar className="h-3.5 w-3.5" />
+                                      {formatDate(quiz.createdAt)}
+                                    </div>
+                                  </div>
                                 </div>
+
+                                {/* Topic and Author */}
                                 <div>
-                                  <h3 className="text-foreground font-semibold">
+                                  <h3 className="text-foreground mb-1 text-lg leading-tight font-semibold">
                                     {quiz.Quiz.topic}
-                                    <span className="text-foreground/50 pl-4 text-sm">
-                                      ({quiz.Quiz.Profile?.name ? ` ${quiz.Quiz.Profile?.name} ` : " Unknown "})
-                                    </span>
                                   </h3>
-                                  <div className="text-muted-foreground mt-1 flex items-center gap-4 text-sm">
-                                    <span className="flex items-center gap-1">
+                                  <p className="text-muted-foreground text-sm">
+                                    by {quiz.Quiz.Profile?.name ?? "Unknown"}
+                                  </p>
+                                </div>
+
+                                {/* Stats */}
+                                <div className="flex flex-wrap items-center gap-4 text-sm">
+                                  <span className="flex items-center gap-1.5">
+                                    <CheckCircle className="h-4 w-4 text-green-600" />
+                                    <span className="font-medium">
+                                      {quiz.correctAnswer}/{quiz.correctAnswer + quiz.incorrectAnswer}
+                                    </span>
+                                    <span className="text-muted-foreground">correct</span>
+                                  </span>
+
+                                  <span className="flex items-center gap-1.5">
+                                    <Clock className="text-muted-foreground h-4 w-4" />
+                                    <span className="font-medium">{formatTime(quiz.timeTookInSeconds)}</span>
+                                  </span>
+                                </div>
+                              </div>
+
+                              {/* Desktop Layout */}
+                              <div className="hidden md:grid md:grid-cols-12 md:items-center md:gap-6">
+                                {/* Left Side - Score (3 columns) */}
+                                <div className="col-span-3 lg:col-span-2">
+                                  <div
+                                    className={`inline-flex items-center justify-center rounded-full border px-4 py-2 font-bold ${getScoreColor(percentage)}`}
+                                  >
+                                    {percentage}%
+                                  </div>
+                                </div>
+
+                                {/* Right Side - Details (9 columns) */}
+                                <div className="col-span-9 space-y-3 lg:col-span-10">
+                                  {/* Topic and Author Row */}
+                                  <div className="flex items-center justify-between">
+                                    <div>
+                                      <h3 className="text-foreground text-lg leading-tight font-semibold">
+                                        {quiz.Quiz.topic}
+                                      </h3>
+                                      <p className="text-muted-foreground mt-0.5 text-sm">
+                                        by {quiz.Quiz.Profile?.name ?? "Unknown"}
+                                      </p>
+                                    </div>
+                                    <div className="text-muted-foreground flex items-center gap-1 text-sm">
+                                      <Calendar className="h-4 w-4" />
+                                      {formatDate(quiz.createdAt)}
+                                    </div>
+                                  </div>
+
+                                  {/* Stats Row */}
+                                  <div className="flex items-center gap-6 text-sm">
+                                    <span className="flex items-center gap-2">
                                       <CheckCircle className="h-4 w-4 text-green-600" />
-                                      {quiz.correctAnswer} correct
+                                      <span className="font-medium">
+                                        {quiz.correctAnswer}/{quiz.correctAnswer + quiz.incorrectAnswer}
+                                      </span>
+                                      <span className="text-muted-foreground">correct</span>
                                     </span>
-                                    <span className="flex items-center gap-1">
-                                      <XCircle className="h-4 w-4 text-red-600" />
-                                      {quiz.incorrectAnswer} incorrect
-                                    </span>
-                                    <span className="flex items-center gap-1">
-                                      <Clock className="h-4 w-4" />
-                                      {formatTime(quiz.timeTookInSeconds)}
+
+                                    <span className="flex items-center gap-2">
+                                      <Clock className="text-muted-foreground h-4 w-4" />
+                                      <span className="font-medium">{formatTime(quiz.timeTookInSeconds)}</span>
                                     </span>
                                   </div>
                                 </div>
-                              </div>
-                              <div className="text-right">
-                                <p className="text-muted-foreground text-sm">{formatDate(quiz.createdAt)}</p>
-                                <p className="text-muted-foreground/80 text-xs">
-                                  {quiz.correctAnswer}/{total} questions
-                                </p>
                               </div>
                             </div>
                           </Link>
@@ -241,31 +295,38 @@ export function History({ page = 1 }: { page?: number }) {
                     ) : (
                       createdHistory.quizzesCreated.map(quiz => (
                         <div key={quiz.id}>
-                          <div className="bg-card border-border/50 hover:bg-muted/70 flex items-center justify-between rounded-lg border p-4 shadow-md transition-colors">
-                            <div className="flex items-center gap-4">
-                              <div className="border-border rounded-full border px-3 py-2 font-semibold">
+                          <div className="bg-card border-border/50 hover:bg-muted/70 flex flex-col items-start justify-between gap-4 rounded-lg border p-4 shadow-md transition-colors sm:flex-row sm:items-center">
+                            {/* Left side – untouched */}
+                            <div className="flex w-full items-center gap-4">
+                              <div className="border-border flex items-center justify-center gap-2 rounded-full border px-3 py-2 font-semibold">
                                 <Users className="mr-2 inline h-4 w-4" />
                                 {quiz.timesTaken}
                               </div>
-                              <div>
-                                <h3 className="text-foreground font-semibold">{quiz.topic}</h3>
-                                <div className="text-muted-foreground mt-1 flex items-center gap-4 text-sm">
-                                  <span className="flex items-center gap-1">
-                                    <Trophy className="h-4 w-4" />
-                                    {quiz.timesTaken} times taken
-                                  </span>
-                                  <span className="flex items-center gap-1">
-                                    <User className="h-4 w-4" />
-                                    By {createdHistory.name}
-                                  </span>
+                              <div className="flex w-full flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
+                                <div className="sm:flex-1">
+                                  <h3 className="text-foreground font-semibold">{quiz.topic}</h3>
+                                  <div className="text-muted-foreground mt-2 text-sm">
+                                    <div className="flex flex-wrap items-center gap-2">
+                                      <span className="flex items-center gap-1">
+                                        <Trophy className="h-4 w-4" />
+                                        {quiz.timesTaken} times taken
+                                      </span>
+                                      <span className="flex items-center gap-1">
+                                        <User className="h-4 w-4" />
+                                        By {createdHistory.name}
+                                      </span>
+                                    </div>
+                                    <span className="text-muted-foreground text-xs">
+                                      {formatDate(quiz.createdAt)}
+                                    </span>
+                                  </div>
                                 </div>
+
+                                {/* Right side – column on mobile, row on ≥sm */}
+                                <Button variant="outline" size="sm" asChild>
+                                  <Link href={`/quiz/view/${quiz.id}`}>View Quiz</Link>
+                                </Button>
                               </div>
-                            </div>
-                            <div className="space-y-4 text-right">
-                              <p className="text-muted-foreground text-xs">{formatDate(quiz.createdAt)}</p>
-                              <Button variant="outline" size="sm" asChild>
-                                <Link href={`/quiz/view/${quiz.id}`}>View Quiz</Link>
-                              </Button>
                             </div>
                           </div>
                         </div>
@@ -432,8 +493,8 @@ const formatDate = (date: string | Date) => {
     year: "numeric",
     month: "short",
     day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
+    // hour: "2-digit",
+    // minute: "2-digit",
   });
 };
 
@@ -442,8 +503,12 @@ const getScorePercentage = (correct: number, incorrect: number) => {
   return total > 0 ? Math.round((correct / total) * 100) : 0;
 };
 
-const getScoreColor = (percentage: number) => {
-  if (percentage >= 80) return "text-green-600/80 py-2 border border-border";
-  if (percentage >= 60) return "text-yellow-600/80 py-2 border border-border";
-  return "text-red-600/80 py-2 border border-border";
-};
+function getScoreColor(percentage: number): string {
+  if (percentage >= 90)
+    return "bg-green-100 text-green-800 border-green-200 dark:bg-green-900/20 dark:text-green-400 dark:border-green-800";
+  if (percentage >= 75)
+    return "bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-800";
+  if (percentage >= 60)
+    return "bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-900/20 dark:text-yellow-400 dark:border-yellow-800";
+  return "bg-red-100 text-red-800 border-red-200 dark:bg-red-900/20 dark:text-red-400 dark:border-red-800";
+}

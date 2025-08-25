@@ -8,7 +8,7 @@ export const HISTORY_ITEM_PER_PAGE = 9;
 export const getPaginatedTakenHistoryProcedure = protectedProcedure
   .input(object({ page: number().nonnegative() }))
   .query(async ({ ctx, input }) => {
-    const skip = input.page < 2 ? 0 : input.page * 9;
+    const skip = (input.page - 1) * HISTORY_ITEM_PER_PAGE;
 
     const { data, error } = await tryCatch(
       ctx.db.profile.findUnique({

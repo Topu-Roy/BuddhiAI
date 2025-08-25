@@ -7,7 +7,6 @@ import { QuizMarquee } from "@/components/quiz-marquee";
 import { BackgroundBeams } from "@/components/ui/background-beams";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Highlighter } from "@/components/ui/highlighter";
 
 export default function LandingPage() {
   return (
@@ -50,11 +49,7 @@ export default function LandingPage() {
           <div className="z-10 mx-auto max-w-4xl px-4 text-center">
             {/* Heading */}
             <h1 className="mb-4 text-3xl leading-tight font-bold text-balance sm:text-4xl md:text-5xl lg:text-6xl">
-              Let&apos;s take a{" "}
-              <Highlighter action="underline" strokeWidth={3} color="oklch(0.6818 0.1584 243.3540)">
-                bite-size
-              </Highlighter>{" "}
-              Quiz of
+              Let&apos;s take a bite-size Quiz of
               <span className="text-primary block sm:inline">
                 <DynamicText />
               </span>
