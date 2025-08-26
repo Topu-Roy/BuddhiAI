@@ -55,7 +55,7 @@ export function QuickStatsCard() {
         <div className="flex justify-between text-sm">
           <span className="text-foreground/50">Time spent</span>
 
-          <span className="font-medium">{`${timeSpent.hours ? `${timeSpent.hours}h` : null} ${timeSpent.remainingMinutes}m ${timeSpent.remainingSeconds}s`}</span>
+          <span className="font-medium">{`${timeSpent.hours ? `${timeSpent.hours}h` : ""} ${timeSpent.remainingMinutes}m`}</span>
         </div>
       </CardContent>
     </Card>
