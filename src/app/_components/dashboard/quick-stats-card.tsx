@@ -6,10 +6,12 @@ import { ErrorCard } from "@/components/error-card";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 
-const formatTime = (seconds: number) => {
-  const minutes = Math.floor(seconds / 60);
-  const remainingSeconds = seconds % 60;
-  return { minutes, remainingSeconds };
+const formatTime = (totalSeconds: number) => {
+  const hours = Math.floor(totalSeconds / 3600);
+  const remainingMinutes = Math.floor((totalSeconds % 3600) / 60);
+  const remainingSeconds = totalSeconds % 60;
+
+  return { hours, remainingMinutes, remainingSeconds };
 };
 
 export function QuickStatsCard() {
@@ -53,7 +55,7 @@ export function QuickStatsCard() {
         <div className="flex justify-between text-sm">
           <span className="text-foreground/50">Time spent</span>
 
-          <span className="font-medium tracking-[0.4rem]">{`${timeSpent.minutes}:${timeSpent.remainingSeconds}`}</span>
+          <span className="font-medium">{`${timeSpent.hours ? `${timeSpent.hours}h` : null} ${timeSpent.remainingMinutes}m ${timeSpent.remainingSeconds}s`}</span>
         </div>
       </CardContent>
     </Card>
