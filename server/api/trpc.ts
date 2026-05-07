@@ -170,6 +170,7 @@ const adminMiddleware = t.middleware(async ({ next, ctx }) => {
     },
     select: {
       id: true,
+      email: true,
     },
   });
 
