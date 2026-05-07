@@ -5,22 +5,32 @@ import type { PrismaPromise } from "@/generated/prisma/internal/prismaNamespace"
 import { adminProcedure, createTRPCRouter } from "@/server/api/trpc";
 import { TRPCError } from "@trpc/server";
 import { tryCatch } from "@/lib/try-catch";
+import { z } from "zod";
 
 export const seedRouter = createTRPCRouter({
   getStats: adminProcedure.query(async ({ ctx }) => {
-    const [quizCount, questionCount] = await Promise.all([
-      ctx.db.quiz.count(),
-      ctx.db.question.count(),
+    const [[quizCount, questionCount, resultCount, profileCount], lastQuiz, bannedCount] = await Promise.all([
+      Promise.all([
+        ctx.db.quiz.count(),
+        ctx.db.question.count(),
+        ctx.db.result.count(),
+        ctx.db.profile.count(),
+      ]),
+      ctx.db.quiz.findFirst({
+        orderBy: { createdAt: "desc" },
+        select: { createdAt: true },
+      }),
+      ctx.db.user.count({
+        where: { banned: true },
+      }),
     ]);
-
-    const lastQuiz = await ctx.db.quiz.findFirst({
-      orderBy: { createdAt: "desc" },
-      select: { createdAt: true },
-    });
 
     return {
       quizCount,
       questionCount,
+      resultCount,
+      profileCount,
+      bannedCount,
       lastSeededAt: lastQuiz?.createdAt ?? null,
     };
   }),
@@ -181,4 +191,62 @@ export const seedRouter = createTRPCRouter({
     console.log(`Database reset successfully -`, data);
     return { success: true, ...data };
   }),
+
+  getUsers: adminProcedure.query(async ({ ctx }) => {
+    const { data, error } = await tryCatch(
+      ctx.db.user.findMany({
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          role: true,
+          banned: true,
+          banReason: true,
+          createdAt: true,
+          profile: {
+            select: {
+              id: true,
+              educationLevel: true,
+            },
+          },
+        },
+        orderBy: { createdAt: "desc" },
+      })
+    );
+
+    if (error) {
+      console.error("Get users failed:", error);
+      throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Failed to fetch users" });
+    }
+
+    return data;
+  }),
+
+  toggleBanUser: adminProcedure
+    .input(
+      z.object({
+        userId: z.string().nonempty(),
+        banned: z.boolean(),
+        banReason: z.string().optional(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { error } = await tryCatch(
+        ctx.db.user.update({
+          where: { id: input.userId },
+          data: {
+            banned: input.banned,
+            banReason: input.banned ? input.banReason ?? "Banned by admin" : null,
+          },
+          select: { id: true },
+        })
+      );
+
+      if (error) {
+        console.error("Toggle ban failed:", error);
+        throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Failed to toggle ban" });
+      }
+
+      return { success: true, userId: input.userId, banned: input.banned };
+    }),
 });
