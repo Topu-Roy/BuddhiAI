@@ -2,19 +2,27 @@
 
 import { useState } from "react";
 import { api } from "@/trpc/react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { AlertTriangle, Loader2, CheckCircle2, XCircle, Ban, MoreHorizontal } from "lucide-react";
+import { AlertTriangle, Ban, CheckCircle2, Loader2, MoreHorizontal, XCircle } from "lucide-react";
 import { toast } from "sonner";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type UserStatus = "idle" | "loading" | "success" | "error";
 
@@ -40,22 +48,22 @@ export function UserTable() {
   const [banReason, setBanReason] = useState("");
 
   const toggleBanMutation = api.seed.toggleBanUser.useMutation({
-    onSuccess: (data) => {
-      setStatusMap((prev) => ({ ...prev, [data.userId]: "success" }));
+    onSuccess: data => {
+      setStatusMap(prev => ({ ...prev, [data.userId]: "success" }));
       toast.success(data.banned ? "User banned" : "User unbanned");
       void refetch();
       setTimeout(() => {
-        setStatusMap((prev) => ({ ...prev, [data.userId]: "idle" }));
+        setStatusMap(prev => ({ ...prev, [data.userId]: "idle" }));
         setShowBanDialog(false);
         setPendingUser(null);
         setBanReason("");
       }, 2000);
     },
-    onError: (error) => {
-      setStatusMap((prev) => ({ ...prev, [pendingUser?.id ?? ""]: "error" }));
+    onError: error => {
+      setStatusMap(prev => ({ ...prev, [pendingUser?.id ?? ""]: "error" }));
       toast.error(error.message);
       setTimeout(() => {
-        setStatusMap((prev) => ({ ...prev, [pendingUser?.id ?? ""]: "idle" }));
+        setStatusMap(prev => ({ ...prev, [pendingUser?.id ?? ""]: "idle" }));
       }, 3000);
     },
   });
@@ -68,7 +76,7 @@ export function UserTable() {
 
   const confirmBan = () => {
     if (!pendingUser) return;
-    setStatusMap((prev) => ({ ...prev, [pendingUser.id]: "loading" }));
+    setStatusMap(prev => ({ ...prev, [pendingUser.id]: "loading" }));
     toggleBanMutation.mutate({
       userId: pendingUser.id,
       banned: !pendingUser.banned,
@@ -125,7 +133,7 @@ export function UserTable() {
           <CardTitle>All Users</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-muted-foreground text-sm">No users found.</p>
+          <p className="text-sm text-muted-foreground">No users found.</p>
         </CardContent>
       </Card>
     );
@@ -150,14 +158,12 @@ export function UserTable() {
                 </tr>
               </thead>
               <tbody>
-                {users.map((user) => (
+                {users.map(user => (
                   <tr key={user.id} className="border-b">
                     <td className="py-3">{user.name}</td>
                     <td className="py-3 text-muted-foreground">{user.email}</td>
                     <td className="py-3">
-                      <Badge variant={user.role === "admin" ? "default" : "outline"}>
-                        {user.role ?? "user"}
-                      </Badge>
+                      <Badge variant={user.role === "admin" ? "default" : "outline"}>{user.role ?? "user"}</Badge>
                     </td>
                     <td className="py-3">
                       {user.banned ? (
@@ -172,11 +178,13 @@ export function UserTable() {
                       <div className="flex items-center justify-end gap-2">
                         {getStatusBadge(statusMap[user.id] ?? "idle")}
                         <DropdownMenu>
-                          <DropdownMenuTrigger>
-                            <Button variant="ghost" size="icon-sm" className="h-8 w-8">
-                              <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
+                          <DropdownMenuTrigger
+                            render={
+                              <Button variant="ghost" size="icon-sm" className="h-8 w-8">
+                                <MoreHorizontal className="h-4 w-4" />
+                              </Button>
+                            }
+                          />
                           <DropdownMenuContent align="end">
                             <DropdownMenuItem
                               onClick={() => handleBanToggle(user, !user.banned)}
@@ -221,14 +229,12 @@ export function UserTable() {
             </DialogDescription>
           </DialogHeader>
           {!pendingUser?.banned && (
-            <div className="py-2">
+            <div className="space-y-2">
               <label className="text-sm font-medium">Ban Reason (optional)</label>
-              <input
-                type="text"
+              <Input
                 value={banReason}
-                onChange={(e) => setBanReason(e.target.value)}
+                onChange={e => setBanReason(e.target.value)}
                 placeholder="Reason for banning..."
-                className="mt-1 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
               />
             </div>
           )}

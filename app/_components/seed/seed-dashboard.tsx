@@ -1,38 +1,34 @@
 "use client";
 
 import { api } from "@/trpc/react";
-import { SeedStats } from "./seed-stats";
-import { SeedOperationCard } from "./seed-operation-card";
-import { Separator } from "@/components/ui/separator";
 import { RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { SeedOperationCard } from "./seed-operation-card";
+import { SeedStats } from "./seed-stats";
 
 export function SeedDashboard() {
   const utils = api.useUtils();
 
   const handleRefresh = () => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    utils.seed.getStats.invalidate();
+    void utils.seed.getStats.invalidate();
   };
 
   const seedQuizMutation = api.seed.generateQuiz.useMutation({
     onSuccess: () => {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      utils.seed.getStats.invalidate();
+      void utils.seed.getStats.invalidate();
     },
   });
 
   const clearQuizzesMutation = api.seed.clearQuizzes.useMutation({
     onSuccess: () => {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      utils.seed.getStats.invalidate();
+      void utils.seed.getStats.invalidate();
     },
   });
 
   const resetDatabaseMutation = api.seed.resetDatabase.useMutation({
     onSuccess: () => {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      utils.seed.getStats.invalidate();
+      void utils.seed.getStats.invalidate();
     },
   });
 
