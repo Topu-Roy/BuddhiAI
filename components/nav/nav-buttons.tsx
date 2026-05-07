@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { LOGO_URL } from "@/assets/AssetUrl";
-import { Menu } from "lucide-react";
+import { Menu, Shield } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
@@ -15,9 +15,18 @@ import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
 import { SignOutButton } from "./sign-out-button";
 
+type SessionUser = {
+  id: string;
+  email: string;
+  name: string;
+  image?: string;
+  role?: string;
+};
+
 export function NavButtons() {
   const [open, setOpen] = useState(false);
   const { data: session } = authClient.useSession();
+  const isAdmin = (session?.user as SessionUser).role === "admin";
 
   return (
     <>
@@ -27,7 +36,18 @@ export function NavButtons() {
             <Link href={"/dashboard"}>Dashboard</Link>
           </Button>
 
-          <ProfileAvatar email={session.user.email} image={session.user.image ?? ""} name={session.user.name} />
+          {isAdmin && (
+            <Button variant="outline" className="h-8 lg:h-10">
+              <Link href={"/admin"}>Admin</Link>
+            </Button>
+          )}
+
+          <ProfileAvatar
+            email={session.user.email}
+            image={session.user.image ?? ""}
+            name={session.user.name}
+            isAdmin={isAdmin}
+          />
         </>
       ) : (
         <>
@@ -118,7 +138,17 @@ export function NavButtons() {
   );
 }
 
-function ProfileAvatar({ email, image, name }: { name: string; email: string; image: string }) {
+function ProfileAvatar({
+  email,
+  image,
+  name,
+  isAdmin,
+}: {
+  name: string;
+  email: string;
+  image: string;
+  isAdmin: boolean;
+}) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -157,6 +187,14 @@ function ProfileAvatar({ email, image, name }: { name: string; email: string; im
         </div>
 
         <Separator />
+
+        {isAdmin && (
+          <Button onClick={() => setOpen(false)} variant={"outline"} className="w-full">
+            <Link className="w-full" href={"/admin"}>
+              Admin
+            </Link>
+          </Button>
+        )}
 
         <Button onClick={() => setOpen(false)} variant={"outline"} className="w-full">
           <Link className="w-full" href={"/dashboard"}>
