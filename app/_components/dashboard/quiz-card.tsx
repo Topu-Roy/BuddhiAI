@@ -74,7 +74,7 @@ export function GenerateQuizCard() {
     <Card className="shadow-sm">
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-lg">
-          <div className="bg-primary/10 flex size-8 items-center justify-center rounded-full">
+          <div className="flex size-8 items-center justify-center rounded-full bg-primary/10">
             <BotMessageSquare size={18} className="text-primary" />
           </div>
           Build a new quiz

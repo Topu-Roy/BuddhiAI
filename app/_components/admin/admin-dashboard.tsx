@@ -1,12 +1,12 @@
 "use client";
 
-import { api } from "@/trpc/react";
-import { AdminStats } from "./admin-stats";
 import { SeedOperationCard } from "@/app/_components/seed/seed-operation-card";
-import { UserTable } from "./user-table";
-import { Separator } from "@/components/ui/separator";
+import { api } from "@/trpc/react";
 import { RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { AdminStats } from "./admin-stats";
+import { UserTable } from "./user-table";
 
 export function AdminDashboard() {
   const utils = api.useUtils();

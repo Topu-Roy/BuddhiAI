@@ -29,7 +29,7 @@ export function Header() {
   return (
     <header className="mb-8">
       <h1 className="text-xl font-bold tracking-tight sm:text-2xl lg:text-4xl">Hey, {profile.name} 👋</h1>
-      <p className="text-foreground/50 mt-1 text-sm lg:text-base">Ready for your next challenge?</p>
+      <p className="mt-1 text-sm text-foreground/50 lg:text-base">Ready for your next challenge?</p>
     </header>
   );
 }

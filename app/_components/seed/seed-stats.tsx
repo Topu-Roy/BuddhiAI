@@ -1,9 +1,9 @@
 "use client";
 
 import { api } from "@/trpc/react";
+import { CalendarDays, Database, FileQuestion } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Database, FileQuestion, CalendarDays } from "lucide-react";
 
 export function SeedStats() {
   const { data: stats, isPending } = api.seed.getStats.useQuery();

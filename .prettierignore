@@ -5,5 +5,4 @@ node_modules/
 coverage/
 pnpm-lock.yaml
 .pnpm-store/
-convex/_generated
-convex/betterAuth/_generated
+generated/

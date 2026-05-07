@@ -8,7 +8,7 @@ export function SeedButton() {
 
   return (
     <>
-      {isError && <p className="text-destructive mt-2 text-sm">Failed to seed: {error.message}</p>}
+      {isError && <p className="mt-2 text-sm text-destructive">Failed to seed: {error.message}</p>}
 
       <Button onClick={() => seedDb()} disabled={isPending}>
         {isPending ? "Seeding…" : "Seed Database"}

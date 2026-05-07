@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { LOGO_URL } from "@/assets/AssetUrl";
-import { Menu, Shield } from "lucide-react";
+import { Menu } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";

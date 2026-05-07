@@ -1,12 +1,19 @@
 "use client";
 
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { AlertTriangle, Loader2, CheckCircle2, XCircle } from "lucide-react";
+import { AlertTriangle, CheckCircle2, Loader2, XCircle } from "lucide-react";
 import { toast } from "sonner";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 interface SeedOperationCardProps {
   title: string;
@@ -47,14 +54,14 @@ export function SeedOperationCard({
       await mutationFn();
       setStatus("success");
       toast.success(`${title} completed successfully`);
-      
+
       setTimeout(() => setStatus("idle"), 3000);
     } catch (error) {
       setStatus("error");
       const message = error instanceof Error ? error.message : "An error occurred";
       setErrorMessage(message);
       toast.error(`${title} failed: ${message}`);
-      
+
       setTimeout(() => setStatus("idle"), 5000);
     }
   };
@@ -84,7 +91,10 @@ export function SeedOperationCard({
         );
       default:
         return (
-          <Badge variant={isDanger ? "destructive" : "outline"} className={isDanger ? "border-red-500 text-red-500" : ""}>
+          <Badge
+            variant={isDanger ? "destructive" : "outline"}
+            className={isDanger ? "border-red-500 text-red-500" : ""}
+          >
             {isDanger ? "Danger" : "Ready"}
           </Badge>
         );
@@ -109,9 +119,7 @@ export function SeedOperationCard({
             {status === "loading" && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {actionLabel}
           </Button>
-          {status === "error" && errorMessage && (
-            <p className="mt-2 text-xs text-destructive">{errorMessage}</p>
-          )}
+          {status === "error" && errorMessage && <p className="mt-2 text-xs text-destructive">{errorMessage}</p>}
         </CardContent>
       </Card>
 

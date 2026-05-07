@@ -4,18 +4,13 @@ import type { INTEREST } from "@/generated/prisma/enums";
 import type { PrismaPromise } from "@/generated/prisma/internal/prismaNamespace";
 import { adminProcedure, createTRPCRouter } from "@/server/api/trpc";
 import { TRPCError } from "@trpc/server";
-import { tryCatch } from "@/lib/try-catch";
 import { z } from "zod";
+import { tryCatch } from "@/lib/try-catch";
 
 export const seedRouter = createTRPCRouter({
   getStats: adminProcedure.query(async ({ ctx }) => {
     const [[quizCount, questionCount, resultCount, profileCount], lastQuiz, bannedCount] = await Promise.all([
-      Promise.all([
-        ctx.db.quiz.count(),
-        ctx.db.question.count(),
-        ctx.db.result.count(),
-        ctx.db.profile.count(),
-      ]),
+      Promise.all([ctx.db.quiz.count(), ctx.db.question.count(), ctx.db.result.count(), ctx.db.profile.count()]),
       ctx.db.quiz.findFirst({
         orderBy: { createdAt: "desc" },
         select: { createdAt: true },
@@ -236,7 +231,7 @@ export const seedRouter = createTRPCRouter({
           where: { id: input.userId },
           data: {
             banned: input.banned,
-            banReason: input.banned ? input.banReason ?? "Banned by admin" : null,
+            banReason: input.banned ? (input.banReason ?? "Banned by admin") : null,
           },
           select: { id: true },
         })

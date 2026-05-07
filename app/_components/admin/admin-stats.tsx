@@ -1,9 +1,9 @@
 "use client";
 
 import { api } from "@/trpc/react";
+import { Ban, Database, FileQuestion, Users } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Database, FileQuestion, Users, Ban } from "lucide-react";
 
 export function AdminStats() {
   const { data: stats, isPending } = api.seed.getStats.useQuery();

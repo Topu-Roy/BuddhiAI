@@ -102,12 +102,12 @@ export function EditDialog({ profile }: { profile: Profile }) {
   return (
     <Dialog>
       <DialogTrigger
-          render={
-            <button className="size-10 cursor-pointer rounded-full border border-border bg-foreground/5 p-2">
-              <Edit size={18} className="text-foreground/80" />
-            </button>
-          }
-        />
+        render={
+          <button className="size-10 cursor-pointer rounded-full border border-border bg-foreground/5 p-2">
+            <Edit size={18} className="text-foreground/80" />
+          </button>
+        }
+      />
       <DialogOverlay className="backdrop-blur-sm transition-all duration-300" />
       <DialogContent>
         <DialogHeader>
