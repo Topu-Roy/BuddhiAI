@@ -1,63 +1,36 @@
-<p align="center">
-  <img src="https://bwjcur3siq.ufs.sh/f/j7HvSadRZFfQkNePSwyrK2OcEi6C5ALxu3zMyeZnpNjbqTfh" alt="BuddhiAI Cover" width="100%" style="border-radius:12px; max-width: 640px;" />
-</p>
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
----
+## Getting Started
 
-## 🚀 What is BuddhiAI?
+First, run the development server:
 
-BuddhiAI is an AI-powered quiz platform that lets you **create, explore, and take bite-sized quizzes in seconds**.  
-Whether you're learning something new, testing your knowledge, or challenging friends, BuddhiAI makes it fast, fun, and addictive.
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
 
----
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## ✨ Key Features
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-- **AI-Powered Quiz Creation**  
-  Generate smart multiple-choice questions instantly on any topic.
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-- **Explore Thousands of Quizzes**  
-  Browse bite-sized quizzes created by the community.
+## Learn More
 
-- **Leaderboards & Scores**  
-  Track your performance and compete with friends.
+To learn more about Next.js, take a look at the following resources:
 
-- **Fast & Fun Format**  
-  10 questions per quiz — perfect for a quick brain boost.
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-- **Share Anywhere**  
-  Copy a link or share directly to social media.
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
----
+## Deploy on Vercel
 
-## 🎯 Taglines
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-- “Fuel your brain. Fast. Fun. AI-powered.”
-- “10 questions. Unlimited smarts. Let’s go!”
-- “Quizzes made for humans. Powered by AI.”
-- “Play. Learn. Beat your brain.”
-
----
-
-## 🕹️ Live Demo
-
-👉 **Try it now:** [buddhiai.vercel.app](https://buddhiai.vercel.app)
-
----
-
-## 🛠️ Tech Stack
-
-| Layer           | Stack                                   |
-| --------------- | --------------------------------------- |
-| **Frontend**    | Next.js 15 • React 19 • TypeScript 5    |
-| **Styling**     | TailwindCSS 4 • Radix UI • Lucide icons |
-| **State / API** | React Query • tRPC                      |
-| **Forms**       | React Hook Form • Zod                   |
-| **Backend**     | Nextjs api routes (AI API integrations) |
-| **Database**    | PostgreSQL • Prisma ORM                 |
-| **Auth**        | Better Auth / Google OAuth              |
-| **AI Engine**   | OpenAI / AI SDK                         |
-
----
-
-> Built with ☕ and curiosity.
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

@@ -1,222 +1,247 @@
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client"
+  output   = "../generated/prisma"
 }
 
 datasource db {
-    provider  = "postgresql"
-    url       = env("DATABASE_URL")
-    directUrl = env("DIRECT_URL")
+  provider = "postgresql"
 }
 
 model Quiz {
-    id              String     @id @default(uuid())
-    topic           String
-    timesTaken      Int
-    category        INTEREST
-    questions       Question[]
-    description     String
-    createdWith     String
-    profileId       String?
-    results         Result[]
-    createdAt       DateTime   @default(now())
-    updatedAt       DateTime   @updatedAt()
-    quizAnalyticsId String?
+  id              String     @id @default(uuid())
+  topic           String
+  timesTaken      Int
+  category        INTEREST
+  questions       Question[]
+  description     String
+  createdWith     String
+  profileId       String?
+  results         Result[]
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt()
+  quizAnalyticsId String?
 
-    QuizAnalytics QuizAnalytics? @relation(fields: [quizAnalyticsId], references: [id])
-    Profile       Profile?       @relation(fields: [profileId], references: [id])
+  QuizAnalytics QuizAnalytics? @relation(fields: [quizAnalyticsId], references: [id])
+  Profile       Profile?       @relation(fields: [profileId], references: [id])
 
-    @@index([createdWith, profileId])
-    @@map("quiz")
+  @@index([createdWith, profileId])
+  @@map("quiz")
 }
 
 model QuizAnalytics {
-    id           String   @id @default(uuid())
-    quizId       String   @unique
-    totalPassed  Int
-    totalFailed  Int
-    averageScore Int
-    averageTime  Int
-    timesTaken   Int
-    createdAt    DateTime @default(now())
-    updatedAt    DateTime @updatedAt()
-    Quiz         Quiz[]
+  id           String   @id @default(uuid())
+  quizId       String   @unique
+  totalPassed  Int
+  totalFailed  Int
+  averageScore Int
+  averageTime  Int
+  timesTaken   Int
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt()
+  Quiz         Quiz[]
 
-    @@index([quizId])
-    @@map("quiz_analytics")
+  @@index([quizId])
+  @@map("quiz_analytics")
 }
 
 model Question {
-    id                 String   @id @default(uuid())
-    localId            Int
-    quizId             String
-    question           String
-    options            String[]
-    correctAnswerIndex Int
-    explanation        String
-    answers            Answer[]
-    createdAt          DateTime @default(now())
-    updatedAt          DateTime @updatedAt()
+  id                 String   @id @default(uuid())
+  localId            Int
+  quizId             String
+  question           String
+  options            String[]
+  correctAnswerIndex Int
+  explanation        String
+  answers            Answer[]
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt()
 
-    Quiz Quiz @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  Quiz Quiz @relation(fields: [quizId], references: [id], onDelete: Cascade)
 
-    @@index([quizId])
-    @@map("question")
+  @@index([quizId])
+  @@map("question")
 }
 
 model Answer {
-    id                  String   @id @default(uuid())
-    resultId            String
-    questionId          String
-    selectedAnswerIndex Int
-    isCorrect           Boolean
-    createdAt           DateTime @default(now())
-    updatedAt           DateTime @updatedAt()
+  id                  String   @id @default(uuid())
+  resultId            String
+  questionId          String
+  selectedAnswerIndex Int
+  isCorrect           Boolean
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt()
 
-    Question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
-    Result   Result   @relation(fields: [resultId], references: [id], onDelete: Cascade)
+  Question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  Result   Result   @relation(fields: [resultId], references: [id], onDelete: Cascade)
 
-    @@index([questionId, resultId])
-    @@map("answer")
+  @@index([questionId, resultId])
+  @@map("answer")
 }
 
 model Result {
-    id                String   @id @default(uuid())
-    quizId            String
-    profileId         String
-    correctAnswer     Int
-    incorrectAnswer   Int
-    timeTookInSeconds Int
-    answers           Answer[]
-    createdAt         DateTime @default(now())
-    updatedAt         DateTime @updatedAt()
+  id                String   @id @default(uuid())
+  quizId            String
+  profileId         String
+  correctAnswer     Int
+  incorrectAnswer   Int
+  timeTookInSeconds Int
+  answers           Answer[]
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt()
 
-    Profile Profile @relation(fields: [profileId], references: [id])
-    Quiz    Quiz    @relation(fields: [quizId], references: [id])
+  Profile Profile @relation(fields: [profileId], references: [id])
+  Quiz    Quiz    @relation(fields: [quizId], references: [id])
 
-    @@index([quizId, profileId])
-    @@map("result")
+  @@index([quizId, profileId])
+  @@map("result")
 }
 
 model Stats {
-    id                      String   @id @default(uuid())
-    profileId               String   @unique
-    totalTimeSpentInSeconds Int
-    totalCorrectAnswers     Int
-    totalIncorrectAnswers   Int
-    createdAt               DateTime @default(now())
-    updatedAt               DateTime @updatedAt()
+  id                      String   @id @default(uuid())
+  profileId               String   @unique
+  totalTimeSpentInSeconds Int
+  totalCorrectAnswers     Int
+  totalIncorrectAnswers   Int
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt()
 
-    Profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  Profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
 
-    @@index([profileId])
-    @@map("stats")
+  @@index([profileId])
+  @@map("stats")
 }
 
 model Profile {
-    id             String          @id @default(uuid())
-    userId         String          @unique
-    name           String
-    email          String          @unique
-    age            Int
-    image          String?
-    Stats          Stats?
-    educationLevel EDUCATION_LEVEL
-    interests      INTEREST[]
-    quizzesCreated Quiz[]
-    quizzesTaken   Result[]
-    createdAt      DateTime        @default(now())
-    updatedAt      DateTime        @updatedAt()
+  id             String          @id @default(uuid())
+  userId         String          @unique
+  name           String
+  email          String          @unique
+  age            Int
+  image          String?
+  Stats          Stats?
+  educationLevel EDUCATION_LEVEL
+  interests      INTEREST[]
+  quizzesCreated Quiz[]
+  quizzesTaken   Result[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt()
 
-    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-    @@index([userId, email])
-    @@map("profile")
+  @@index([userId, email])
+  @@map("profile")
 }
 
 enum EDUCATION_LEVEL {
-    HIGH_SCHOOL
-    COLLAGE
-    BACHELORS
-    MASTERS
-    PhD
-    OTHER
+  HIGH_SCHOOL
+  COLLAGE
+  BACHELORS
+  MASTERS
+  PhD
+  OTHER
 }
 
 enum INTEREST {
-    SCIENCE
-    TECHNOLOGY
-    HISTORY
-    LITERATURE
-    MATHEMATICS
-    GEOGRAPHY
-    SPORTS
-    ENTERTAINMENT
-    POLITICS
-    ART
-    MUSIC
-    PHILOSOPHY
-    OTHER
+  SCIENCE
+  TECHNOLOGY
+  HISTORY
+  LITERATURE
+  MATHEMATICS
+  GEOGRAPHY
+  SPORTS
+  ENTERTAINMENT
+  POLITICS
+  ART
+  MUSIC
+  PHILOSOPHY
+  OTHER
 }
 
 model User {
-    id            String    @id @default(uuid())
-    name          String
-    email         String
-    emailVerified Boolean
-    image         String?
-    createdAt     DateTime  @default(now())
-    updatedAt     DateTime  @updatedAt()
-    sessions      Session[]
-    accounts      Account[]
-    Profile       Profile?
+  id            String    @id @default(uuid())
+  name          String
+  email         String
+  emailVerified Boolean   @default(false)
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  role          String?
+  banned        Boolean?  @default(false)
+  banReason     String?
+  banExpires    DateTime?
+  sessions      Session[]
+  accounts      Account[]
+  passkeys      Passkey[]
+  profile       Profile?
 
-    @@unique([email])
-    @@map("user")
-}
-
-model Account {
-    id                    String    @id @default(uuid())
-    accountId             String
-    providerId            String
-    userId                String
-    user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-    accessToken           String?
-    refreshToken          String?
-    idToken               String?
-    accessTokenExpiresAt  DateTime?
-    refreshTokenExpiresAt DateTime?
-    scope                 String?
-    password              String?
-    createdAt             DateTime  @default(now())
-    updatedAt             DateTime  @updatedAt()
-
-    @@unique([userId, providerId])
-    @@map("account")
+  @@unique([email])
+  @@map("user")
 }
 
 model Session {
-    id        String   @id @default(uuid())
-    expiresAt DateTime
-    token     String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt()
-    ipAddress String?
-    userAgent String?
-    userId    String
-    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id             String   @id @default(uuid())
+  expiresAt      DateTime
+  token          String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  ipAddress      String?
+  userAgent      String?
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  impersonatedBy String?
 
-    @@unique([token])
-    @@index([expiresAt])
-    @@map("session")
+  @@unique([token])
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id @default(uuid())
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("account")
 }
 
 model Verification {
-    id         String    @id @default(uuid())
-    identifier String
-    value      String
-    expiresAt  DateTime
-    createdAt  DateTime? @default(now())
-    updatedAt  DateTime? @updatedAt()
+  id         String   @id @default(uuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
-    @@map("verification")
+  @@index([identifier])
+  @@map("verification")
+}
+
+model Passkey {
+  id           String    @id @default(uuid())
+  name         String?
+  publicKey    String
+  userId       String
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  credentialID String
+  counter      Int
+  deviceType   String
+  backedUp     Boolean
+  transports   String?
+  createdAt    DateTime?
+  aaguid       String?
+
+  @@index([userId])
+  @@index([credentialID])
+  @@map("passkey")
 }
