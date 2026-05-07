@@ -40,19 +40,19 @@ export function NavButtons() {
           </Button>
 
           <Button className="hidden lg:block">
-            <Link href={"/auth/sign-up"}>Get Started</Link>
+            <Link href={"/auth/sign-in"}>Get Started</Link>
           </Button>
         </>
       )}
 
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger
-            render={
-              <Button variant="ghost" size="icon" className="lg:hidden">
-                <Menu size={22} className="text-primary" />
-              </Button>
-            }
-          />
+          render={
+            <Button variant="ghost" size="icon" className="lg:hidden">
+              <Menu size={22} className="text-primary" />
+            </Button>
+          }
+        />
         <SheetContent className="px-4">
           <SheetHeader>
             <div className="inline-flex items-center justify-start gap-2">
@@ -105,7 +105,7 @@ export function NavButtons() {
               </Button>
 
               <Button onClick={() => setOpen(false)}>
-                <Link href={"/auth/sign-up"}>Get Started</Link>
+                <Link href={"/auth/sign-in"}>Get Started</Link>
               </Button>
             </>
           )}
@@ -124,19 +124,20 @@ function ProfileAvatar({ email, image, name }: { name: string; email: string; im
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger
-          render={
-            <Avatar className="cursor-pointer size-10 border-2 border-border">
-              <AvatarImage src={image ?? ""} />
-              <AvatarFallback>
-                {name
-                  ?.split(" ")
-                  .map(n => n[0])
-                  .join("")
-                  .toUpperCase()}
-              </AvatarFallback>
-            </Avatar>
-          }
-        />
+        nativeButton={false}
+        render={
+          <Avatar className="size-10 cursor-pointer border-2 border-border">
+            <AvatarImage src={image ?? ""} />
+            <AvatarFallback>
+              {name
+                ?.split(" ")
+                .map(n => n[0])
+                .join("")
+                .toUpperCase()}
+            </AvatarFallback>
+          </Avatar>
+        }
+      />
       <PopoverContent className="flex w-full flex-col items-center gap-4">
         <div className="flex items-center gap-3">
           <Avatar className="h-9 w-9">
