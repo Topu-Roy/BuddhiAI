@@ -15,18 +15,10 @@ import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
 import { SignOutButton } from "./sign-out-button";
 
-type SessionUser = {
-  id: string;
-  email: string;
-  name: string;
-  image?: string;
-  role?: string;
-};
-
 export function NavButtons() {
   const [open, setOpen] = useState(false);
   const { data: session } = authClient.useSession();
-  const isAdmin = (session?.user as SessionUser).role === "admin";
+  const isAdmin = session?.user?.role === "admin";
 
   return (
     <>
