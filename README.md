@@ -1,36 +1,136 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# BuddhiAI
+
+An AI-powered quiz application built with modern technologies. Generate quizzes on any topic using Google Gemini AI and test your knowledge.
+
+![BuddhiAI](https://img.shields.io/badge/version-1.0.0-blue)
+![Next.js](https://img.shields.io/badge/Next.js-16-blue)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+
+## Features
+
+- **AI Quiz Generation** — Create quizzes instantly using Google Gemini AI
+- **Multiple Categories** — Science, Technology, History, and more
+- **Progress Tracking** — Track your quiz history and scores
+- **Social Authentication** — Sign in with Google or GitHub
+- **Responsive Design** — Works on desktop and mobile
+
+## Tech Stack
+
+- **Frontend**: Next.js 16, React 19, Tailwind CSS 4
+- **Backend**: tRPC, Prisma, PostgreSQL
+- **Authentication**: Better Auth
+- **AI**: Google Gemini (via @ai-sdk/google)
+- **UI Components**: shadcn/ui, Motion
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+
+- PostgreSQL database
+- Bun (recommended) or npm/pnpm
+
+### Installation
 
 ```bash
-npm run dev
+# Clone the repository
+git clone https://github.com/your-username/buddhi-ai.git
+cd buddhi-ai
+
+# Install dependencies
+bun install
 # or
-yarn dev
+npm install
+
+# Set up environment variables
+cp .env.example .env
+# Edit .env with your database and auth credentials
+
+# Generate Prisma client
+bun run postinstall
 # or
-pnpm dev
+npx prisma generate
+
+# Push database schema
+bun run db:push
 # or
-bun dev
+npx prisma db push
+
+# Start development server
+bun run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```env
+# Database (PostgreSQL)
+DATABASE_URL=
 
-## Learn More
+# Auth
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+GITHUB_CLIENT_ID=
+GITHUB_CLIENT_SECRET=
 
-To learn more about Next.js, take a look at the following resources:
+# Next.js
+NEXTAUTH_SECRET=
+NEXTAUTH_URL=http://localhost:3000
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Available Scripts
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Command | Description |
+|---------|-------------|
+| `bun run dev` | Start development server |
+| `bun run build` | Build for production |
+| `bun run start` | Start production server |
+| `bun run lint` | Run ESLint and TypeScript checks |
+| `bun run db:push` | Push Prisma schema to database |
+| `bun run db:studio` | Open Prisma Studio |
 
-## Deploy on Vercel
+## Project Structure
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+buddhi-ai/
+├── app/                    # Next.js App Router pages
+│   ├── (public)/          # Public routes (auth, quiz explore)
+│   ├── (protected)/      # Protected routes (dashboard, quiz)
+│   └── _components/       # Shared components
+├── components/            # UI components (shadcn/ui)
+├── server/                # Backend (tRPC, Prisma)
+│   ├── api/              # tRPC routers and procedures
+│   └── db.ts             # Database connection
+├── lib/                   # Utilities and helpers
+└── prisma/                # Database schema
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Routes
+
+| Route | Description |
+|-------|-------------|
+| `/` | Home page |
+| `/auth/sign-in` | Sign in (Google/GitHub) |
+| `/quiz/explore` | Browse public quizzes |
+| `/quiz/take/[id]` | Take a quiz |
+| `/dashboard` | User dashboard |
+| `/profile` | User profile |
+| `/admin` | Admin dashboard |
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing`)
+5. Open a Pull Request
+
+## License
+
+MIT License — see [LICENSE](LICENSE) for details.
+
+---
+
+Built with 💖 by [Topu](https://github.com/topuroy)
