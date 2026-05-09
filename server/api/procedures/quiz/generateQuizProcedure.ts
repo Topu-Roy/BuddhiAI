@@ -2,7 +2,7 @@ import { randomUUID } from "crypto";
 import { generateQuizInputSchema, quizSchema } from "@/server/schema/quiz";
 import { google } from "@ai-sdk/google";
 import { TRPCError } from "@trpc/server";
-import { generateObject } from "ai";
+import { generateText, Output } from "ai";
 import { tryCatch } from "@/lib/try-catch";
 import { protectedProcedure } from "../../trpc";
 
@@ -50,9 +50,11 @@ export const generateQuizProcedure = protectedProcedure
 
     // Generate quiz using AI
     const { data: generatedQuiz, error: generatedQuizError } = await tryCatch(
-      generateObject({
-        model: google("gemini-2.0-flash"),
-        schema: quizSchema,
+      generateText({
+        model: google("gemini-flash-latest"),
+        output: Output.object({
+          schema: quizSchema,
+        }),
         prompt:
           `Generate exactly 10 multiple-choice questions about ${input.topic}. ` +
           `The questions should be short, logical and appropriate for any person for the age of ${input.age} and education level of ${input.educationLevel.toLowerCase().replace("_", " ")}. ` +
@@ -98,14 +100,14 @@ export const generateQuizProcedure = protectedProcedure
           tx.quiz.create({
             data: {
               id: quizId,
-              createdWith: "gemini-2.5-flash",
+              createdWith: "gemini-flash-latest",
               timesTaken: 0,
               profileId: profile.id,
-              topic: generatedQuiz.object.topic,
-              description: generatedQuiz.object.description,
-              category: generatedQuiz.object.category,
+              topic: generatedQuiz.output.topic,
+              description: generatedQuiz.output.description,
+              category: generatedQuiz.output.category,
               questions: {
-                create: generatedQuiz.object.quiz.map(question => ({
+                create: generatedQuiz.output.quiz.map(question => ({
                   question: question.question,
                   localId: question.id,
                   options: question.options,

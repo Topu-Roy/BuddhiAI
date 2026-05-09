@@ -17,9 +17,9 @@ const mcqSchema = object({
   explanation: string(),
 });
 
-// array of 10
+// Quiz
 export const quizSchema = object({
-  quiz: array(mcqSchema).length(10),
+  quiz: array(mcqSchema).min(4),
   topic: string(),
   description: string(),
   category: zodEnum(INTEREST),
