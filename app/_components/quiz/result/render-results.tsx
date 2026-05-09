@@ -176,24 +176,24 @@ export async function Results({ resultId }: { resultId: string }) {
 
       {/* Actions */}
       <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-        <Button size="lg">
-          <Link href="/dashboard">
-            <Home className="mr-2 h-4 w-4" />
+        <Link href="/dashboard">
+          <Button size="lg" className={"inline-flex items-center justify-center gap-2 px-4"}>
+            <Home className="h-4 w-4" />
             Dashboard
-          </Link>
-        </Button>
-        <Button variant="outline" size="lg">
-          <Link href={`/quiz/history?page=1`}>
-            <RotateCcw className="mr-2 h-4 w-4" />
+          </Button>
+        </Link>
+        <Link href={`/quiz/history?page=1`}>
+          <Button variant="outline" size="lg" className={"inline-flex items-center justify-center gap-2 px-4"}>
+            <RotateCcw className="h-4 w-4" />
             My history
-          </Link>
-        </Button>
-        <Button variant="outline" size="lg">
-          <Link href={`/quiz/explore?page=1`}>
-            <RotateCcw className="mr-2 h-4 w-4" />
+          </Button>
+        </Link>
+        <Link href={`/quiz/explore?page=1`}>
+          <Button variant="outline" size="lg" className={"inline-flex items-center justify-center gap-2 px-4"}>
+            <RotateCcw className="h-4 w-4" />
             Explore more
-          </Link>
-        </Button>
+          </Button>
+        </Link>
       </div>
     </div>
   );

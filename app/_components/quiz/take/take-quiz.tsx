@@ -163,7 +163,7 @@ export function TakeQuiz({ quizId }: { quizId: string }) {
                 className={cn(
                   "m-0! flex size-7! flex-1 items-center justify-center rounded-full border border-border bg-accent p-0! text-sm text-foreground sm:size-8! dark:bg-muted",
                   {
-                    "border-0 bg-primary text-white dark:bg-primary": isAnswered,
+                    "border-0 bg-primary/40 text-background dark:bg-primary": isAnswered,
                     "ring-2 ring-gray-800 dark:ring-white": isAnswered && current === index,
                     "ring-2 ring-ring": !isAnswered && current === index,
                   }
