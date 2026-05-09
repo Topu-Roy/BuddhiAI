@@ -4,8 +4,8 @@ import type { INTEREST } from "@/generated/prisma/enums";
 import type { PrismaPromise } from "@/generated/prisma/internal/prismaNamespace";
 import { adminProcedure, createTRPCRouter } from "@/server/api/trpc";
 import { TRPCError } from "@trpc/server";
-import { tryCatch } from "@/lib/try-catch";
 import { z } from "zod";
+import { tryCatch } from "@/lib/try-catch";
 
 export const seedRouter = createTRPCRouter({
   getStats: adminProcedure.query(async ({ ctx }) => {
@@ -33,72 +33,50 @@ export const seedRouter = createTRPCRouter({
   generateQuiz: adminProcedure.mutation(async ({ ctx }) => {
     const { data, error } = await tryCatch(
       ctx.db.$transaction(async tx => {
-        // First, ensure admin profile exists - fetch with id only
-        const existingProfile = await tx.profile.findFirst({
-          where: { email: ctx.profile.email },
-          select: { id: true },
+        // Pre-assign UUIDs so we can reference them across all three batches
+        const quizzes = initialQuizData.map(item => ({
+          ...item,
+          quizId: randomUUID(),
+        }));
+
+        // 1. Create all quizzes
+        await tx.quiz.createMany({
+          data: quizzes.map(item => ({
+            id: item.quizId,
+            createdWith: "gemini-2.5-flash",
+            timesTaken: 0,
+            profileId: ctx.profile.id,
+            topic: item.topic,
+            description: item.description,
+            category: item.category as INTEREST,
+          })),
         });
 
-        // Determine profileId
-        let profileId: string;
+        // 2. Create all questions (parent quiz rows guaranteed to exist)
+        await tx.question.createMany({
+          data: quizzes.flatMap(item =>
+            item.questions.map(q => ({
+              quizId: item.quizId,
+              question: q.question,
+              localId: q.localId,
+              options: q.options,
+              correctAnswerIndex: q.correctAnswerIndex,
+              explanation: q.explanation,
+            }))
+          ),
+        });
 
-        if (existingProfile) {
-          profileId = existingProfile.id;
-        } else {
-          // Create profile if it doesn't exist
-          const newProfile = await tx.profile.create({
-            data: {
-              userId: ctx.user.id,
-              name: ctx.user.name,
-              email: ctx.profile.email,
-              age: 25,
-              educationLevel: "OTHER",
-              interests: [],
-            },
-            select: { id: true },
-          });
-          profileId = newProfile.id;
-        }
-
-        // Sequential operations - create quiz first, then analytics
-        for (const item of initialQuizData) {
-          const quizId = randomUUID();
-
-          // 1. Create quiz with questions
-          await tx.quiz.create({
-            data: {
-              id: quizId,
-              createdWith: "gemini-2.5-flash",
-              timesTaken: 0,
-              profileId: profileId,
-              topic: item.topic,
-              description: item.description,
-              category: item.category as INTEREST,
-              questions: {
-                create: item.questions.map(q => ({
-                  question: q.question,
-                  localId: q.localId,
-                  options: q.options,
-                  correctAnswerIndex: q.correctAnswerIndex,
-                  explanation: q.explanation,
-                })),
-              },
-            },
-            select: { id: true },
-          });
-
-          // 2. Create analytics AFTER quiz exists
-          await tx.quizAnalytics.create({
-            data: {
-              quizId,
-              totalPassed: 0,
-              totalFailed: 0,
-              averageScore: 0,
-              averageTime: 0,
-              timesTaken: 0,
-            },
-          });
-        }
+        // 3. Create all analytics
+        await tx.quizAnalytics.createMany({
+          data: quizzes.map(item => ({
+            quizId: item.quizId,
+            totalPassed: 0,
+            totalFailed: 0,
+            averageScore: 0,
+            averageTime: 0,
+            timesTaken: 0,
+          })),
+        });
 
         return true;
       })
