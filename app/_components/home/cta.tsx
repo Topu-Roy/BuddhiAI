@@ -11,7 +11,7 @@ export function CTA() {
     return (
       <>
         <Button size="lg" className="w-full sm:w-auto">
-          <Link href={"/sign-in"}>Get started</Link>
+          <Link href={"/auth/sign-in"}>Get started</Link>
         </Button>
         <Button variant="outline" size="lg" className="w-full text-black sm:w-auto dark:text-foreground">
           <Link href={"/quiz/explore?page=1"}>Explore</Link>
