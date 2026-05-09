@@ -6,6 +6,7 @@ export const env = createEnv({
     NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
 
     DATABASE_URL: z.string().nonempty(),
+    DIRECT_URL: z.string().nonempty(),
 
     BETTER_AUTH_SECRET: z.string().nonempty(),
     BETTER_AUTH_URL: z.string().nonempty(),
@@ -14,6 +15,8 @@ export const env = createEnv({
     GITHUB_CLIENT_SECRET: z.string().nonempty(),
     GOOGLE_CLIENT_ID: z.string().nonempty(),
     GOOGLE_CLIENT_SECRET: z.string().nonempty(),
+
+    GOOGLE_GENERATIVE_AI_API_KEY: z.string().nonempty(),
   },
   client: {
     // NEXT_PUBLIC_CLIENT_VAR: z.string(),
@@ -22,6 +25,7 @@ export const env = createEnv({
     NODE_ENV: process.env.NODE_ENV,
 
     DATABASE_URL: process.env.DATABASE_URL,
+    DIRECT_URL: process.env.DIRECT_URL,
 
     BETTER_AUTH_SECRET: process.env.BETTER_AUTH_SECRET,
     BETTER_AUTH_URL: process.env.BETTER_AUTH_URL,
@@ -30,5 +34,7 @@ export const env = createEnv({
     GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+
+    GOOGLE_GENERATIVE_AI_API_KEY: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
   },
 });
