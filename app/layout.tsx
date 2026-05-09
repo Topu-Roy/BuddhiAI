@@ -21,7 +21,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "BuddhiAI - Fuel Your Brain with Smart Quizzes",
   description:
-    "BuddhiAI lets you create, explore, and take bite-sized AI-powered quizzes in seconds. Perfect for learning, fun, or challenging friends. Fast, fun, and addictive — 10 questions, unlimited smarts!",
+    "BuddhiAI lets you create, explore, and take bite-sized AI-powered quizzes in seconds. Perfect for learning, fun, or challenging friends. Fast, fun, and addictive questions, unlimited knowledge!",
   keywords: [
     "BuddhiAI",
     "AI quizzes",
@@ -57,8 +57,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "BuddhiAI - Fuel Your Brain with Smart Quizzes",
-    description:
-      "10 questions, unlimited smarts. AI-powered quizzes for learning, fun, or challenging friends. Fast, fun, and addictive!",
+    description: "AI-powered quizzes for learning, fun, or challenging friends. Fast, fun, and addictive!",
     images: ["https://bwjcur3siq.ufs.sh/f/j7HvSadRZFfQxYHWBvoYVLAR8WIPC709sH6laUyFSiuGOfpK"],
     creator: "@topuroy",
   },
